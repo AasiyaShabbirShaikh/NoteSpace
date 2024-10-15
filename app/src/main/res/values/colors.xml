@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#F44336</color>
+
+    <color name="grey">#EFEFEF</color>
+    <color name="yellow">#FFE500</color>
+    <color name="red">#FFF44336</color>
+    <color name="pink">#E91E63</color>
+    <color name="purple">#9C27B0</color>
+    <color name="voilet">#673AB7</color>
+    <color name="dark_blue">#3F51B5</color>
+    <color name="sky_blue">#03A9F4</color>
+    <color name="teal">#009688</color>
+    <color name="dark_green">#4CAF50</color>
+    <color name="light_green">#8BC34A</color>
+    <color name="orange">#FF9800</color>
+    <color name="charcoal">#98948F</color>
+
+    <array name="color-menu">
+        <item>@color/white</item>
+        <item>@color/purple</item>
+        <item>@color/voilet</item>
+        <item>@color/dark_blue</item>
+        <item>@color/sky_blue</item>
+        <item>@color/yellow</item>
+        <item>@color/orange</item>
+        <item>@color/pink</item>
+        <item>@color/red</item>
+        <item>@color/light_green</item>
+        <item>@color/dark_green</item>
+        <item>@color/teal</item>
+    </array>
 </resources>
