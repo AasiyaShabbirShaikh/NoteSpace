@@ -9,10 +9,11 @@
 
     <style name="Theme.noteSpace.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/note_space_svg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/appp_logo</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.NoteSpace</item>
-
     </style>
+
 
     <style name="Theme.NoteSpace.NoActionBar">
         <item name="windowActionBar">false</item>
