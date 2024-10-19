@@ -40,5 +40,18 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+        <include
+            android:id="@+id/bottom_nav_icon_include"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            layout="@layout/bottom_nav_layout"/>
+    </FrameLayout>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

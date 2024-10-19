@@ -74,6 +74,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun setUpBottomNavIconClick(){
+        binding.bottomNavIconInclude.apply {
+            checkboxNavIcon.setOnClickListener {
+                navController.navigate(R.id.newListFragment)
+            }
+            paintNavIcon.setOnClickListener {
+                navController.navigate(R.id.dashboardFragment)
+            }
+            mikeNavIcon.setOnClickListener {
+                navController.navigate(R.id.dashboardFragment)
+            }
+            galleryNavIcon.setOnClickListener {
+
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if(binding.mainDrawer.isDrawerOpen(GravityCompat.START)){
             binding.mainDrawer.closeDrawer(GravityCompat.START)
