@@ -54,43 +54,42 @@ class MainActivity : AppCompatActivity() {
         binding.drawerNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.notes -> {
-                    Toast.makeText(this,"notes clicked", Toast.LENGTH_LONG).show()
-                    Log.d("DrawerNavigation", "Navigating to Notes")
+                    Toast.makeText(this,"Notes Fragment",Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.dashboardFragment)
                 }
                 R.id.reminders -> {
-                    Toast.makeText(this,"reminders clicked", Toast.LENGTH_LONG).show()
-                    Log.d("DrawerNavigation", "Navigating to reminders")
+                    Toast.makeText(this,"Reminders Fragment",Toast.LENGTH_LONG).show()
+
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.reminderFragment)
                 }
                 R.id.create_new_label -> {
-                    Toast.makeText(this,"create new label clicked", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"CreateNewLabel Fragment",Toast.LENGTH_LONG).show()
 
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.createNewLabelFragment)
                 }
                 R.id.archive -> {
-                    Toast.makeText(this,"archive clicked", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"Archive Fragment",Toast.LENGTH_LONG).show()
 
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.archiveFragment)
                 }
                 R.id.trash -> {
-                    Toast.makeText(this,"trash clicked", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"Trash Fragment",Toast.LENGTH_LONG).show()
 
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.trashFragment)
                 }
                 R.id.settings -> {
-                    Toast.makeText(this,"settings clicked", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"Settings Fragment",Toast.LENGTH_LONG).show()
 
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.settingsFragment)
                 }
                 R.id.help_feedback -> {
-                    Toast.makeText(this,"help/feedback clicked", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"HelpFeedback Fragment",Toast.LENGTH_LONG).show()
 
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.helpFeedbackFragment)
@@ -100,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun setCustomBottomIconClickEvents(){
         binding.bottomNavCustom.apply {
