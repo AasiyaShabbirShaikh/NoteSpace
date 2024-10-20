@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -19,7 +20,7 @@ import com.example.notespace.databinding.GalleryDialogBoxBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpDrawerLayout() {
-        setSupportActionBar(binding.headerToolbar.toolbar)
+        setSupportActionBar(binding.headerToolbar.toolbarHome)
         supportActionBar?.title =""
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this, binding.mainDrawer, R.string.start, R.string.close)
@@ -132,6 +133,14 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun hideBottomNavBar(){
+        binding.bottomNavFrameLayout.visibility= View.GONE
+    }
+
+    fun showBottomNavBar(){
+        binding.bottomNavFrameLayout.visibility= View.VISIBLE
     }
 
     private fun showGalleryDialogBox(){

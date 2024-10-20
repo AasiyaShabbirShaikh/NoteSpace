@@ -35,6 +35,8 @@
 <!--    dashboard_fragment-->
     <string name="empty_notes_note">Notes you add appear here</string>
     <string name="empty_reminder_note">Notes with upcoming reminders appear here</string>
+    <string name="empty_archive_note">Your archive notes appear here</string>
+    <string name="empty_trash_note">No notes in Trash</string>
 
 
 
