@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/trash_asset"
+        android:title="@string/delete" />
+
+    <item
+        android:id="@+id/make_a_copy"
+        android:icon="@drawable/make_copy_asset"
+        android:title="@string/make_a_copy" />
+
+    <item
+        android:id="@+id/send"
+        android:icon="@drawable/share_asset"
+        android:title="@string/send" />
+
+    <item
+        android:id="@+id/collaborator"
+        android:icon="@drawable/person_plus_asset"
+        android:title="@string/collaborator" />
+
+    <item
+        android:id="@+id/labels"
+        android:icon="@drawable/label_asset"
+        android:title="@string/labels" />
+
+    <item
+        android:id="@+id/help_feedback"
+        android:icon="@drawable/help_feedback_asset"
+        android:title="@string/help_feedback" />
+</menu>

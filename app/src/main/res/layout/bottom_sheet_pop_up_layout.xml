@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="7dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/popup_take_photo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/popup_take_photo_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/take_photo_asset"
+            />
+
+        <TextView
+            android:id="@+id/popup_take_photo_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/take_photo"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/popup_add_image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/popup_add_image_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/image_gallery_asset"
+            />
+
+        <TextView
+            android:id="@+id/popup_add_image_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_image"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/popup_drawing_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/popup_drawing_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/paint_brush_asset"
+            />
+
+        <TextView
+            android:id="@+id/popup_drawing_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/drawing"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/popup_recording_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/popup_recording_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/audio_mike_asset"
+            />
+
+        <TextView
+            android:id="@+id/popup_recording_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recording"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/popup_checkboxes_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/popup_checkboxes_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/checkbox_asset"
+            />
+
+        <TextView
+            android:id="@+id/popup_checkboxes_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkboxes"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

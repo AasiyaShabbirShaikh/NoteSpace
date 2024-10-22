@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="7dp"
+    android:paddingTop="7dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/remind_me_later_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/remind_me_later"
+        android:paddingStart="12dp"
+        android:paddingTop="7dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins"
+        />
+
+    <TextView
+        android:id="@+id/saved_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saved_in_google"
+        android:paddingStart="12dp"
+        android:paddingTop="2dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins"
+        />
+
+    <TextView
+        android:id="@+id/line_textview"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/dark_grey"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="14dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/remind_tomorrow_one_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_tomorrow_one_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/time_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_tomorrow_one_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tomorrow_morning"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+        <TextView
+            android:id="@+id/remind_tomorrow_one_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8.00 AM"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:layout_marginStart="155dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remind_tomorrow_two_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_tomorrow_two_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/time_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_tomorrow_two_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tomorrow_evening"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+        <TextView
+            android:id="@+id/remind_tomorrow_two_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6.00 PM"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:layout_marginStart="155dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remind_tomorrow_three_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_tomorrow_three_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/time_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_tomorrow_three_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tuesday_morning"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+        <TextView
+            android:id="@+id/remind_tomorrow_three_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tue 8.00 AM"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:layout_marginStart="135dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remind_home_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_home_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/home_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_home_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remind_work_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_work_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/work_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_work_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/work"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remind_pick_date_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_pick_date_time_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/time_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_pick_date_time_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_date_time"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remind_pick_place_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/remind_pick_place_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/location_asset"
+            />
+
+        <TextView
+            android:id="@+id/remind_pick_place_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_place"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

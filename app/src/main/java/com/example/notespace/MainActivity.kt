@@ -11,12 +11,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.notespace.database.NotesDatabase
 import com.example.notespace.databinding.ActivityMainBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
+import com.example.notespace.repository.NotesRepository
+import com.example.notespace.viewModel.NotesViewModel
+import com.example.notespace.viewModel.NotesViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
 
+    lateinit var notesViewModel: NotesViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        Thread.sleep(2000)
@@ -32,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 //        installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpViewModel()
 
         navController = Navigation.findNavController(this,R.id.container)
 
@@ -41,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setCustomBottomIconClickEvents()
+        handleFloatingButtonClick()
 
     }
 
@@ -125,6 +134,7 @@ class MainActivity : AppCompatActivity() {
             binding.mainDrawer.closeDrawer(GravityCompat.START)
         }else {
             super.onBackPressed()
+            showBottomNavLayout()
         }
     }
 
@@ -165,5 +175,29 @@ class MainActivity : AppCompatActivity() {
         }
         dialogbox?.show()
     }
+
+    private fun setUpViewModel(){
+        val notesRepository = NotesRepository(NotesDatabase(this))
+        val viewModelProviderFactory = NotesViewModelFactory(application, notesRepository)
+        notesViewModel = ViewModelProvider(this, viewModelProviderFactory)[NotesViewModel::class.java]
+    }
+
+    private fun handleFloatingButtonClick(){
+        binding.floatingActionButton.setOnClickListener {
+            hideBottomNavLayout()
+            navController.navigate(R.id.addFragment)
+        }
+    }
+
+    private fun showBottomNavLayout(){
+        binding.bottomNavFrameLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideBottomNavLayout(){
+        binding.bottomNavFrameLayout.visibility = View.GONE
+    }
+
+
+
 
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/take_photo"
+        android:icon="@drawable/take_photo_asset"
+        android:title="@string/take_photo" />
+
+    <item
+        android:id="@+id/add_image"
+        android:icon="@drawable/image_gallery_asset"
+        android:title="@string/add_image" />
+
+    <item
+        android:id="@+id/drawing"
+        android:icon="@drawable/paint_brush_asset"
+        android:title="@string/drawing" />
+
+    <item
+        android:id="@+id/recording"
+        android:icon="@drawable/audio_mike_asset"
+        android:title="@string/recording" />
+
+    <item
+        android:id="@+id/checkboxes"
+        android:icon="@drawable/checkbox_asset"
+        android:title="@string/checkboxes" />
+
+</menu>

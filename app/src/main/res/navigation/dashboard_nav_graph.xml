@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.notespace.ui.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_addFragment"
+            app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_newListFragment"
+            app:destination="@id/newListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_reminderFragment"
+            app:destination="@id/reminderFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_createNewLabelFragment2"
+            app:destination="@id/createNewLabelFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_archiveFragment"
+            app:destination="@id/archiveFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_trashFragment"
+            app:destination="@id/trashFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_helpFeedbackFragment"
+            app:destination="@id/helpFeedbackFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_editNoteFragment"
+            app:destination="@id/editNoteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.notespace.ui.AddFragment"
+        android:label="fragment_add"
+        tools:layout="@layout/fragment_add" />
+
+    <fragment
+        android:id="@+id/newListFragment"
+        android:name="com.example.notespace.ui.NewListFragment"
+        android:label="fragment_new_list"
+        tools:layout="@layout/fragment_new_list" />
+    <fragment
+        android:id="@+id/reminderFragment"
+        android:name="com.example.notespace.ui.ReminderFragment"
+        android:label="fragment_reminder"
+        tools:layout="@layout/fragment_reminder" />
+    <fragment
+        android:id="@+id/createNewLabelFragment"
+        android:name="com.example.notespace.ui.CreateNewLabelFragment"
+        android:label="fragment_create_new_label"
+        tools:layout="@layout/fragment_create_new_label" />
+    <fragment
+        android:id="@+id/archiveFragment"
+        android:name="com.example.notespace.ui.ArchiveFragment"
+        android:label="fragment_archive"
+        tools:layout="@layout/fragment_archive" />
+    <fragment
+        android:id="@+id/trashFragment"
+        android:name="com.example.notespace.ui.TrashFragment"
+        android:label="fragment_trash"
+        tools:layout="@layout/fragment_trash" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.notespace.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/helpFeedbackFragment"
+        android:name="com.example.notespace.ui.HelpFeedbackFragment"
+        android:label="fragment_help_feedback"
+        tools:layout="@layout/fragment_help_feedback" />
+    <fragment
+        android:id="@+id/editNoteFragment"
+        android:name="com.example.notespace.ui.EditNoteFragment"
+        android:label="fragment_edit_note"
+        tools:layout="@layout/fragment_edit_note">
+        <argument
+            android:name="note"
+            app:argType="com.example.notespace.model.Notes"
+            app:nullable="true"/>
+    </fragment>
+
+</navigation>
