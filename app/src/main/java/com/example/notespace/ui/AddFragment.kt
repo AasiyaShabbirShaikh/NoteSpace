@@ -7,78 +7,42 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.notespace.MainActivity
 import com.example.notespace.databinding.BottomSheetPopUpLayoutBinding
 import com.example.notespace.databinding.FragmentAddBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
-class AddFragment : Fragment() {
+class AddFragment : AddNewListBaseFragment() {
 
-    private lateinit var binding: FragmentAddBinding
-    private lateinit var addPopUpDialog : BottomSheetDialog
-    private lateinit var addRemindMeDialog : BottomSheetDialog
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+   private var _binding : FragmentAddBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= FragmentAddBinding.inflate(layoutInflater)
-        return (binding.root)
+        super.onCreateView(inflater, container, savedInstanceState)
+        _binding = FragmentAddBinding.inflate(inflater, container, false)
+//        baseBinding.baseContainer.addView(binding.root)
+        setUpActionBar()
+        setUpBottomNavBar()
+        baseBinding.baseContainer.removeAllViews()
+        baseBinding.baseContainer.addView(binding.root)
+        return (baseBinding.root)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
-
-        binding.addAddOnIcon.setOnClickListener {
-            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
-
-            showAddBottomPopUpMenu()
-        }
+        (activity as MainActivity).hideFloatingActionButton()
     }
 
-
-    private fun showAddBottomPopUpMenu(){
-        val popUpViewBinding = BottomSheetPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
-
-        addPopUpDialog = BottomSheetDialog(requireContext())
-        addPopUpDialog.setContentView(popUpViewBinding.root)
-
-
-        popUpViewBinding.apply {
-            popupTakePhotoLayout.setOnClickListener {
-                Toast.makeText(requireContext(), "take photo clicked",Toast.LENGTH_LONG).show()
-                addPopUpDialog.dismiss()
-            }
-            popupAddImageLayout.setOnClickListener {
-                Toast.makeText(requireContext(), "add image clicked",Toast.LENGTH_LONG).show()
-                addPopUpDialog.dismiss()
-            }
-            popupDrawingLayout.setOnClickListener {
-                Toast.makeText(requireContext(), "drawing clicked",Toast.LENGTH_LONG).show()
-                addPopUpDialog.dismiss()
-            }
-            popupRecordingLayout.setOnClickListener {
-                Toast.makeText(requireContext(), "recording clicked",Toast.LENGTH_LONG).show()
-                addPopUpDialog.dismiss()
-            }
-            popupCheckboxesLayout.setOnClickListener {
-                Toast.makeText(requireContext(), "checkboxes clicked",Toast.LENGTH_LONG).show()
-                addPopUpDialog.dismiss()
-            }
-
-        }
-        addPopUpDialog.show()
-
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as MainActivity).showFloatingActionButton()
+        _binding = null
     }
 }

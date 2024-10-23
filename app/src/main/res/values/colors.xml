@@ -12,6 +12,7 @@
     <color name="voilet">#673AB7</color>
     <color name="dark_blue">#3F51B5</color>
     <color name="sky_blue">#03A9F4</color>
+    <color name="sky_blue_bg">#5276D4FF</color>
     <color name="teal">#009688</color>
     <color name="dark_green">#4CAF50</color>
     <color name="light_green">#8BC34A</color>

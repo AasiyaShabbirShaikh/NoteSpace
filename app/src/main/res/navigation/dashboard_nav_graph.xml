@@ -90,5 +90,11 @@
             app:argType="com.example.notespace.model.Notes"
             app:nullable="true"/>
     </fragment>
+    <fragment
+        android:id="@+id/searchNoteFragment"
+        android:name="com.example.notespace.ui.searchNoteFragment"
+        android:label="fragment_search_note"
+        tools:layout="@layout/fragment_search_note" />
+
 
 </navigation>

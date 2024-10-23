@@ -26,6 +26,7 @@ import com.example.notespace.viewModel.NotesViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
@@ -34,15 +35,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Thread.sleep(2000)
         val splashScreen = installSplashScreen()
-//        installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpViewModel()
-
+//        setUpViewModel()
         navController = Navigation.findNavController(this,R.id.container)
-
+        setUpActionBarClicks()
         setUpDrawerLayout()
         binding.headerToolbar.drawerMenuIcon.setOnClickListener {
             binding.mainDrawer.openDrawer(GravityCompat.START)
@@ -65,13 +63,11 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.notes -> {
                     Toast.makeText(this,"notes clicked", Toast.LENGTH_LONG).show()
-                    Log.d("DrawerNavigation", "Navigating to Notes")
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.dashboardFragment)
                 }
                 R.id.reminders -> {
                     Toast.makeText(this,"reminders clicked", Toast.LENGTH_LONG).show()
-                    Log.d("DrawerNavigation", "Navigating to reminders")
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.reminderFragment)
                 }
@@ -109,6 +105,14 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    private fun setUpActionBarClicks(){
+        binding.headerToolbar.apply {
+            searchCardView.setOnClickListener {
+                navController.navigate(R.id.searchNoteFragment)
+            }
+        }
     }
 
     private fun setCustomBottomIconClickEvents(){
@@ -191,6 +195,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBottomNavLayout(){
         binding.bottomNavFrameLayout.visibility = View.VISIBLE
+    }
+
+     fun showFloatingActionButton(){
+        binding.floatingActionButton.visibility = View.VISIBLE
+    }
+
+     fun hideFloatingActionButton(){
+        binding.floatingActionButton.visibility= View.GONE
     }
 
     private fun hideBottomNavLayout(){

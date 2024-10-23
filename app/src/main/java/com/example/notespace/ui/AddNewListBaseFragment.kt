@@ -13,9 +13,10 @@ import com.example.notespace.databinding.FragmentAddNewListBaseBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
-class AddNewListBaseFragment : Fragment() {
+abstract class AddNewListBaseFragment : Fragment() {
 
     private lateinit var binding : FragmentAddNewListBaseBinding
+    protected val baseBinding get() = binding
 
     private lateinit var addOnDialog : BottomSheetDialog
     private lateinit var menuDialog: BottomSheetDialog
@@ -36,7 +37,7 @@ class AddNewListBaseFragment : Fragment() {
         return binding.root
     }
 
-    private fun setUpActionBar(){
+     fun setUpActionBar(){
         binding.baseToolbar.apply {
             backArrowIcon.setOnClickListener {
                 requireActivity().onBackPressed()
@@ -54,7 +55,7 @@ class AddNewListBaseFragment : Fragment() {
         }
     }
 
-    private fun setUpBottomNavBar(){
+    fun setUpBottomNavBar(){
         binding.apply{
             baseAddOnIcon.setOnClickListener {
                 Toast.makeText(requireContext(), "add on Clicked", Toast.LENGTH_SHORT).show()
@@ -75,7 +76,7 @@ class AddNewListBaseFragment : Fragment() {
         }
     }
 
-    private fun showAddOnBottomPopUpDialog(){
+     fun showAddOnBottomPopUpDialog(){
         val addOnViewBinding = BottomSheetPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
 
         addOnDialog = BottomSheetDialog(requireContext())
@@ -106,7 +107,7 @@ class AddNewListBaseFragment : Fragment() {
 
     }
 
-    private fun showMenuBottomPopUpDialog(){
+     fun showMenuBottomPopUpDialog(){
         val menuViewBinding = BottomMenuPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
 
         menuDialog = BottomSheetDialog(requireContext())
@@ -143,7 +144,7 @@ class AddNewListBaseFragment : Fragment() {
         menuDialog.show()
     }
 
-    private fun showRemindMeBottomPopUpDialog(){
+     fun showRemindMeBottomPopUpDialog(){
         val remindMeViewBinding = BottomRemindPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
 
         remindMeDialog = BottomSheetDialog(requireContext())

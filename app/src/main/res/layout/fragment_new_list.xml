@@ -6,18 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.NewListFragment">
 
-    <include
-        android:id="@+id/header_toolbar"
-        layout="@layout/toolbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/header_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
@@ -31,7 +26,7 @@
             android:hint="Title"
             android:inputType="text"
             android:textColorHint="@color/dark_grey"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/hide_menu_dots_icon"
@@ -44,27 +39,15 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        tools:itemCount="1"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        tools:listitem="@layout/checkbox_item_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_layout"/>
-
     <LinearLayout
+        android:id="@+id/list_item_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="62dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingStart="62dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_recycler_view"
+        tools:layout_editor_absoluteY="146dp">
 
         <ImageView
             android:id="@+id/add_icon"
@@ -76,102 +59,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="List item"
-            android:textSize="16sp"
-            android:paddingTop="3dp"
-            android:fontFamily="@font/poppins_medium"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            />
+            android:fontFamily="@font/poppins_medium"
+            android:paddingTop="3dp"
+            android:text="List item"
+            android:textSize="16sp" />
 
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottom_menu_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/checkbox_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/grey"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/add_on_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/add_on_asset" />
-
-        <ImageView
-            android:id="@+id/color_palete_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/add_on_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/color_palete_asset" />
-
-        <ImageView
-            android:id="@+id/text_style_picker_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/color_palete_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/text_style_picker_asset" />
-
-        <TextView
-            android:id="@+id/edited_just_now_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edited just now"
-            android:layout_marginStart="45dp"
-            app:layout_constraintStart_toEndOf="@id/text_style_picker_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <ImageView
-            android:id="@+id/undo_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_style_picker_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/undo_asset" />
-
-        <ImageView
-            android:id="@+id/redo_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/undo_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/redo_asset" />
-
-        <ImageView
-            android:id="@+id/menu_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/edited_just_now_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/menu_asset" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/title_layout"
+        app:layout_constraintBottom_toTopOf="@+id/list_item_layout"
+        tools:listitem="@layout/checkbox_item_layout"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
