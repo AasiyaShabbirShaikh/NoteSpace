@@ -11,5 +11,6 @@ data class Notes(
     @PrimaryKey(autoGenerate = true)
     val noteId: Int,
     val noteTitle : String,
-    val noteDescription: String
+    val noteDescription: String,
+    val timestamp: Long
 ):Parcelable

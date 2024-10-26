@@ -22,10 +22,6 @@ abstract class AddNewListBaseFragment : Fragment() {
     private lateinit var menuDialog: BottomSheetDialog
     private lateinit var remindMeDialog : BottomSheetDialog
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +30,7 @@ abstract class AddNewListBaseFragment : Fragment() {
         binding = FragmentAddNewListBaseBinding.inflate(layoutInflater)
         setUpActionBar()
         setUpBottomNavBar()
+        baseBinding.baseContainer.removeAllViews()
         return binding.root
     }
 

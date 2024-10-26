@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notespace.MainActivity
-import com.example.notespace.R
-import com.example.notespace.databinding.FragmentNewListBinding
 import com.example.notespace.databinding.FragmentSearchNoteBinding
 
-class searchNoteFragment : Fragment() {
+class SearchNoteFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchNoteBinding
 

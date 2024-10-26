@@ -34,12 +34,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var notesViewModel: NotesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
-        val splashScreen = installSplashScreen()
+        setUpViewModel()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        setUpViewModel()
-        navController = Navigation.findNavController(this,R.id.container)
+
+        navController = findNavController(R.id.container)
         setUpActionBarClicks()
         setUpDrawerLayout()
         binding.headerToolbar.drawerMenuIcon.setOnClickListener {
@@ -111,6 +112,9 @@ class MainActivity : AppCompatActivity() {
         binding.headerToolbar.apply {
             searchCardView.setOnClickListener {
                 navController.navigate(R.id.searchNoteFragment)
+            }
+            gridIcon.setOnClickListener {
+
             }
         }
     }
@@ -208,8 +212,6 @@ class MainActivity : AppCompatActivity() {
     private fun hideBottomNavLayout(){
         binding.bottomNavFrameLayout.visibility = View.GONE
     }
-
-
 
 
 }

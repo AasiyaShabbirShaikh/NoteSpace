@@ -92,7 +92,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchNoteFragment"
-        android:name="com.example.notespace.ui.searchNoteFragment"
+        android:name="com.example.notespace.ui.SearchNoteFragment"
         android:label="fragment_search_note"
         tools:layout="@layout/fragment_search_note" />
 

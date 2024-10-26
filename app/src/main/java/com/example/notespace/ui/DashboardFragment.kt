@@ -37,6 +37,8 @@ class DashboardFragment : Fragment(){
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var notesAdapter: NotesAdapter
 
+    private var isNoteGrid = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,83 +49,42 @@ class DashboardFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        updateEmptyNotesUi()
+        setUpViewModel()
+        setUpDashboardRecyclerView()
 
-//        val menuHost = requireActivity()
-//        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-//
-//        notesViewModel = (activity as MainActivity).notesViewModel
-//        setUpDashboardRecyclerView()
+
+
     }
 
-    private fun updateEmptyNotesUi(){
-        binding.recyclerView.visibility= View.GONE
-        binding.emptyNoteLayout.visibility = View.VISIBLE
+    private fun setUpViewModel(){
+        notesViewModel = (activity as MainActivity).notesViewModel
+
     }
 
-//    private fun updateDashboardUI(note : List<Notes>?){
-//        if(note != null){
-//            if(note.isNotEmpty()){
-//                binding.emptyNoteLayout.visibility = View.GONE
-//                binding.recyclerView.visibility = View.VISIBLE
-//            }
-//            else{
-//                binding.emptyNoteLayout.visibility = View.VISIBLE
-//                binding.recyclerView.visibility = View.GONE
-//            }
-//        }
-//    }
+    private fun setUpDashboardRecyclerView(){
+        notesAdapter = NotesAdapter()
+        binding.recyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+            setHasFixedSize(true)
+            adapter = notesAdapter
+        }
 
-//    private fun setUpDashboardRecyclerView(){
-//        notesAdapter = NotesAdapter()
-//        binding.recyclerView.apply {
-//            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-//            setHasFixedSize(true)
-//
-//            adapter = notesAdapter
-//        }
-//
-//        activity?.let{
-//            notesViewModel.getAllNotes().observe(viewLifecycleOwner){note ->
-//                notesAdapter.differ.submitList(note)
-//                updateDashboardUI(note)
-//
-//            }
-//        }
-//    }
-//
-//    override fun onQueryTextSubmit(p0: String?): Boolean {
-//        return false
-//    }
-//
-//    override fun onQueryTextChange(searchText: String?): Boolean {
-//        if(searchText != null){
-//            searchNote(searchText)
-//        }
-//        return true
-//    }
-//
-//    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//        menu.clear()
-//        menuInflater.inflate(R.menu.add_on_menu,menu)
-//
-//        val menuSearch = menu.findItem(R.id.search_text).actionView as SearchView
-//        menuSearch.isSubmitButtonEnabled = false
-//        menuSearch.setOnQueryTextListener(this)
-//    }
-//
-//    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//        return false
-//    }
-//
-//    private fun searchNote(keySearch: String?){
-//        val searchQuery = "%$keySearch"
-//
-//        notesViewModel.searchNote(searchQuery).observe(this){ list ->
-//            notesAdapter.differ.submitList(list)
-//
-//        }
-//    }
+        notesViewModel.getAllNotes().observe(viewLifecycleOwner){note ->
+            notesAdapter.differ.submitList(note)
+            updateDashboardUI(note)
+        }
+    }
+
+    private fun updateDashboardUI(notes : List<Notes>?){
+        if(notes.isNullOrEmpty()){
+            binding.emptyNoteLayout.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        }
+        else{
+            binding.emptyNoteLayout.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

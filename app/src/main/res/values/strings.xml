@@ -56,6 +56,31 @@
     <string name="things">Things</string>
     <string name="Colors">Colors</string>
 
+    <!--    settings_fragment-->
+    <string name="display_options">Display options</string>
+    <string name="add_new_items">Add new items to bottom</string>
+    <string name="move_checked_items">Move checked items to bottom</string>
+    <string name="display_rich_link">Display rich link previews</string>
+    <string name="theme">Theme</string>
+    <string name="reminder_defaults">Reminder defaults</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="evening">Evening</string>
+    <string name="sharing">Sharing</string>
+    <string name="enable_sharing">Enable sharing</string>
+    <string name="morning_time">8.00 AM</string>
+    <string name="afternoon_time">1.00 PM</string>
+    <string name="evening_time">6.00 PM</string>
+    <string name="system_default">System default</string>
+
+    <!--    choose_theme_dialog_box-->
+    <string name="choose_theme">Choose theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="to_change_the_theme">To change the theme of your keep widget and notifications, manage your Android <font color="#3F51B5"><u>screen and display settings.</u></font></string>
+    <string name="cancel"><font color="#3F51B5">Cancel</font></string>
+
+
     <!--    <string name="title_activity_dashboard_activtiy">DashboardActivtiy</string>-->
     <!--    <string name="navigation_drawer_open">Open navigation drawer</string>-->
     <!--    <string name="navigation_drawer_close">Close navigation drawer</string>-->

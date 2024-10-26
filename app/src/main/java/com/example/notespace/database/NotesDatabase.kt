@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.notespace.model.Notes
 
-@Database(entities = [Notes::class], version = 1)
+@Database(entities = [Notes::class], version = 1, exportSchema = false)
 abstract class NotesDatabase: RoomDatabase() {
 
     abstract fun getNoteDao():NotesDao
