@@ -25,11 +25,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="1"
+        android:textSize="16sp"
+        android:paddingTop="4dp"
+        android:fontFamily="@font/poppins"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
     <ImageView
         android:id="@+id/pin_icon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="225dp"
+        android:layout_marginStart="155dp"
         android:src="@drawable/pin_asset"
         app:layout_constraintStart_toEndOf="@+id/back_arrow_icon"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,6 +60,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+        <ImageView
+            android:id="@+id/color_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="25dp"
+            android:src="@drawable/color_palete_asset"
+            app:layout_constraintStart_toEndOf="@+id/pin_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/labels_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="25dp"
+            android:src="@drawable/label_asset"
+
+            app:layout_constraintStart_toEndOf="@+id/pin_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
     <ImageView
         android:id="@+id/archive_icon"
         android:layout_width="20dp"

@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.notespace.MainActivity
 import com.example.notespace.R
 import com.example.notespace.databinding.FragmentEditNoteBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditNoteFragment : AddNewListBaseFragment() {
 
     private var _binding: FragmentEditNoteBinding? = null

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -21,8 +22,9 @@ import com.example.notespace.databinding.ActivityMainBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
 import com.example.notespace.repository.NotesRepository
 import com.example.notespace.viewModel.NotesViewModel
-import com.example.notespace.viewModel.NotesViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
@@ -31,18 +33,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
 
-    lateinit var notesViewModel: NotesViewModel
+    private val notesViewModel: NotesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        setUpViewModel()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         navController = findNavController(R.id.container)
+
         setUpActionBarClicks()
         setUpDrawerLayout()
+
         binding.headerToolbar.drawerMenuIcon.setOnClickListener {
             binding.mainDrawer.openDrawer(GravityCompat.START)
         }
@@ -184,11 +188,6 @@ class MainActivity : AppCompatActivity() {
         dialogbox?.show()
     }
 
-    private fun setUpViewModel(){
-        val notesRepository = NotesRepository(NotesDatabase(this))
-        val viewModelProviderFactory = NotesViewModelFactory(application, notesRepository)
-        notesViewModel = ViewModelProvider(this, viewModelProviderFactory)[NotesViewModel::class.java]
-    }
 
     private fun handleFloatingButtonClick(){
         binding.floatingActionButton.setOnClickListener {

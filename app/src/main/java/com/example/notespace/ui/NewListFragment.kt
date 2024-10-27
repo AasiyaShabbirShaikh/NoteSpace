@@ -16,8 +16,9 @@ import com.example.notespace.databinding.BottomSheetPopUpLayoutBinding
 import com.example.notespace.databinding.FragmentAddBinding
 import com.example.notespace.databinding.FragmentNewListBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class NewListFragment : AddNewListBaseFragment() {
 
     private var _binding : FragmentNewListBinding? = null

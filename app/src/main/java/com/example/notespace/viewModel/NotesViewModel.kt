@@ -1,32 +1,41 @@
 package com.example.notespace.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notespace.model.Notes
 import com.example.notespace.repository.NotesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NotesViewModel(
-    application: Application, private val noteRepository: NotesRepository): AndroidViewModel(application) {
+@HiltViewModel
+class NotesViewModel @Inject constructor(private val notesRepository: NotesRepository): ViewModel() {
 
-        fun addNote(note:Notes) =
-            viewModelScope.launch {
-            noteRepository.insertNote(note)
+        suspend fun addNote(note: Notes) : Long {
+            return notesRepository.insertNote(note)
         }
 
-        fun deleteNote(note:Notes) =
-            viewModelScope.launch {
-            noteRepository.deleteNote(note)
+        fun deleteNote(note:Notes) = viewModelScope.launch {
+            notesRepository.deleteNote(note)
         }
 
-        fun updateNote(note:Notes) =
-            viewModelScope.launch {
-            noteRepository.updateNote(note)
+        fun updateNote(note:Notes) = viewModelScope.launch {
+            notesRepository.updateNote(note)
         }
 
-        fun getAllNotes() = noteRepository.getAllNotes()
+        fun deleteNoteById(noteId: Long) = viewModelScope.launch {
+            Log.d("NotesViewModel", "Attempting to delete note with ID: $noteId")
+            notesRepository.deleteNoteById(noteId)
+            Log.d("NotesViewModel", "Note deleted with ID: $noteId")
+        }
 
-        fun searchNote(keySearch : String?) = noteRepository.searchNote(keySearch)
+        fun getAllNotes(): LiveData<List<Notes>>
+        {
+            return notesRepository.getAllNotes()
+        }
+
+        fun searchNote(keySearch : String?) = notesRepository.searchNote(keySearch)
 
 }

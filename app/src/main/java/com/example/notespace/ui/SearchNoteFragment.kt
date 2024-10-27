@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notespace.MainActivity
 import com.example.notespace.databinding.FragmentSearchNoteBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchNoteFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchNoteBinding

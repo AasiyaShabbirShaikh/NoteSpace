@@ -1,17 +1,20 @@
 package com.example.notespace.repository
 
-import com.example.notespace.database.NotesDatabase
+import com.example.notespace.database.NotesDao
 import com.example.notespace.model.Notes
+import javax.inject.Inject
 
-class NotesRepository(private val db:NotesDatabase) {
+class NotesRepository @Inject constructor(private val notesDao: NotesDao) {
 
-    suspend fun insertNote(note: Notes) = db.getNoteDao().insertNote(note)
+    suspend fun insertNote(note: Notes) : Long = notesDao.insertNote(note)
 
-    suspend fun updateNote(note: Notes) = db.getNoteDao().updateNote(note)
+    suspend fun updateNote(note: Notes) = notesDao.updateNote(note)
 
-    suspend fun deleteNote(note: Notes) = db.getNoteDao().deleteNote(note)
+    suspend fun deleteNote(note: Notes) = notesDao.deleteNote(note)
 
-    fun getAllNotes() = db.getNoteDao().getAllNotes()
+    suspend fun deleteNoteById(noteId: Long) = notesDao.deleteNoteById(noteId)
 
-    fun searchNote(keySearch :String?) = db.getNoteDao().searchNote(keySearch)
+    fun getAllNotes() = notesDao.getAllNotes()
+
+    fun searchNote(keySearch :String?) = notesDao.searchNote(keySearch)
 }

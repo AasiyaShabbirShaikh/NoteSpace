@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -27,15 +28,17 @@ import com.example.notespace.databinding.FragmentDashboardBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
 import com.example.notespace.model.Notes
 import com.example.notespace.viewModel.NotesViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class DashboardFragment : Fragment(){
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var notesViewModel: NotesViewModel
-    private lateinit var notesAdapter: NotesAdapter
+    private val notesViewModel: NotesViewModel by viewModels()
+    lateinit var notesAdapter: NotesAdapter
 
     private var isNoteGrid = true
 
@@ -49,20 +52,22 @@ class DashboardFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpViewModel()
         setUpDashboardRecyclerView()
-
-
-
-    }
-
-    private fun setUpViewModel(){
-        notesViewModel = (activity as MainActivity).notesViewModel
 
     }
 
     private fun setUpDashboardRecyclerView(){
-        notesAdapter = NotesAdapter()
+        notesAdapter = NotesAdapter(
+            {
+                selectedNote ->
+                Toast.makeText(requireContext(), "selected note", Toast.LENGTH_LONG).show()
+            },
+            {
+                selectedCount ->
+                Toast.makeText(requireContext(), "selected note", Toast.LENGTH_LONG).show()
+            }
+        )
+
         binding.recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
             setHasFixedSize(true)
@@ -70,6 +75,7 @@ class DashboardFragment : Fragment(){
         }
 
         notesViewModel.getAllNotes().observe(viewLifecycleOwner){note ->
+            Log.d("DashboardFragment", "Observed notes: ${note.size} notes")
             notesAdapter.differ.submitList(note)
             updateDashboardUI(note)
         }

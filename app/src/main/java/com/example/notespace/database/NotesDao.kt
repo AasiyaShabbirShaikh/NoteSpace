@@ -13,13 +13,16 @@ import com.example.notespace.model.Notes
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNote(notes:Notes)
+    suspend fun insertNote(notes:Notes) : Long
 
     @Update
     suspend fun updateNote(notes:Notes)
 
     @Delete
     suspend fun deleteNote(notes: Notes)
+
+    @Query("DELETE FROM notes WHERE noteId = :noteId")
+    suspend fun deleteNoteById(noteId: Long)
 
     @Query("SELECT * FROM NOTES ORDER BY noteId DESC")
     fun getAllNotes(): LiveData<List<Notes>>

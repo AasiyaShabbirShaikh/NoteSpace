@@ -13,7 +13,9 @@ import com.example.notespace.R
 import com.example.notespace.databinding.ChooseThemeDialogBoxBinding
 import com.example.notespace.databinding.FragmentSettingsBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
