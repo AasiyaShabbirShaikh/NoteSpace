@@ -2,25 +2,23 @@ package com.example.notespace
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.notespace.database.NotesDatabase
+import com.example.notespace.adapter.NotesAdapter
 import com.example.notespace.databinding.ActivityMainBinding
+import com.example.notespace.databinding.AddReminderDialogBoxBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
-import com.example.notespace.repository.NotesRepository
 import com.example.notespace.viewModel.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +31,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
 
+    private lateinit var notesAdapter : NotesAdapter
+
     private val notesViewModel: NotesViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.container)
 
+        setSupportActionBar(binding.headerToolbar.toolbarHome)
+
         setUpActionBarClicks()
         setUpDrawerLayout()
 
@@ -53,12 +56,13 @@ class MainActivity : AppCompatActivity() {
 
         setCustomBottomIconClickEvents()
         handleFloatingButtonClick()
+        handleCustomToolbarIconClicks()
+
+        binding.customToolbarLayout.toolbar.visibility = View.GONE
 
     }
 
     private fun setUpDrawerLayout() {
-        setSupportActionBar(binding.headerToolbar.toolbarHome)
-        supportActionBar?.title =""
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this, binding.mainDrawer, R.string.start, R.string.close)
         binding.mainDrawer.addDrawerListener(actionBarDrawerToggle)
@@ -102,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.help_feedback -> {
                     Toast.makeText(this,"help/feedback clicked", Toast.LENGTH_LONG).show()
-
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.helpFeedbackFragment)
                 }
@@ -142,11 +145,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(binding.mainDrawer.isDrawerOpen(GravityCompat.START)){
-            binding.mainDrawer.closeDrawer(GravityCompat.START)
-        }else {
-            super.onBackPressed()
-            showBottomNavLayout()
+        when{
+            binding.mainDrawer.isDrawerOpen(GravityCompat.START) -> {
+                binding.mainDrawer.closeDrawer(GravityCompat.START)
+            }
+            binding.customToolbarLayout.toolbar.visibility == View.VISIBLE -> {
+                notesAdapter.clearNoteSelection()  // Clear selection
+                hideCustomToolbar()
+                showHeaderToolbar()
+            }
+            else -> {
+                super.onBackPressed()
+                showBottomNavLayout()
+            }
         }
     }
 
@@ -168,12 +179,15 @@ class MainActivity : AppCompatActivity() {
     private fun showGalleryDialogBox(){
         val dialogBinding = GalleryDialogBoxBinding.inflate(layoutInflater)
         dialogbox = Dialog(this@MainActivity)
-        dialogbox?.setContentView(dialogBinding.root)
-        dialogbox?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialogbox?.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialogbox?.setCancelable(true)
+
+        dialogbox?.apply {
+            setContentView(dialogBinding.root)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+            window?.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setCancelable(true)
+        }
 
         dialogBinding.apply {
             takePhotoLayout.setOnClickListener {
@@ -196,12 +210,124 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun handleCustomToolbarIconClicks() {
+        binding.customToolbarLayout.apply {
+            backArrowIcon.setOnClickListener {
+                super.onBackPressed()
+            }
+            pinIcon.setOnClickListener {
+
+            }
+            remindMeIcon.setOnClickListener {
+                showAddReminderDialogBox()
+            }
+            colorIcon.setOnClickListener {
+
+            }
+            labelsIcon.setOnClickListener {
+
+            }
+            menuDotsIcon.setOnClickListener {
+                showCustomMenuOptions()
+            }
+        }
+    }
+
+    private fun showCustomMenuOptions(){
+        val popupMenu = PopupMenu(this@MainActivity, binding.customToolbarLayout.menuDotsIcon)
+        popupMenu.menuInflater.inflate(R.menu.on_select_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.menu_archive -> {
+                    Toast.makeText(this@MainActivity, "archive clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.menu_delete -> {
+                    Toast.makeText(this@MainActivity, "delete clicked", Toast.LENGTH_SHORT).show()
+                    val selectedNoteIds = notesAdapter.getSelectedNoteIds ()
+                    if(selectedNoteIds.isNotEmpty()) {
+                        notesViewModel.moveToTrash(selectedNoteIds)
+                        notesAdapter.deleteSelectedNote()
+                        hideCustomToolbar()
+                        showHeaderToolbar()
+                    }
+                }
+                R.id.menu_make_copy -> {
+                    Toast.makeText(this@MainActivity, "makeACopy clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.menu_send -> {
+                    Toast.makeText(this@MainActivity, "Send clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.menu_copy_to_google_docs -> {
+                    Toast.makeText(this@MainActivity, "CopyToGoogleDocs clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
+            false
+
+        }
+        popupMenu.show()
+    }
+
+    private fun showAddReminderDialogBox(){
+        val addReminderBinding = AddReminderDialogBoxBinding.inflate(layoutInflater)
+
+        dialogbox = Dialog(this@MainActivity)
+
+        dialogbox?.apply {
+            setContentView(addReminderBinding.root)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+            window?.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setCancelable(true)
+        }
+
+        addReminderBinding.apply {
+            timeTabText.setOnClickListener {
+                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
+                dialogbox?.dismiss()
+            }
+            placeTabText.setOnClickListener {
+                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
+                timeTabDisplayLayout.visibility = View.GONE
+                placeTabDisplayLayout.visibility = View.VISIBLE
+                dialogbox?.dismiss()
+            }
+            dateLayout.setOnClickListener {
+                Toast.makeText(this@MainActivity, "timeLayout clicked",Toast.LENGTH_SHORT).show()
+                dialogbox?.dismiss()
+            }
+            doesNotRepeatLayout.setOnClickListener {
+                Toast.makeText(this@MainActivity, "doesNotRepeat clicked",Toast.LENGTH_SHORT).show()
+                dialogbox?.dismiss()
+            }
+            addReminderCancelTextButton.setOnClickListener {
+                Toast.makeText(this@MainActivity, "cancel clicked",Toast.LENGTH_SHORT).show()
+                dialogbox?.dismiss()
+            }
+            saveButton.setOnClickListener {
+                Toast.makeText(this@MainActivity, "save clicked",Toast.LENGTH_SHORT).show()
+                dialogbox?.dismiss()
+            }
+
+        }
+        dialogbox?.show()
+    }
+
     private fun showBottomNavLayout(){
         binding.bottomNavFrameLayout.visibility = View.VISIBLE
     }
 
      fun showFloatingActionButton(){
         binding.floatingActionButton.visibility = View.VISIBLE
+    }
+
+    fun hideHeaderToolbar() {
+        binding.headerToolbar.root.visibility = View.GONE
+    }
+
+    fun showHeaderToolbar() {
+        binding.headerToolbar.root.visibility = View.VISIBLE
     }
 
      fun hideFloatingActionButton(){
@@ -212,5 +338,16 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavFrameLayout.visibility = View.GONE
     }
 
+    fun showCustomToolbar() {
+        binding.customToolbarLayout.toolbar.visibility = View.VISIBLE
+    }
+
+    fun hideCustomToolbar() {
+        binding.customToolbarLayout.toolbar.visibility = View.GONE
+    }
+
+    fun updateNotesCount(count: Int) {
+        binding.customToolbarLayout.toolbar.findViewById<TextView>(R.id.count_textview).text = count.toString()
+    }
 
 }

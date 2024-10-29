@@ -11,17 +11,36 @@ import com.example.notespace.databinding.NoteItemLayoutBinding
 import com.example.notespace.model.Notes
 import com.example.notespace.ui.DashboardFragmentDirections
 
-class NotesAdapter(private val onNoteLongClick: (Notes) -> Unit, private val onSelectCountChange: (Int) -> Unit) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
+class NotesAdapter(
+    private val onNoteLongClick: (Notes) -> Unit,
+    private val onSelectCountChange: (Int) -> Unit
+) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
     private val selectedNotes = mutableSetOf<Notes>()
+    var isSelectionModeOn = false
 
     inner class NoteViewHolder(val itemBinding: NoteItemLayoutBinding, ) : RecyclerView.ViewHolder(itemBinding.root){
         init {
             itemView.setOnLongClickListener {
                 val note = differ.currentList[adapterPosition]
                 toggleSelection(note)
+                isSelectionModeOn = true
                 onNoteLongClick(note)
                 true
+            }
+
+            itemView.setOnClickListener {
+                if(isSelectionModeOn){
+                    val note = differ.currentList[adapterPosition]
+                    toggleSelection(note)
+                }
+                else{
+                    itemView.findNavController().navigate(
+                        DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
+                            differ.currentList[adapterPosition]
+                        )
+                    )
+                }
             }
         }
 
@@ -32,6 +51,7 @@ class NotesAdapter(private val onNoteLongClick: (Notes) -> Unit, private val onS
             else{
                 selectedNotes.add(note)
             }
+            isSelectionModeOn = selectedNotes.isNotEmpty()
             notifyItemChanged(adapterPosition)
             onSelectCountChange(selectedNotes.size)
         }
@@ -61,6 +81,31 @@ class NotesAdapter(private val onNoteLongClick: (Notes) -> Unit, private val onS
     }
     val differ = AsyncListDiffer(this, differCallback)
 
+
+    fun clearNoteSelection(){
+        selectedNotes.clear()
+        isSelectionModeOn = false
+        notifyDataSetChanged()
+        onSelectCountChange(selectedNotes.size)
+    }
+
+    fun getSelectedNoteIds(): List<Long> {
+        return selectedNotes.map {it.noteId}
+    }
+
+    fun deleteSelectedNote(){
+        val notesToDelete = selectedNotes.toList()
+        selectedNotes.clear()
+        isSelectionModeOn = false
+        onSelectCountChange(selectedNotes.size)
+
+        val updateNotesList = differ.currentList.toMutableList().apply {
+            removeAll(notesToDelete)
+        }
+        differ.submitList(updateNotesList)
+    }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
             NoteItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -77,13 +122,13 @@ class NotesAdapter(private val onNoteLongClick: (Notes) -> Unit, private val onS
 
         holder.bind(currentNote)
 
-        holder.itemView.setOnClickListener {
-            holder.itemView.findNavController().navigate(
-                DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
-                    currentNote
-                )
-            )
-        }
+//        holder.itemView.setOnClickListener {
+//            holder.itemView.findNavController().navigate(
+//                DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
+//                    currentNote
+//                )
+//            )
+//        }
     }
 
 }

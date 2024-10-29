@@ -38,7 +38,7 @@ class DashboardFragment : Fragment(){
     private val binding get() = _binding!!
 
     private val notesViewModel: NotesViewModel by viewModels()
-    lateinit var notesAdapter: NotesAdapter
+    private lateinit var notesAdapter: NotesAdapter
 
     private var isNoteGrid = true
 
@@ -53,7 +53,7 @@ class DashboardFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpDashboardRecyclerView()
-
+        observeNotes()
     }
 
     private fun setUpDashboardRecyclerView(){
@@ -61,10 +61,12 @@ class DashboardFragment : Fragment(){
             {
                 selectedNote ->
                 Toast.makeText(requireContext(), "selected note", Toast.LENGTH_LONG).show()
+                onNoteSelection()
             },
             {
                 selectedCount ->
                 Toast.makeText(requireContext(), "selected note", Toast.LENGTH_LONG).show()
+                handleNoteSelectCount(selectedCount)
             }
         )
 
@@ -73,7 +75,9 @@ class DashboardFragment : Fragment(){
             setHasFixedSize(true)
             adapter = notesAdapter
         }
+    }
 
+    private fun observeNotes(){
         notesViewModel.getAllNotes().observe(viewLifecycleOwner){note ->
             Log.d("DashboardFragment", "Observed notes: ${note.size} notes")
             notesAdapter.differ.submitList(note)
@@ -91,6 +95,28 @@ class DashboardFragment : Fragment(){
             binding.recyclerView.visibility = View.VISIBLE
         }
     }
+
+    private fun onNoteSelection(){
+        val mainActivity = activity as? MainActivity
+        mainActivity?.apply {
+            hideHeaderToolbar()
+            showCustomToolbar()
+        }
+    }
+
+    private fun handleNoteSelectCount(selectedCount : Int){
+        if(selectedCount > 0){
+            onNoteSelection()
+            (activity as MainActivity).updateNotesCount(selectedCount)
+
+        }
+        else{
+            (activity as MainActivity).hideCustomToolbar()
+            (activity as MainActivity).showHeaderToolbar()
+            notesAdapter.clearNoteSelection()
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

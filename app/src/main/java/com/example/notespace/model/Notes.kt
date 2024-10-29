@@ -12,5 +12,6 @@ data class Notes(
     val noteId: Long,
     val noteTitle : String,
     val noteDescription: String,
-    val timestamp: Long
+    val timestamp: Long,
+    val trashed: Boolean = false
 ):Parcelable

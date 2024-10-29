@@ -62,94 +62,6 @@ class AddFragment : AddNewListBaseFragment() {
         Log.d("AddFragment", "Fragment is paused")
     }
 
-//    private fun saveNote() {
-//        val title = binding.addTitleEditText.text.toString()
-//        val description = binding.addDescriptionEditText.text.toString()
-//
-//        val note = Notes(0, title, description, System.currentTimeMillis())
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            val currentId = notesViewModel.addNote(note)
-//
-//            // Log the title and description before the condition check
-//            Log.d("AddFragment", "Title: '$title', Description: '$description', Inserted note ID: $currentId")
-//
-//            if (title.isEmpty() && description.isEmpty()) {
-//                Log.d("AddFragment", "Inserted note ID for empty note: $currentId")
-//                Handler(Looper.getMainLooper()).postDelayed({
-//                    notesViewModel.deleteNoteById(currentId)
-//                    Toast.makeText(requireContext(), "Note discarded", Toast.LENGTH_LONG).show()
-//                }, 3000)
-//            } else {
-//                Log.d("AddFragment", "Note saved with title: '$title' and description: '$description'")
-//            }
-//        }
-//    }
-
-
-//    private fun saveNote() {
-//        val title = binding.addTitleEditText.text.toString()
-//        val description = binding.addDescriptionEditText.text.toString()
-//
-//        val note = Notes(0, title, description, System.currentTimeMillis())
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            try {
-//                val currentId = notesViewModel.addNote(note)
-//
-//                // Log the title and description before the condition check
-//                Log.d("AddFragment", "Title: '$title', Description: '$description', Inserted note ID: $currentId")
-//
-//                if (title.isEmpty() && description.isEmpty()) {
-//                    Log.d("AddFragment", "Inserted note ID for empty note: $currentId")
-//                    Handler(Looper.getMainLooper()).postDelayed({
-//                        notesViewModel.deleteNoteById(currentId)
-//                        Toast.makeText(requireContext(), "Note discarded", Toast.LENGTH_LONG).show()
-//                    }, 3000)
-//                } else {
-//                    Log.d("AddFragment", "Note saved with title: '$title' and description: '$description'")
-//                }
-//            } catch (e: Exception) {
-//                Log.e("AddFragment", "Error saving note: ${e.message}")
-//            }
-//        }
-//    }
-
-//    private fun saveNote() {
-//        val title = binding.addTitleEditText.text.toString()
-//        val description = binding.addDescriptionEditText.text.toString()
-//
-//        val note = Notes(0, title, description, System.currentTimeMillis())
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            try {
-//                val currentId = notesViewModel.addNote(note)
-//
-//                // Log the title and description before the condition check
-//                Log.d("AddFragment", "Title: '$title', Description: '$description', Inserted note ID: $currentId")
-//
-//                if (title.isEmpty() && description.isEmpty()) {
-//                    Log.d("AddFragment", "Inserted note ID for empty note: $currentId")
-//
-//                    // Delay for 3 seconds
-//                    delay(3000)
-//
-//                    // Delete the empty note
-//                    notesViewModel.deleteNoteById(currentId)
-//                    Toast.makeText(requireContext(), "Note discarded", Toast.LENGTH_LONG).show()
-//                } else {
-//                    Log.d("AddFragment", "Note saved with title: '$title' and description: '$description'")
-//                    // Navigate or perform other actions after saving is successful
-//                    // For example, navigating to the dashboard
-//                    findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
-//                }
-//            } catch (e: Exception) {
-//                Log.e("AddFragment", "Error saving note: ${e.message}")
-//            }
-//        }
-//    }
-
-
     private fun saveNote() {
         val title = binding.addTitleEditText.text.toString()
         val description = binding.addDescriptionEditText.text.toString()
@@ -159,33 +71,20 @@ class AddFragment : AddNewListBaseFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val currentId = notesViewModel.addNote(note)
-                Log.d("AddFragment", "Inserted note ID: $currentId")
 
                 if (title.isEmpty() && description.isEmpty()) {
-                    Log.d("AddFragment", "Inserted note ID for empty note: $currentId")
-
-                    // Delay before deletion
                     delay(3000)
-
-                    // Check if the fragment is still added before attempting to delete
                     if (isAdded) {
                         notesViewModel.deleteNoteById(currentId)
                         Toast.makeText(requireContext(), "Note discarded", Toast.LENGTH_LONG).show()
                     }
                 } else {
-                    // Navigate to another fragment (e.g., DashboardFragment)
                     findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
                 }
             } catch (e: Exception) {
-                Log.e("AddFragment", "Error saving note: ${e.message}")
             }
         }
     }
-
-
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

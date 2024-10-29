@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.joinIntoString
 import com.example.notespace.model.Notes
 import com.example.notespace.repository.NotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,14 +27,22 @@ class NotesViewModel @Inject constructor(private val notesRepository: NotesRepos
         }
 
         fun deleteNoteById(noteId: Long) = viewModelScope.launch {
-            Log.d("NotesViewModel", "Attempting to delete note with ID: $noteId")
             notesRepository.deleteNoteById(noteId)
-            Log.d("NotesViewModel", "Note deleted with ID: $noteId")
         }
 
         fun getAllNotes(): LiveData<List<Notes>>
         {
             return notesRepository.getAllNotes()
+        }
+
+        fun moveToTrash(noteId: Long) = viewModelScope.launch {
+            notesRepository.moveToTrash(noteId)
+        }
+
+        fun moveToTrash(noteIds: List<Long>) = viewModelScope.launch {
+            noteIds.forEach{ noteId ->
+                notesRepository.moveToTrash(noteId)
+            }
         }
 
         fun searchNote(keySearch : String?) = notesRepository.searchNote(keySearch)

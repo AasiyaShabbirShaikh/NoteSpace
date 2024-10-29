@@ -80,6 +80,28 @@
     <string name="to_change_the_theme">To change the theme of your keep widget and notifications, manage your Android <font color="#3F51B5"><u>screen and display settings.</u></font></string>
     <string name="cancel"><font color="#3F51B5">Cancel</font></string>
 
+    <!--    add_reminder_dialog_box-->
+    <string name="add_reminder">Add reminder</string>
+    <string name="time">Time</string>
+    <string name="time_blue"><font color="#3F51B5">Time</font></string>
+    <string name="place">Place</string>
+    <string name="place_blue"><font color="#3F51B5">Place</font></string>
+    <string name="save">Save</string>
+    <string name="does_not_repeat">Does not repeat</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="next_monday">Next Monday</string>
+    <string name="pick_a_date">Pick a date...</string>
+    <string name="night">Night</string>
+    <string name="pick_a_time">Pick a time...</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="custom">Costum</string>
+    <string name="edit_location">Edit location</string>
+
+
 
     <!--    <string name="title_activity_dashboard_activtiy">DashboardActivtiy</string>-->
     <!--    <string name="navigation_drawer_open">Open navigation drawer</string>-->

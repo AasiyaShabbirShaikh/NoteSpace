@@ -18,15 +18,23 @@ interface NotesDao {
     @Update
     suspend fun updateNote(notes:Notes)
 
+
+    //delete
     @Delete
     suspend fun deleteNote(notes: Notes)
 
     @Query("DELETE FROM notes WHERE noteId = :noteId")
     suspend fun deleteNoteById(noteId: Long)
 
+    //
     @Query("SELECT * FROM NOTES ORDER BY noteId DESC")
     fun getAllNotes(): LiveData<List<Notes>>
 
+    //trash
+    @Query("UPDATE notes SET trashed = 1 where noteId =:noteId ")
+    suspend fun moveToTrash(noteId: Long)
+
+    //search
     @Query("SELECT * FROM NOTES WHERE noteTitle LIKE:searchKey OR noteDescription LIKE:searchKey")
     fun searchNote(searchKey:String?): LiveData<List<Notes>>
 
