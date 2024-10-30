@@ -111,5 +111,7 @@
     <!--    <string name="nav_header_desc">Navigation header</string>-->
     <!--    <string name="action_settings">Settings</string>-->
 
+    <!--    toast_string-->
+    <string name="note_discarded">Note discarded</string>
 
 </resources>

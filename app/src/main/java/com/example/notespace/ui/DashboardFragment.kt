@@ -1,38 +1,23 @@
 package com.example.notespace.ui
 
-import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
-import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notespace.MainActivity
-import com.example.notespace.R
+import com.example.notespace.NoteInterface
 import com.example.notespace.adapter.NotesAdapter
-import com.example.notespace.databinding.ActivityMainBinding
 import com.example.notespace.databinding.FragmentDashboardBinding
-import com.example.notespace.databinding.GalleryDialogBoxBinding
 import com.example.notespace.model.Notes
 import com.example.notespace.viewModel.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class DashboardFragment : Fragment(){
+class DashboardFragment : Fragment(), NoteInterface{
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -79,7 +64,6 @@ class DashboardFragment : Fragment(){
 
     private fun observeNotes(){
         notesViewModel.getAllNotes().observe(viewLifecycleOwner){note ->
-            Log.d("DashboardFragment", "Observed notes: ${note.size} notes")
             notesAdapter.differ.submitList(note)
             updateDashboardUI(note)
         }
@@ -121,6 +105,14 @@ class DashboardFragment : Fragment(){
     override fun onDestroyView() {
         super.onDestroyView()
         _binding= null
+    }
+
+    override fun getSelectedNoteIds(): List<Long> {
+        return notesAdapter.getSelectedNoteIds()
+    }
+
+    override fun deleteSelectedNotes() {
+        notesAdapter.deleteSelectedNote()
     }
 
 

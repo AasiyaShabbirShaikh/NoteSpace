@@ -23,7 +23,7 @@ import com.example.notespace.viewModel.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     lateinit var binding: ActivityMainBinding
 
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         handleCustomToolbarIconClicks()
 
         binding.customToolbarLayout.toolbar.visibility = View.GONE
-
     }
 
     private fun setUpDrawerLayout() {
@@ -238,19 +237,24 @@ class MainActivity : AppCompatActivity() {
         popupMenu.menuInflater.inflate(R.menu.on_select_menu, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener { menuItem ->
+            val dashboardFragment = supportFragmentManager.findFragmentById(R.id.container) as? NoteInterface
+
             when(menuItem.itemId){
                 R.id.menu_archive -> {
                     Toast.makeText(this@MainActivity, "archive clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.menu_delete -> {
                     Toast.makeText(this@MainActivity, "delete clicked", Toast.LENGTH_SHORT).show()
-                    val selectedNoteIds = notesAdapter.getSelectedNoteIds ()
-                    if(selectedNoteIds.isNotEmpty()) {
-                        notesViewModel.moveToTrash(selectedNoteIds)
-                        notesAdapter.deleteSelectedNote()
-                        hideCustomToolbar()
-                        showHeaderToolbar()
+                    dashboardFragment?.let {
+                        println("getting called")
+                        val selectedNoteIds = it.getSelectedNoteIds ()
+                        if(selectedNoteIds.isNotEmpty()) {
+                            notesViewModel.moveToTrash(selectedNoteIds)
+                            it.deleteSelectedNotes()
+                        }
                     }
+                    hideCustomToolbar()
+                    showHeaderToolbar()
                 }
                 R.id.menu_make_copy -> {
                     Toast.makeText(this@MainActivity, "makeACopy clicked", Toast.LENGTH_SHORT).show()
@@ -262,7 +266,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "CopyToGoogleDocs clicked", Toast.LENGTH_SHORT).show()
                 }
             }
-            false
+            true
 
         }
         popupMenu.show()

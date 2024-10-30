@@ -31,12 +31,15 @@ interface NotesDao {
     fun getAllNotes(): LiveData<List<Notes>>
 
     //trash
-    @Query("UPDATE notes SET trashed = 1 where noteId =:noteId ")
-    suspend fun moveToTrash(noteId: Long)
+    @Query("UPDATE notes SET trashed = 1 where noteId IN (:noteIds) ")
+    suspend fun moveToTrash(noteIds: List<Long>)
 
     //search
-    @Query("SELECT * FROM NOTES WHERE noteTitle LIKE:searchKey OR noteDescription LIKE:searchKey")
+    @Query("SELECT * FROM notes WHERE noteTitle LIKE:searchKey OR noteDescription LIKE:searchKey")
     fun searchNote(searchKey:String?): LiveData<List<Notes>>
 
+
+    @Query("SELECT * FROM notes WHERE trashed = 0 ORDER BY noteId DESC")
+    fun getNonTrashNotes() : LiveData<List<Notes>>
 
 }

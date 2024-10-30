@@ -44,7 +44,7 @@ class NotesAdapter(
             }
         }
 
-        private fun toggleSelection(note:Notes){
+         fun toggleSelection(note:Notes){
             if(selectedNotes.contains(note)){
                 selectedNotes.remove(note)
             }
@@ -130,5 +130,7 @@ class NotesAdapter(
 //            )
 //        }
     }
+
+
 
 }

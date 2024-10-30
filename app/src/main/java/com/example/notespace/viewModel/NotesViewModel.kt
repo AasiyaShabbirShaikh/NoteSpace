@@ -35,16 +35,18 @@ class NotesViewModel @Inject constructor(private val notesRepository: NotesRepos
             return notesRepository.getAllNotes()
         }
 
-        fun moveToTrash(noteId: Long) = viewModelScope.launch {
-            notesRepository.moveToTrash(noteId)
-        }
+//        fun moveNoteToTrash(noteId: Long) = viewModelScope.launch {
+//            notesRepository.moveToTrash(noteId)
+//        }
 
         fun moveToTrash(noteIds: List<Long>) = viewModelScope.launch {
-            noteIds.forEach{ noteId ->
-                notesRepository.moveToTrash(noteId)
-            }
+                notesRepository.moveToTrash(noteIds)
         }
 
         fun searchNote(keySearch : String?) = notesRepository.searchNote(keySearch)
 
+    fun getNonTrashNotes(): LiveData<List<Notes>>
+    {
+        return notesRepository.getNonTrashNotes()
+    }
 }

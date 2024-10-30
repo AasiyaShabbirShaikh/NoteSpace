@@ -53,13 +53,13 @@ class AddFragment : AddNewListBaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("AddFragment", "Fragment is resumed")
+//        Log.d("AddFragment", "Fragment is resumed")
     }
 
     override fun onPause() {
         super.onPause()
         saveNote()
-        Log.d("AddFragment", "Fragment is paused")
+//        Log.d("AddFragment", "Fragment is paused")
     }
 
     private fun saveNote() {
@@ -76,7 +76,7 @@ class AddFragment : AddNewListBaseFragment() {
                     delay(3000)
                     if (isAdded) {
                         notesViewModel.deleteNoteById(currentId)
-                        Toast.makeText(requireContext(), "Note discarded", Toast.LENGTH_LONG).show()
+//                        Toast.makeText(requireContext(), getString(R.string.note_discarded), Toast.LENGTH_LONG).show()
                     }
                 } else {
                     findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)

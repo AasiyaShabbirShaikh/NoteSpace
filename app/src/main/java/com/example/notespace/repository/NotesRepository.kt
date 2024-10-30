@@ -16,7 +16,13 @@ class NotesRepository @Inject constructor(private val notesDao: NotesDao) {
 
     fun getAllNotes() = notesDao.getAllNotes()
 
-    suspend fun moveToTrash(noteId: Long) = notesDao.moveToTrash(noteId)
+//    suspend fun moveToTrash(noteId: Long) = notesDao.moveToTrash(noteId)
+
+    suspend fun moveToTrash(noteIds: List<Long>){
+        notesDao.moveToTrash(noteIds)
+    }
 
     fun searchNote(keySearch :String?) = notesDao.searchNote(keySearch)
+
+    fun getNonTrashNotes()= notesDao.getNonTrashNotes()
 }
