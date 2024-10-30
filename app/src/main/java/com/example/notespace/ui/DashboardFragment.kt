@@ -112,7 +112,25 @@ class DashboardFragment : Fragment(), NoteInterface{
     }
 
     override fun deleteSelectedNotes() {
-        notesAdapter.deleteSelectedNote()
+//        val selectedNoteIds = notesAdapter.getSelectedNoteIds()
+//        if (selectedNoteIds.isNotEmpty()) {
+//            notesViewModel.moveToTrash(selectedNoteIds)
+//            notesAdapter.deleteSelectedNote()
+//        } else {
+//            Toast.makeText(requireContext(), "No notes selected", Toast.LENGTH_SHORT).show()
+//        }
+
+        val selectedNoteIds = getSelectedNoteIds()
+        if (selectedNoteIds.isNotEmpty()) {
+            notesViewModel.moveToTrash(selectedNoteIds)
+            notesAdapter.deleteSelectedNote()
+            clearSelectionAndToolbar()
+        }
+    }
+
+    private fun clearSelectionAndToolbar(){
+        notesAdapter.clearNoteSelection()
+        (activity as? MainActivity)?.hideCustomToolbar()
     }
 
 

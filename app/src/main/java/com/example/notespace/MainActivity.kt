@@ -244,15 +244,19 @@ class MainActivity : AppCompatActivity(){
                     Toast.makeText(this@MainActivity, "archive clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.menu_delete -> {
-                    Toast.makeText(this@MainActivity, "delete clicked", Toast.LENGTH_SHORT).show()
-                    dashboardFragment?.let {
-                        println("getting called")
-                        val selectedNoteIds = it.getSelectedNoteIds ()
-                        if(selectedNoteIds.isNotEmpty()) {
-                            notesViewModel.moveToTrash(selectedNoteIds)
-                            it.deleteSelectedNotes()
-                        }
-                    }
+//                    Toast.makeText(this@MainActivity, "delete clicked", Toast.LENGTH_SHORT).show()
+//                    dashboardFragment?.let {
+//                        println("getting called")
+//                        val selectedNoteIds = it.getSelectedNoteIds ()
+//                        if(selectedNoteIds.isNotEmpty()) {
+//                            notesViewModel.moveToTrash(selectedNoteIds)
+//                            it.deleteSelectedNotes()
+//                        }
+//                    }
+//                    hideCustomToolbar()
+//                    showHeaderToolbar()
+
+                    dashboardFragment?.deleteSelectedNotes()
                     hideCustomToolbar()
                     showHeaderToolbar()
                 }
