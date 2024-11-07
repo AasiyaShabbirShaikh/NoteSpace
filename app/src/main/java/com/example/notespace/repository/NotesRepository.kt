@@ -14,15 +14,22 @@ class NotesRepository @Inject constructor(private val notesDao: NotesDao) {
 
     suspend fun deleteNoteById(noteId: Long) = notesDao.deleteNoteById(noteId)
 
+    suspend fun deleteNoteByIds(noteId: List<Long>) = notesDao.deleteNoteByIds(noteId)
+
     fun getAllNotes() = notesDao.getAllNotes()
 
 //    suspend fun moveToTrash(noteId: Long) = notesDao.moveToTrash(noteId)
 
-    suspend fun moveToTrash(noteIds: List<Long>){
-        notesDao.moveToTrash(noteIds)
-    }
+//    suspend fun moveToTrash(noteIds: List<Long>){
+//        notesDao.moveToTrash(noteIds)
+//    }
 
     fun searchNote(keySearch :String?) = notesDao.searchNote(keySearch)
 
     fun getNonTrashNotes()= notesDao.getNonTrashNotes()
+
+
+    suspend fun moveNotesToTrash(noteIds: List<Long>){
+        notesDao.updateNotesAsTrashed(noteIds)
+    }
 }

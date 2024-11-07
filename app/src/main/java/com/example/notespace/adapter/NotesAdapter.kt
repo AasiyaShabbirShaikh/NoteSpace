@@ -16,9 +16,11 @@ class NotesAdapter(
     private val onSelectCountChange: (Int) -> Unit
 ) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
+
+//    private var noteList = listOf<Notes>()
     private val selectedNotes = mutableSetOf<Notes>()
     var isSelectionModeOn = false
-//    private val notes = mutableListOf<Note>()
+
     inner class NoteViewHolder(val itemBinding: NoteItemLayoutBinding, ) : RecyclerView.ViewHolder(itemBinding.root){
         init {
             itemView.setOnLongClickListener {
@@ -45,7 +47,7 @@ class NotesAdapter(
         }
 
          fun toggleSelection(note:Notes){
-             println("notes , ${note}")
+//             println("notes , ${note}")
             if(selectedNotes.contains(note)){
                 selectedNotes.remove(note)
             }
@@ -69,6 +71,7 @@ class NotesAdapter(
                 }
         }
     }
+
 
     private val differCallback = object : DiffUtil.ItemCallback<Notes>() {
         override fun areItemsTheSame(oldItem: Notes, newItem: Notes): Boolean {
@@ -94,20 +97,15 @@ class NotesAdapter(
         return selectedNotes.map {it.noteId}
     }
 
-    fun deleteSelectedNote(){
-        val notesToDelete = selectedNotes.toList()
-        val currentNotesList = differ.currentList.toMutableList()
-        currentNotesList.removeAll(notesToDelete)
-        differ.submitList(currentNotesList)
-        selectedNotes.clear()
-        isSelectionModeOn = false
-        onSelectCountChange(selectedNotes.size)
+    fun deleteSelectedNote(noteIds : List<Long>){
+        val notesToDelete = differ.currentList.filter { it.noteId in noteIds }
+        selectedNotes.removeAll(notesToDelete)
 
-//        val updateNotesList = differ.currentList.toMutableList().apply {
-//            removeAll(notesToDelete)
-//        }
-//        differ.submitList(currentNotesList)
-//        notifyDataSetChanged()
+        val updateNotesList = differ.currentList.toMutableList().apply {
+            removeAll(notesToDelete)
+        }
+        differ.submitList(updateNotesList)
+        clearNoteSelection()
     }
 
 

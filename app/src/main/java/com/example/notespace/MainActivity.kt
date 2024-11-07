@@ -245,20 +245,20 @@ class MainActivity : AppCompatActivity(){
                 }
                 R.id.menu_delete -> {
 //                    Toast.makeText(this@MainActivity, "delete clicked", Toast.LENGTH_SHORT).show()
-//                    dashboardFragment?.let {
-//                        println("getting called")
-//                        val selectedNoteIds = it.getSelectedNoteIds ()
-//                        if(selectedNoteIds.isNotEmpty()) {
-//                            notesViewModel.moveToTrash(selectedNoteIds)
-//                            it.deleteSelectedNotes()
-//                        }
-//                    }
+                    dashboardFragment?.let {
+                        println("getting called")
+                        val selectedNoteIds = it.getSelectedNoteIds ()
+                        if(selectedNoteIds.isNotEmpty()) {
+                            notesViewModel.moveToTrash(selectedNoteIds)
+                            it.deleteSelectedNotes()
+                        }
+                        hideCustomToolbar()
+                        showHeaderToolbar()
+                    }
 //                    hideCustomToolbar()
 //                    showHeaderToolbar()
 
-                    dashboardFragment?.deleteSelectedNotes()
-                    hideCustomToolbar()
-                    showHeaderToolbar()
+//                    dashboardFragment?.deleteSelectedNotes()
                 }
                 R.id.menu_make_copy -> {
                     Toast.makeText(this@MainActivity, "makeACopy clicked", Toast.LENGTH_SHORT).show()

@@ -1,10 +1,8 @@
 package com.example.notespace.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.joinIntoString
 import com.example.notespace.model.Notes
 import com.example.notespace.repository.NotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +24,10 @@ class NotesViewModel @Inject constructor(private val notesRepository: NotesRepos
             notesRepository.updateNote(note)
         }
 
+        fun deleteNoteByIds(noteId: List<Long>) = viewModelScope.launch {
+            notesRepository.deleteNoteByIds(noteId)
+        }
+
         fun deleteNoteById(noteId: Long) = viewModelScope.launch {
             notesRepository.deleteNoteById(noteId)
         }
@@ -39,8 +41,10 @@ class NotesViewModel @Inject constructor(private val notesRepository: NotesRepos
 //            notesRepository.moveToTrash(noteId)
 //        }
 
-        fun moveToTrash(noteIds: List<Long>) = viewModelScope.launch {
-                notesRepository.moveToTrash(noteIds)
+        fun moveToTrash(noteIds: List<Long>) {
+            viewModelScope.launch {
+                notesRepository.moveNotesToTrash(noteIds)
+            }
         }
 
         fun searchNote(keySearch : String?) = notesRepository.searchNote(keySearch)

@@ -102,11 +102,6 @@ class DashboardFragment : Fragment(), NoteInterface{
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding= null
-    }
-
     override fun getSelectedNoteIds(): List<Long> {
         return notesAdapter.getSelectedNoteIds()
     }
@@ -122,8 +117,8 @@ class DashboardFragment : Fragment(), NoteInterface{
 
         val selectedNoteIds = getSelectedNoteIds()
         if (selectedNoteIds.isNotEmpty()) {
-            notesViewModel.moveToTrash(selectedNoteIds)
-            notesAdapter.deleteSelectedNote()
+            notesViewModel.deleteNoteByIds(selectedNoteIds)
+            notesAdapter.deleteSelectedNote(selectedNoteIds)
             clearSelectionAndToolbar()
         }
     }
@@ -133,5 +128,9 @@ class DashboardFragment : Fragment(), NoteInterface{
         (activity as? MainActivity)?.hideCustomToolbar()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding= null
+    }
 
 }

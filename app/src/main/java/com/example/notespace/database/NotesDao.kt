@@ -31,8 +31,8 @@ interface NotesDao {
     fun getAllNotes(): LiveData<List<Notes>>
 
     //trash
-    @Query("UPDATE notes SET trashed = 1 where noteId IN (:noteIds) ")
-    suspend fun moveToTrash(noteIds: List<Long>)
+    @Query("UPDATE notes SET trashed = 1 where noteId IN (:noteIds)")
+    suspend fun updateNotesAsTrashed(noteIds: List<Long>)
 
     //search
     @Query("SELECT * FROM notes WHERE noteTitle LIKE:searchKey OR noteDescription LIKE:searchKey")
@@ -42,4 +42,6 @@ interface NotesDao {
     @Query("SELECT * FROM notes WHERE trashed = 0 ORDER BY noteId DESC")
     fun getNonTrashNotes() : LiveData<List<Notes>>
 
+    @Query("DELETE FROM notes WHERE noteId IN (:noteIds)")
+    suspend fun deleteNoteByIds(noteIds: List<Long>)
 }
