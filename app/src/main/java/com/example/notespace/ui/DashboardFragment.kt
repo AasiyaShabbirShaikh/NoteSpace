@@ -1,10 +1,10 @@
 package com.example.notespace.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -25,6 +25,8 @@ class DashboardFragment : Fragment(), NoteInterface{
     private val notesViewModel: NotesViewModel by viewModels()
     private lateinit var notesAdapter: NotesAdapter
 
+    private val selectedIds = mutableListOf<Long>()
+    private var isSelectionMode = false
     private var isNoteGrid = true
 
     override fun onCreateView(
@@ -43,16 +45,21 @@ class DashboardFragment : Fragment(), NoteInterface{
 
     private fun setUpDashboardRecyclerView(){
         notesAdapter = NotesAdapter(
-            {
-                selectedNote ->
-                Toast.makeText(requireContext(), "selected note", Toast.LENGTH_LONG).show()
-                onNoteSelection()
+            onNoteLongClick = {note ->
+                if (!isSelectionMode) {
+                    isSelectionMode = true
+                    toggleNoteSelection(note)
+                }
             },
-            {
-                selectedCount ->
-                Toast.makeText(requireContext(), "selected note", Toast.LENGTH_LONG).show()
+            onNoteClick = { note ->
+                if (isSelectionMode) {
+                    toggleNoteSelection(note)
+                }
+            },
+            onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)
             }
+//            notesViewModel = notesViewModel
         )
 
         binding.recyclerView.apply {
@@ -65,6 +72,7 @@ class DashboardFragment : Fragment(), NoteInterface{
     private fun observeNotes(){
         notesViewModel.getAllNotes().observe(viewLifecycleOwner){note ->
             notesAdapter.differ.submitList(note)
+            Log.d("NotesViewModel", "Notes moved : $note")
             updateDashboardUI(note)
         }
     }
@@ -81,56 +89,63 @@ class DashboardFragment : Fragment(), NoteInterface{
     }
 
     private fun onNoteSelection(){
-        val mainActivity = activity as? MainActivity
-        mainActivity?.apply {
-            hideHeaderToolbar()
-            showCustomToolbar()
+//        val mainActivity = activity as? MainActivity
+//        mainActivity?.apply {
+//            hideHeaderToolbar()
+//            showCustomToolbar()
+//        }
+        (activity as MainActivity).hideHeaderToolbar()
+        (activity as MainActivity).showCustomToolbar()
+    }
+
+
+    private fun toggleNoteSelection(note: Notes) {
+        if (selectedIds.contains(note.noteId)) {
+            selectedIds.remove(note.noteId)
+        } else {
+            selectedIds.add(note.noteId)
         }
+        notesAdapter.updateSelectedNotes(selectedIds)
+        handleNoteSelectCount(selectedIds.size)
     }
 
     private fun handleNoteSelectCount(selectedCount : Int){
         if(selectedCount > 0){
             onNoteSelection()
             (activity as MainActivity).updateNotesCount(selectedCount)
-
         }
         else{
-            (activity as MainActivity).hideCustomToolbar()
-            (activity as MainActivity).showHeaderToolbar()
-            notesAdapter.clearNoteSelection()
-        }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding= null
-    }
-
-    override fun getSelectedNoteIds(): List<Long> {
-        return notesAdapter.getSelectedNoteIds()
-    }
-
-    override fun deleteSelectedNotes() {
-//        val selectedNoteIds = notesAdapter.getSelectedNoteIds()
-//        if (selectedNoteIds.isNotEmpty()) {
-//            notesViewModel.moveToTrash(selectedNoteIds)
-//            notesAdapter.deleteSelectedNote()
-//        } else {
-//            Toast.makeText(requireContext(), "No notes selected", Toast.LENGTH_SHORT).show()
-//        }
-
-        val selectedNoteIds = getSelectedNoteIds()
-        if (selectedNoteIds.isNotEmpty()) {
-            notesViewModel.moveToTrash(selectedNoteIds)
-            notesAdapter.deleteSelectedNote()
             clearSelectionAndToolbar()
         }
     }
 
+    override fun getSelectedNoteIds(): List<Long> = selectedIds
+
+    override fun deleteSelectedNotes() {
+        if (selectedIds.isNotEmpty()) {
+            notesViewModel.moveToTrash(selectedIds)
+            Log.e("NotesViewModel", "Notes moved to trash: $selectedIds")
+            notesAdapter.removeSelectedNotes(selectedIds)
+            (activity as? MainActivity)?.getAllNotes()
+            clearSelectionAndToolbar()
+//            notesViewModel.getAllNotes()
+        }
+
+    }
+
     private fun clearSelectionAndToolbar(){
+        selectedIds.clear()
+        isSelectionMode = false
         notesAdapter.clearNoteSelection()
         (activity as? MainActivity)?.hideCustomToolbar()
+        (activity as? MainActivity)?.showHeaderToolbar()
+        (activity as? MainActivity)?.updateNotesCount(0)
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding= null
     }
 
 

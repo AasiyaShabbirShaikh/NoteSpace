@@ -23,14 +23,13 @@ import com.example.notespace.viewModel.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), NoteInterface{
 
     lateinit var binding: ActivityMainBinding
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
-
     private lateinit var notesAdapter : NotesAdapter
 
     private val notesViewModel: NotesViewModel by viewModels()
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         navController = findNavController(R.id.container)
-
         setSupportActionBar(binding.headerToolbar.toolbarHome)
 
         setUpActionBarClicks()
@@ -62,49 +60,44 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun setUpDrawerLayout() {
-        actionBarDrawerToggle =
-            ActionBarDrawerToggle(this, binding.mainDrawer, R.string.start, R.string.close)
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.mainDrawer, R.string.start, R.string.close)
         binding.mainDrawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
         binding.drawerNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.notes -> {
-                    Toast.makeText(this,"notes clicked", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this,"notes clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.dashboardFragment)
                 }
                 R.id.reminders -> {
-                    Toast.makeText(this,"reminders clicked", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this,"reminders clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.reminderFragment)
                 }
                 R.id.create_new_label -> {
-                    Toast.makeText(this,"create new label clicked", Toast.LENGTH_LONG).show()
-
+//                    Toast.makeText(this,"create new label clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.createNewLabelFragment)
                 }
                 R.id.archive -> {
-                    Toast.makeText(this,"archive clicked", Toast.LENGTH_LONG).show()
-
+//                    Toast.makeText(this,"archive clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.archiveFragment)
                 }
                 R.id.trash -> {
-                    Toast.makeText(this,"trash clicked", Toast.LENGTH_LONG).show()
-
+//                    Toast.makeText(this,"trash clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.trashFragment)
                 }
                 R.id.settings -> {
-                    Toast.makeText(this,"settings clicked", Toast.LENGTH_LONG).show()
-
+//                    Toast.makeText(this,"settings clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.settingsFragment)
                 }
                 R.id.help_feedback -> {
-                    Toast.makeText(this,"help/feedback clicked", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this,"help/feedback clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.helpFeedbackFragment)
                 }
@@ -167,14 +160,6 @@ class MainActivity : AppCompatActivity(){
         return super.onOptionsItemSelected(item)
     }
 
-    fun hideBottomNavBar(){
-        binding.bottomNavFrameLayout.visibility= View.GONE
-    }
-
-    fun showBottomNavBar(){
-        binding.bottomNavFrameLayout.visibility= View.VISIBLE
-    }
-
     private fun showGalleryDialogBox(){
         val dialogBinding = GalleryDialogBoxBinding.inflate(layoutInflater)
         dialogbox = Dialog(this@MainActivity)
@@ -212,7 +197,7 @@ class MainActivity : AppCompatActivity(){
     private fun handleCustomToolbarIconClicks() {
         binding.customToolbarLayout.apply {
             backArrowIcon.setOnClickListener {
-                super.onBackPressed()
+                onBackPressed()
             }
             pinIcon.setOnClickListener {
 
@@ -244,18 +229,6 @@ class MainActivity : AppCompatActivity(){
                     Toast.makeText(this@MainActivity, "archive clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.menu_delete -> {
-//                    Toast.makeText(this@MainActivity, "delete clicked", Toast.LENGTH_SHORT).show()
-//                    dashboardFragment?.let {
-//                        println("getting called")
-//                        val selectedNoteIds = it.getSelectedNoteIds ()
-//                        if(selectedNoteIds.isNotEmpty()) {
-//                            notesViewModel.moveToTrash(selectedNoteIds)
-//                            it.deleteSelectedNotes()
-//                        }
-//                    }
-//                    hideCustomToolbar()
-//                    showHeaderToolbar()
-
                     dashboardFragment?.deleteSelectedNotes()
                     hideCustomToolbar()
                     showHeaderToolbar()
@@ -292,29 +265,29 @@ class MainActivity : AppCompatActivity(){
 
         addReminderBinding.apply {
             timeTabText.setOnClickListener {
-                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
                 dialogbox?.dismiss()
             }
             placeTabText.setOnClickListener {
-                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
                 timeTabDisplayLayout.visibility = View.GONE
                 placeTabDisplayLayout.visibility = View.VISIBLE
                 dialogbox?.dismiss()
             }
             dateLayout.setOnClickListener {
-                Toast.makeText(this@MainActivity, "timeLayout clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "timeLayout clicked",Toast.LENGTH_SHORT).show()
                 dialogbox?.dismiss()
             }
             doesNotRepeatLayout.setOnClickListener {
-                Toast.makeText(this@MainActivity, "doesNotRepeat clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "doesNotRepeat clicked",Toast.LENGTH_SHORT).show()
                 dialogbox?.dismiss()
             }
             addReminderCancelTextButton.setOnClickListener {
-                Toast.makeText(this@MainActivity, "cancel clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "cancel clicked",Toast.LENGTH_SHORT).show()
                 dialogbox?.dismiss()
             }
             saveButton.setOnClickListener {
-                Toast.makeText(this@MainActivity, "save clicked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "save clicked",Toast.LENGTH_SHORT).show()
                 dialogbox?.dismiss()
             }
 
@@ -356,6 +329,26 @@ class MainActivity : AppCompatActivity(){
 
     fun updateNotesCount(count: Int) {
         binding.customToolbarLayout.toolbar.findViewById<TextView>(R.id.count_textview).text = count.toString()
+    }
+
+    fun hideBottomNavBar(){
+        binding.bottomNavFrameLayout.visibility= View.GONE
+    }
+
+    fun showBottomNavBar(){
+        binding.bottomNavFrameLayout.visibility= View.VISIBLE
+    }
+
+    override fun getSelectedNoteIds(): List<Long> {
+        return notesAdapter.getSelectedNoteIds()
+    }
+
+    override fun deleteSelectedNotes() {
+        val selectedIds = getSelectedNoteIds()
+        if (selectedIds.isNotEmpty()) {
+            notesViewModel.moveToTrash(selectedIds)
+            notesAdapter.deleteSelectedNote()
+        }
     }
 
 }
