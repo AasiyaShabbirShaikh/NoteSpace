@@ -40,14 +40,14 @@ abstract class AddNewListBaseFragment : Fragment() {
                 requireActivity().onBackPressed()
             }
             pinIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Pinned Clicked", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Pinned Clicked", Toast.LENGTH_LONG).show()
             }
             remindMeIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Remind Clicked", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Remind Clicked", Toast.LENGTH_LONG).show()
                 showRemindMeBottomPopUpDialog()
             }
             archiveIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Archive Clicked", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Archive Clicked", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -55,19 +55,19 @@ abstract class AddNewListBaseFragment : Fragment() {
     fun setUpBottomNavBar(){
         binding.apply{
             baseAddOnIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "add on Clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "add on Clicked", Toast.LENGTH_SHORT).show()
                 showAddOnBottomPopUpDialog()
             }
             baseColorPaleteIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "color palete Clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "color palete Clicked", Toast.LENGTH_SHORT).show()
 
             }
             baseTextStylePickerIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "text style Clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "text style Clicked", Toast.LENGTH_SHORT).show()
 
             }
             baseMenuIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "menu Clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "menu Clicked", Toast.LENGTH_SHORT).show()
                 showMenuBottomPopUpDialog()
             }
         }
@@ -82,19 +82,19 @@ abstract class AddNewListBaseFragment : Fragment() {
 
         addOnViewBinding.apply {
             popupTakePhotoLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "take photo clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "take photo clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
             popupAddImageLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "add image clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "add image clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
             popupDrawingLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "drawing clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "drawing clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
             popupRecordingLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "recording clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "recording clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
 
@@ -112,27 +112,27 @@ abstract class AddNewListBaseFragment : Fragment() {
 
         menuViewBinding.apply {
             menuDeleteLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "delete clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "delete clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuMakeACopyLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "make a copy clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "make a copy clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuSendLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "send clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "send clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuCollaboratorLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "collaborator clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "collaborator clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuLabelsLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "labels clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "labels clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuHelpFeedbackLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "helpFeedback clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "helpFeedback clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
 
@@ -149,23 +149,23 @@ abstract class AddNewListBaseFragment : Fragment() {
 
         remindMeViewBinding.apply {
             remindTomorrowOneLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow one clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "tomorrow one clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
             remindTomorrowTwoLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow two clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "tomorrow two clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
             remindTomorrowThreeLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow three clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "tomorrow three clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
             remindPickDateTimeLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "pick date time clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "pick date time clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
             remindPickPlaceLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "pick place clicked",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "pick place clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
         }

@@ -10,38 +10,35 @@ import com.example.notespace.R
 import com.example.notespace.databinding.NoteItemLayoutBinding
 import com.example.notespace.model.Notes
 import com.example.notespace.ui.DashboardFragmentDirections
-import com.example.notespace.viewModel.NotesViewModel
 
 class NotesAdapter(
     private val onNoteLongClick: (Notes) -> Unit,
-    private val onNoteClick: (Notes) -> Unit,
     private val onSelectCountChange: (Int) -> Unit
-//    private val notesViewModel: NotesViewModel
 ) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
     private val selectedNotes = mutableSetOf<Notes>()
     var isSelectionModeOn = false
-
+//    private val notes = mutableListOf<Note>()
     inner class NoteViewHolder(val itemBinding: NoteItemLayoutBinding, ) : RecyclerView.ViewHolder(itemBinding.root){
         init {
             itemView.setOnLongClickListener {
                 val note = differ.currentList[adapterPosition]
-                handleNoteSelection()
-//                toggleSelection(note)
-//                isSelectionModeOn = true
+                toggleSelection(note)
+                isSelectionModeOn = true
                 onNoteLongClick(note)
                 true
             }
 
             itemView.setOnClickListener {
-                val note = differ.currentList[adapterPosition]
                 if(isSelectionModeOn){
-//                    val note = differ.currentList[adapterPosition]
+                    val note = differ.currentList[adapterPosition]
                     toggleSelection(note)
                 }
                 else{
                     itemView.findNavController().navigate(
-                        DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
+                        DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
+                            differ.currentList[adapterPosition]
+                        )
                     )
                 }
             }
@@ -90,44 +87,37 @@ class NotesAdapter(
         selectedNotes.clear()
         isSelectionModeOn = false
         notifyDataSetChanged()
-        onSelectCountChange(0)
-//        if (selectedNotes.isNotEmpty()) {
-//            onSelectCountChange(selectedNotes.size)
-//        }
+        onSelectCountChange(selectedNotes.size)
     }
 
     fun getSelectedNoteIds(): List<Long> {
         return selectedNotes.map {it.noteId}
     }
 
-//    fun deleteSelectedNote(){
-//        val notesToDelete = selectedNotes.toList()
-//        notesViewModel.moveToTrash(notesToDelete.map { it.noteId })
-//
-//        val currentNotesList = differ.currentList.toMutableList()
-//        currentNotesList.removeAll(notesToDelete)
+    fun deleteSelectedNote(){
+        val notesToDelete = selectedNotes.toList()
+        val currentNotesList = differ.currentList.toMutableList()
+        currentNotesList.removeAll(notesToDelete)
+        differ.submitList(currentNotesList)
+        selectedNotes.clear()
+        isSelectionModeOn = false
+        onSelectCountChange(selectedNotes.size)
+
+//        val updateNotesList = differ.currentList.toMutableList().apply {
+//            removeAll(notesToDelete)
+//        }
 //        differ.submitList(currentNotesList)
-//
-//        selectedNotes.clear()
-//        isSelectionModeOn = false
-//        onSelectCountChange(selectedNotes.size)
-//    }
-
-    fun deleteSelectedNote() {
-        if (selectedNotes.isNotEmpty()) {
-            val notesToDelete = selectedNotes.toList()
-            notesViewModel.moveToTrash(notesToDelete.map { it.noteId }) // Move notes to trash.
-
-            // Remove selected notes from the adapter and database.
-            val currentNotesList = differ.currentList.toMutableList()
-            currentNotesList.removeAll(notesToDelete)
-            differ.submitList(currentNotesList) // Refresh the list after deletion.
-
-            selectedNotes.clear()  // Clear the selection.
-            isSelectionModeOn = false  // Exit selection mode.
-            onSelectCountChange(0)  // Reset selection count.
-        }
+//        notifyDataSetChanged()
     }
+
+
+//    fun deleteNoteById(noteId: Int) {
+//        val noteIndex = notes.indexOfFirst { it.id == noteId }
+//        if (noteIndex != -1) {
+//            notes.removeAt(noteIndex)
+//            notifyItemRemoved(noteIndex)
+//        }
+//    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {

@@ -55,7 +55,7 @@ class NewListFragment : AddNewListBaseFragment() {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 0 -> {
-//                    Toast.makeText(requireContext(), "hide checkboxes", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "hide checkboxes", Toast.LENGTH_LONG).show()
                 }
             }
             false

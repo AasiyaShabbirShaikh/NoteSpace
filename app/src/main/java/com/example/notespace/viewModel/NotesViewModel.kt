@@ -14,37 +14,39 @@ import javax.inject.Inject
 @HiltViewModel
 class NotesViewModel @Inject constructor(private val notesRepository: NotesRepository): ViewModel() {
 
-    suspend fun addNote(note: Notes) : Long {
-        return notesRepository.insertNote(note)
-    }
+        suspend fun addNote(note: Notes) : Long {
+            return notesRepository.insertNote(note)
+        }
 
-    fun deleteNote(note:Notes) = viewModelScope.launch {
-        notesRepository.deleteNote(note)
-    }
+        fun deleteNote(note:Notes) = viewModelScope.launch {
+            notesRepository.deleteNote(note)
+        }
 
-    fun updateNote(note:Notes) = viewModelScope.launch {
-        notesRepository.updateNote(note)
-    }
+        fun updateNote(note:Notes) = viewModelScope.launch {
+            notesRepository.updateNote(note)
+        }
 
-    fun deleteNoteById(noteId: Long) = viewModelScope.launch {
-        notesRepository.deleteNoteById(noteId)
-    }
+        fun deleteNoteById(noteId: Long) = viewModelScope.launch {
+            notesRepository.deleteNoteById(noteId)
+        }
 
-    fun getAllNotes(): LiveData<List<Notes>> {
-        return notesRepository.getAllNotes()
-    }
+        fun getAllNotes(): LiveData<List<Notes>>
+        {
+            return notesRepository.getAllNotes()
+        }
 
-    fun moveToTrash(noteId: Long) = viewModelScope.launch {
-        notesRepository.moveToTrash(noteId)
-    }
+//        fun moveNoteToTrash(noteId: Long) = viewModelScope.launch {
+//            notesRepository.moveToTrash(noteId)
+//        }
 
-    fun moveToTrash(noteIds: List<Long>) = viewModelScope.launch {
-        notesRepository.moveToTrash(noteIds)
-    }
+        fun moveToTrash(noteIds: List<Long>) = viewModelScope.launch {
+                notesRepository.moveToTrash(noteIds)
+        }
 
-    fun searchNote(keySearch : String?) = notesRepository.searchNote(keySearch)
+        fun searchNote(keySearch : String?) = notesRepository.searchNote(keySearch)
 
-    fun getNonTrashNotes(): LiveData<List<Notes>> {
+    fun getNonTrashNotes(): LiveData<List<Notes>>
+    {
         return notesRepository.getNonTrashNotes()
     }
 }
