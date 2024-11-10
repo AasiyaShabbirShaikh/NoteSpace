@@ -105,7 +105,7 @@ class DashboardFragment : Fragment(), NoteInterface{
         } else {
             selectedIds.add(note.noteId)
         }
-        notesAdapter.updateSelectedNotes(selectedIds)
+//        notesAdapter.updateSelectedNotes(selectedIds)
         handleNoteSelectCount(selectedIds.size)
     }
 
@@ -125,8 +125,8 @@ class DashboardFragment : Fragment(), NoteInterface{
         if (selectedIds.isNotEmpty()) {
             notesViewModel.moveToTrash(selectedIds)
             Log.e("NotesViewModel", "Notes moved to trash: $selectedIds")
-            notesAdapter.removeSelectedNotes(selectedIds)
-            (activity as? MainActivity)?.getAllNotes()
+//            notesAdapter.removeSelectedNotes(selectedIds)
+//            (activity as? MainActivity)?.getAllNotes()
             clearSelectionAndToolbar()
 //            notesViewModel.getAllNotes()
         }

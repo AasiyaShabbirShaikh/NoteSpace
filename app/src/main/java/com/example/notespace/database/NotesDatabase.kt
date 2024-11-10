@@ -8,7 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.notespace.model.Notes
 
-@Database(entities = [Notes::class], version = 2, exportSchema = false)
+@Database(entities = [Notes::class], version = 3, exportSchema = false)
 abstract class NotesDatabase: RoomDatabase() {
 
     abstract fun getNoteDao():NotesDao
@@ -32,13 +32,20 @@ abstract class NotesDatabase: RoomDatabase() {
             }
         }
 
+        val migrationFrom2To3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE notes ADD COLUMN noteImageUri TEXT")
+            }
+        }
+
         private fun createDatabse(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
                 NotesDatabase::class.java,
                 "note_db"
             )
-                .addMigrations(migrationFrom1To2)
+                .addMigrations(migrationFrom1To2, migrationFrom2To3)
+//                .fallbackToDestructiveMigration()
                 .build()
 
     }

@@ -26,9 +26,9 @@ class NotesAdapter(
         init {
             itemView.setOnLongClickListener {
                 val note = differ.currentList[adapterPosition]
-                handleNoteSelection()
-//                toggleSelection(note)
-//                isSelectionModeOn = true
+//                handleNoteSelection()
+                toggleSelection(note)
+                isSelectionModeOn = true
                 onNoteLongClick(note)
                 true
             }
@@ -90,42 +90,28 @@ class NotesAdapter(
         selectedNotes.clear()
         isSelectionModeOn = false
         notifyDataSetChanged()
-        onSelectCountChange(0)
-//        if (selectedNotes.isNotEmpty()) {
-//            onSelectCountChange(selectedNotes.size)
-//        }
+//        onSelectCountChange(0)
+        if (selectedNotes.isNotEmpty()) {
+            onSelectCountChange(selectedNotes.size)
+        }
     }
 
     fun getSelectedNoteIds(): List<Long> {
         return selectedNotes.map {it.noteId}
     }
 
-//    fun deleteSelectedNote(){
-//        val notesToDelete = selectedNotes.toList()
-//        notesViewModel.moveToTrash(notesToDelete.map { it.noteId })
-//
-//        val currentNotesList = differ.currentList.toMutableList()
-//        currentNotesList.removeAll(notesToDelete)
-//        differ.submitList(currentNotesList)
-//
-//        selectedNotes.clear()
-//        isSelectionModeOn = false
-//        onSelectCountChange(selectedNotes.size)
-//    }
-
     fun deleteSelectedNote() {
         if (selectedNotes.isNotEmpty()) {
             val notesToDelete = selectedNotes.toList()
-            notesViewModel.moveToTrash(notesToDelete.map { it.noteId }) // Move notes to trash.
+//            notesViewModel.moveToTrash(notesToDelete.map { it.noteId }) // Move notes to trash.
 
-            // Remove selected notes from the adapter and database.
             val currentNotesList = differ.currentList.toMutableList()
             currentNotesList.removeAll(notesToDelete)
-            differ.submitList(currentNotesList) // Refresh the list after deletion.
+            differ.submitList(currentNotesList)
 
-            selectedNotes.clear()  // Clear the selection.
-            isSelectionModeOn = false  // Exit selection mode.
-            onSelectCountChange(0)  // Reset selection count.
+            selectedNotes.clear()
+            isSelectionModeOn = false
+            onSelectCountChange(0)
         }
     }
 

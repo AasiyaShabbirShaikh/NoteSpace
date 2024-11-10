@@ -1,16 +1,25 @@
 package com.example.notespace
 
 import android.app.Dialog
+import android.content.ContentValues
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
@@ -34,6 +43,9 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
     private val notesViewModel: NotesViewModel by viewModels()
 
+    private lateinit var imageUri: Uri
+
+    private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -57,6 +69,16 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         handleCustomToolbarIconClicks()
 
         binding.customToolbarLayout.toolbar.visibility = View.GONE
+
+
+        cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
+            if (result.resultCode == RESULT_OK) {
+                // Navigate to AddFragment and pass imageUri to it if needed
+                navController.navigate(R.id.addFragment)
+            } else {
+                Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setUpDrawerLayout() {
@@ -175,7 +197,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
         dialogBinding.apply {
             takePhotoLayout.setOnClickListener {
-                navController.navigate(R.id.dashboardFragment)
+                checkCameraPermissionAndOpenCamera()
                 dialogbox?.dismiss()
             }
             chooseImageLayout.setOnClickListener {
@@ -186,6 +208,45 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         dialogbox?.show()
     }
 
+    private fun openCamera(){
+        // Create content values for the image metadata
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.TITLE, "ImageTitle")
+            put(MediaStore.Images.Media.DESCRIPTION, "ImageDescription")
+        }
+
+        // Insert the content values to get a URI for the new image
+        val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        if (imageUri != null) {
+            // Create an Intent to open the camera
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, imageUri) // Set the output URI to save the image
+            }
+
+            // Launch the camera app using ActivityResultLauncher
+            cameraResultLauncher.launch(intent)
+        } else {
+            // If imageUri is null, show an error message
+            Toast.makeText(this, "Failed to create image URI", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            openCamera()
+        } else {
+            Toast.makeText(this, "Camera permission is required to take photos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkCameraPermissionAndOpenCamera() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            openCamera()
+        } else {
+            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        }
+    }
 
     private fun handleFloatingButtonClick(){
         binding.floatingActionButton.setOnClickListener {
