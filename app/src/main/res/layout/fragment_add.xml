@@ -19,6 +19,14 @@
         app:layout_constraintBottom_toTopOf="parent"
         >
 
+        <ImageView
+            android:id="@+id/add_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="16dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+
         <EditText
             android:id="@+id/add_title_edit_text"
             android:layout_width="match_parent"

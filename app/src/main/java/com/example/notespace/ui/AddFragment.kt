@@ -1,5 +1,6 @@
 package com.example.notespace.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -29,6 +30,7 @@ class AddFragment : AddNewListBaseFragment() {
 
     private val notesViewModel: NotesViewModel by viewModels()
 
+    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,30 +51,36 @@ class AddFragment : AddNewListBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
         (activity as MainActivity).hideFloatingActionButton()
+
+        // Use the same key "image" as in MainActivity
+        imageUri = arguments?.getParcelable("image")
+        println("Received: $imageUri")
+
+        if (imageUri != null) {
+            binding.addImageView.visibility = View.VISIBLE
+            binding.addImageView.setImageURI(imageUri)
+        } else {
+            Toast.makeText(context, "Image URI is null", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-//        Log.d("AddFragment", "Fragment is resumed")
-    }
 
     override fun onPause() {
         super.onPause()
         saveNote()
-//        Log.d("AddFragment", "Fragment is paused")
     }
 
     private fun saveNote() {
         val title = binding.addTitleEditText.text.toString()
         val description = binding.addDescriptionEditText.text.toString()
 
-        val note = Notes(0, title, description, System.currentTimeMillis())
+        val note = Notes(0, title, description, System.currentTimeMillis(),false, imageUri?.toString())
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val currentId = notesViewModel.addNote(note)
 
-                if (title.isEmpty() && description.isEmpty()) {
+                if (title.isEmpty() && description.isEmpty() && imageUri == null) {
                     delay(3000)
                     if (isAdded) {
                         notesViewModel.deleteNoteById(currentId)

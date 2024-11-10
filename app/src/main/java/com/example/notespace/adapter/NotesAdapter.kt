@@ -1,6 +1,8 @@
 package com.example.notespace.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -63,6 +65,13 @@ class NotesAdapter(
         fun bind(note: Notes){
             itemBinding.noteTitleText.text =note.noteTitle
             itemBinding.noteDescriptionText.text = note.noteDescription
+            if(!note.noteImageUri.isNullOrEmpty()){
+                itemBinding.photoImage.visibility = View.VISIBLE
+                itemBinding.photoImage.setImageURI(Uri.parse(note.noteImageUri))
+            }
+            else{
+                itemBinding.photoImage.visibility = View.GONE
+            }
             itemView.background =
                 if(selectedNotes.contains(note)){
                     itemView.context.getDrawable(R.drawable.note_selected_border)
