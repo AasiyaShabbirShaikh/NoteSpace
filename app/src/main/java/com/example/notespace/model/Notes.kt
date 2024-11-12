@@ -14,5 +14,5 @@ data class Notes(
     val noteDescription: String,
     val timestamp: Long,
     val trashed: Boolean = false,
-    val noteImageUri : String? =null
+    val noteImageUri : List<String>? = null
 ):Parcelable

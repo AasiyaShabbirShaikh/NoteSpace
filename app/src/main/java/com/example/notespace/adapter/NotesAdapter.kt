@@ -67,7 +67,7 @@ class NotesAdapter(
             itemBinding.noteDescriptionText.text = note.noteDescription
             if(!note.noteImageUri.isNullOrEmpty()){
                 itemBinding.photoImage.visibility = View.VISIBLE
-                itemBinding.photoImage.setImageURI(Uri.parse(note.noteImageUri))
+//                itemBinding.photoImage.setImageURI(Uri.parse(note.noteImageUri))
             }
             else{
                 itemBinding.photoImage.visibility = View.GONE

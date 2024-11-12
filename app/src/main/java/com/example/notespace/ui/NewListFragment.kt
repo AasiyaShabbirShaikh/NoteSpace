@@ -30,8 +30,8 @@ class NewListFragment : AddNewListBaseFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentNewListBinding.inflate(inflater, container, false)
-        setUpActionBar()
-        setUpBottomNavBar()
+//        setUpActionBar()
+//        setUpBottomNavBar()
         (requireActivity() as MainActivity).hideBottomNavBar()
         baseBinding.baseContainer.removeAllViews()
         baseBinding.baseContainer.addView(binding.root)

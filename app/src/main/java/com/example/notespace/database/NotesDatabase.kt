@@ -4,11 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.notespace.model.Notes
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 @Database(entities = [Notes::class], version = 3, exportSchema = false)
+@TypeConverters(NotesDatabase.UriListConverter::class)
 abstract class NotesDatabase: RoomDatabase() {
 
     abstract fun getNoteDao():NotesDao
@@ -48,6 +54,20 @@ abstract class NotesDatabase: RoomDatabase() {
 //                .fallbackToDestructiveMigration()
                 .build()
 
+    }
+
+    class UriListConverter {
+
+        @TypeConverter
+        fun fromUriList(uriList: List<String>?): String {
+            return Gson().toJson(uriList)
+        }
+
+        @TypeConverter
+        fun toUriList(uriString: String): List<String>? {
+            val listType: Type = object : TypeToken<List<String>>() {}.type
+            return Gson().fromJson(uriString, listType)
+        }
     }
 
 
