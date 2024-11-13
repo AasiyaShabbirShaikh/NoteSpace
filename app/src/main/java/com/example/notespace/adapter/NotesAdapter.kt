@@ -33,6 +33,7 @@ class NotesAdapter(
                 if(isSelectionModeOn){
                     val note = differ.currentList[adapterPosition]
                     toggleSelection(note)
+
                 }
                 else{
                     itemView.findNavController().navigate(
