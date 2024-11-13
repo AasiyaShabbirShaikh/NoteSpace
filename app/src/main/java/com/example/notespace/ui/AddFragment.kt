@@ -362,6 +362,7 @@ class AddFragment: Fragment() {
     }
 
     private fun showDatePickerDialogBox() {
+        dialogBinding.timePassedText.visibility = View.GONE
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -427,6 +428,7 @@ class AddFragment: Fragment() {
     }
 
     private fun showTimePickerDialogBox() {
+        dialogBinding.timePassedText.visibility = View.GONE
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
@@ -480,6 +482,7 @@ class AddFragment: Fragment() {
 
 
     private fun chooseRepeatMenuOption(view: View){
+        dialogBinding.timePassedText.visibility = View.GONE
         val popupMenu = PopupMenu(requireContext(), view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.does_not_repeat_menu, popupMenu.menu)
