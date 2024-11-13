@@ -33,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -330,7 +331,7 @@ class AddFragment: Fragment() {
                 R.id.today -> {
 //                    Toast.makeText(requireContext(), "Today selected", Toast.LENGTH_SHORT).show()
                     val calendar = Calendar.getInstance()
-                    val today = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(calendar.time)
+                    val today = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
                     dialogBinding.dateText.text = today
                     true
                 }
@@ -338,7 +339,7 @@ class AddFragment: Fragment() {
 //                    Toast.makeText(requireContext(), "Tomorrow selected", Toast.LENGTH_SHORT).show()
                     val calendar = Calendar.getInstance()
                     calendar.add(Calendar.DAY_OF_YEAR, 1)
-                    val tomorrow = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(calendar.time)
+                    val tomorrow = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
                     dialogBinding.dateText.text = tomorrow
                     true
                 }
@@ -346,7 +347,7 @@ class AddFragment: Fragment() {
 //                    Toast.makeText(requireContext(), "Next Weekday selected", Toast.LENGTH_SHORT).show()
                     val calendar = Calendar.getInstance()
                     calendar.add(Calendar.DAY_OF_YEAR, 7)
-                    val nextWeekday = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(calendar.time)
+                    val nextWeekday = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
                     dialogBinding.dateText.text = nextWeekday
                     true
                 }
@@ -379,7 +380,7 @@ class AddFragment: Fragment() {
                 val selectedDateCalendar = Calendar.getInstance()
                 selectedDateCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
 
-                val dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault()) // "MMMM" is full month name, "dd" is day
+                val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // "MMMM" is full month name, "dd" is day
                 val formattedDate = dateFormat.format(selectedDateCalendar.time)
 
                 dialogBinding.dateText.text = formattedDate
@@ -436,7 +437,7 @@ class AddFragment: Fragment() {
         val timePickerDialog = TimePickerDialog(
             requireContext(),
             { _, selectedHour, selectedMinute ->
-                val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                val timeFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault())
                 calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
                 calendar.set(Calendar.MINUTE, selectedMinute)
                 val formattedTime = timeFormat.format(calendar.time)
@@ -452,29 +453,45 @@ class AddFragment: Fragment() {
         val selectedDateText = dialogBinding.dateText.text.toString()
         val selectedTimeText = dialogBinding.timeText.text.toString()
 
+        println(" selected--- ${selectedDateText}  ${selectedTimeText}")
+
         if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
-            val selectedCalendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("MMMM dd hh:mm a", Locale.getDefault()) // Ensure time format uses ":" instead of "."
+            val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // Format for "November 20 6:00 PM"
 
             try {
-                Log.d("AddFragment", "Date text: $selectedDateText, Time text: $selectedTimeText")
-                val selectedDateTime = dateFormat.parse("$selectedDateText $selectedTimeText")
-                selectedCalendar.time = selectedDateTime
+                // Combine the date and time strings correctly
+                val selectedDateTimeString = "$selectedDateText $selectedTimeText"
+                Log.d("AddFragment", "Date and time string: $selectedDateTimeString")
 
-                val currentCalendar = Calendar.getInstance()
+                // Parse the combined date and time string
+                val selectedDateTime = dateFormat.parse(selectedDateTimeString)
 
-                if (selectedCalendar.before(currentCalendar)) {
-                    Log.d("AddFragment", "Selected time is in the past.")
-                    dialogBinding.timePassedText.visibility = View.VISIBLE
+                if (selectedDateTime != null) {
+                    val selectedCalendar = Calendar.getInstance()
+                    selectedCalendar.time = selectedDateTime
+
+                    val currentCalendar = Calendar.getInstance()
+                    Log.d("AddFragment", "Current time: ${currentCalendar.time}, Selected time: ${selectedCalendar.time}")
+
+                    // Check if the selected time is in the past or future
+                    if (selectedCalendar.before(currentCalendar)) {
+                        Log.d("AddFragment", "Selected time is in the past.")
+                        dialogBinding.timePassedText.visibility = View.VISIBLE
+
+                        // Show Toast message when the selected time has passed
+                        Toast.makeText(requireContext(), "The selected time is in the past", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d("AddFragment", "Selected time is in the future.")
+                        dialogBinding.timePassedText.visibility = View.GONE
+                    }
                 } else {
-                    Log.d("AddFragment", "Selected time is in the future.")
-                    dialogBinding.timePassedText.visibility = View.GONE
+                    Log.e("AddFragment", "Failed to parse date and time")
                 }
-            } catch (e: Exception) {
-                Log.e("AddFragment", "Date parsing failed: ${e.message}")
-                e.printStackTrace()
+            } catch (e: ParseException) {
+                Log.e("AddFragment", "Date parse error: ${e.message}")
             }
-        } else {
+        }
+        else {
             Toast.makeText(requireContext(), "Please select both date and time", Toast.LENGTH_SHORT).show()
             dialogBinding.timePassedText.visibility = View.GONE
         }
