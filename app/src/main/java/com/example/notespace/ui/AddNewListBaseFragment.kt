@@ -28,29 +28,29 @@ abstract class AddNewListBaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAddNewListBaseBinding.inflate(layoutInflater)
-        setUpActionBar()
+//        setUpActionBar()
         setUpBottomNavBar()
         baseBinding.baseContainer.removeAllViews()
         return binding.root
     }
 
-     fun setUpActionBar(){
-        binding.baseToolbar.apply {
-            backArrowIcon.setOnClickListener {
-                requireActivity().onBackPressed()
-            }
-            pinIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Pinned Clicked", Toast.LENGTH_LONG).show()
-            }
-            remindMeIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Remind Clicked", Toast.LENGTH_LONG).show()
-                showRemindMeBottomPopUpDialog()
-            }
-            archiveIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Archive Clicked", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+//     fun setUpActionBar(){
+//        binding.baseToolbar.apply {
+//            backArrowIcon.setOnClickListener {
+//                requireActivity().onBackPressed()
+//            }
+//            pinIcon.setOnClickListener {
+////                Toast.makeText(requireContext(), "Pinned Clicked", Toast.LENGTH_LONG).show()
+//            }
+//            remindMeIcon.setOnClickListener {
+////                Toast.makeText(requireContext(), "Remind Clicked", Toast.LENGTH_LONG).show()
+//                showRemindMeBottomPopUpDialog()
+//            }
+//            archiveIcon.setOnClickListener {
+////                Toast.makeText(requireContext(), "Archive Clicked", Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
 
     fun setUpBottomNavBar(){
         binding.apply{
@@ -141,36 +141,36 @@ abstract class AddNewListBaseFragment : Fragment() {
         menuDialog.show()
     }
 
-     fun showRemindMeBottomPopUpDialog(){
-        val remindMeViewBinding = BottomRemindPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
-
-        remindMeDialog = BottomSheetDialog(requireContext())
-        remindMeDialog.setContentView(remindMeViewBinding.root)
-
-        remindMeViewBinding.apply {
-            remindTomorrowOneLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow one clicked",Toast.LENGTH_LONG).show()
-                remindMeDialog.dismiss()
-            }
-            remindTomorrowTwoLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow two clicked",Toast.LENGTH_LONG).show()
-                remindMeDialog.dismiss()
-            }
-            remindTomorrowThreeLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow three clicked",Toast.LENGTH_LONG).show()
-                remindMeDialog.dismiss()
-            }
-            remindPickDateTimeLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "pick date time clicked",Toast.LENGTH_LONG).show()
-                remindMeDialog.dismiss()
-            }
-            remindPickPlaceLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "pick place clicked",Toast.LENGTH_LONG).show()
-                remindMeDialog.dismiss()
-            }
-        }
-        remindMeDialog.show()
-    }
+//     fun showRemindMeBottomPopUpDialog(){
+//        val remindMeViewBinding = BottomRemindPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
+//
+//        remindMeDialog = BottomSheetDialog(requireContext())
+//        remindMeDialog.setContentView(remindMeViewBinding.root)
+//
+//        remindMeViewBinding.apply {
+//            remindTomorrowOneLayout.setOnClickListener {
+////                Toast.makeText(requireContext(), "tomorrow one clicked",Toast.LENGTH_LONG).show()
+//                remindMeDialog.dismiss()
+//            }
+//            remindTomorrowTwoLayout.setOnClickListener {
+////                Toast.makeText(requireContext(), "tomorrow two clicked",Toast.LENGTH_LONG).show()
+//                remindMeDialog.dismiss()
+//            }
+//            remindTomorrowThreeLayout.setOnClickListener {
+////                Toast.makeText(requireContext(), "tomorrow three clicked",Toast.LENGTH_LONG).show()
+//                remindMeDialog.dismiss()
+//            }
+//            remindPickDateTimeLayout.setOnClickListener {
+////                Toast.makeText(requireContext(), "pick date time clicked",Toast.LENGTH_LONG).show()
+//                remindMeDialog.dismiss()
+//            }
+//            remindPickPlaceLayout.setOnClickListener {
+////                Toast.makeText(requireContext(), "pick place clicked",Toast.LENGTH_LONG).show()
+//                remindMeDialog.dismiss()
+//            }
+//        }
+//        remindMeDialog.show()
+//    }
 
 
 }

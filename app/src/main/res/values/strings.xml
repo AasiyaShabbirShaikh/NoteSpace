@@ -42,6 +42,7 @@
     <string name="work">Work</string>
     <string name="pick_date_time">Pick a date and time</string>
     <string name="pick_place">Pick a place</string>
+    <string name="later_today">Later Today</string>
 
     <!--    dashboard_fragment-->
     <string name="empty_notes_note">Notes you add appear here</string>
@@ -100,6 +101,8 @@
     <string name="yearly">Yearly</string>
     <string name="custom">Costum</string>
     <string name="edit_location">Edit location</string>
+    <string name="edit_reminder">Edit reminder</string>
+    <string name="time_passed">The time has passed</string>
 
 
     <!--    <string name="title_activity_dashboard_activtiy">DashboardActivtiy</string>-->
@@ -112,5 +115,14 @@
 
     <!--    toast_string-->
     <string name="note_discarded">Note discarded</string>
+
+<!--    does_not_repeat_menu-->
+    <string name="custom_pick">Custom...</string>
+    <string name="repeats_daily">Repeats daily</string>
+    <string name="repeats_weekly">Repeats weekly</string>
+    <string name="repeats_monthly">Repeats monthly</string>
+    <string name="repeats_yearly">Repeats yearly</string>
+
+
 
 </resources>

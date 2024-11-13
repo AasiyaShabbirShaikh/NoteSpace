@@ -32,7 +32,7 @@ class EditNoteFragment : AddNewListBaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
 
-        setUpActionBar()
+//        setUpActionBar()
         setUpBottomNavBar()
 
         baseBinding.baseContainer.removeAllViews()

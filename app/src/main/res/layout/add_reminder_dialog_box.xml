@@ -30,7 +30,7 @@
                 android:id="@+id/add_reminder_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/add_reminder"
+                android:text="@string/edit_reminder"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/poppins"
@@ -47,7 +47,7 @@
 
                 <TextView
                     android:id="@+id/time_tab_text"
-                    android:layout_width="205dp"
+                    android:layout_width="165dp"
                     android:layout_height="match_parent"
                     android:text="@string/time"
                     android:gravity="center|center_vertical"
@@ -86,7 +86,7 @@
 
                     <TextView
                         android:id="@+id/date_text"
-                        android:layout_width="340dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="October 28"
                         android:textSize="14sp"
@@ -121,12 +121,13 @@
 
                     <TextView
                         android:id="@+id/time_text"
-                        android:layout_width="340dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="@string/evening_time"
                         android:textSize="14sp"
                         android:fontFamily="@font/poppins"
                         />
+
 
                     <ImageView
                         android:id="@+id/time_drop_down_icon"
@@ -146,6 +147,19 @@
                     android:layout_marginEnd="16dp"
                     />
 
+                <TextView
+                    android:id="@+id/time_passed_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_passed"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/red"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:fontFamily="@font/poppins"
+                    />
+
                 <LinearLayout
                     android:id="@+id/does_not_repeat_layout"
                     android:layout_width="match_parent"
@@ -156,7 +170,7 @@
 
                     <TextView
                         android:id="@+id/does_not_repeat_text"
-                        android:layout_width="340dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="@string/does_not_repeat"
                         android:textSize="14sp"
@@ -236,13 +250,25 @@
                 >
 
                 <TextView
-                    android:id="@+id/add_reminder_cancel_text_button"
+                    android:id="@+id/add_reminder_delete_text_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="@string/delete"
                     android:fontFamily="@font/poppins"
                     android:textSize="12sp"
                     android:textColor="@color/dark_blue"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/add_reminder_cancel_text_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_blue"
+                    android:layout_marginStart="12dp"
                     android:textStyle="bold"
                     />
 
@@ -258,8 +284,6 @@
 
 
             </LinearLayout>
-
-
 
         </LinearLayout>
 
