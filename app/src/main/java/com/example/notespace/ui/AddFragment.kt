@@ -59,6 +59,7 @@ class AddFragment : AddNewListBaseFragment() {
         if (imageUri != null) {
             binding.addImageView.visibility = View.VISIBLE
             binding.addImageView.setImageURI(imageUri)
+            (activity as MainActivity).hideBottomNavBar()
         } else {
             Toast.makeText(context, "Image URI is null", Toast.LENGTH_SHORT).show()
         }
