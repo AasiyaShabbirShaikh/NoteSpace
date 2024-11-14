@@ -59,7 +59,7 @@ class AddFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddBinding.inflate(layoutInflater)
+        _binding = FragmentAddBinding.inflate(inflater, container, false)
 
         setUpActionBar()
         setUpBottomNavBar()
@@ -279,11 +279,11 @@ class AddFragment: Fragment() {
     private fun parseReminderDateTime(dateText: String, timeText: String): Long? {
         val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault())
 
-//        var formattedDate = dateText
-//        if (dateText.equals("Today", ignoreCase = true)) {
-//            val calendar = Calendar.getInstance()
-//            formattedDate = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
-//        }
+        var formattedDate = dateText
+        if (dateText.equals("Today", ignoreCase = true)) {
+            val calendar = Calendar.getInstance()
+            formattedDate = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
+        }
 
         return try {
             dateFormat.parse("$dateText $timeText")?.time
@@ -293,7 +293,9 @@ class AddFragment: Fragment() {
         }
     }
 
-        private fun showAddReminderDialogBox(){
+
+
+    private fun showAddReminderDialogBox(){
             dialogBinding = AddReminderDialogBoxBinding.inflate(layoutInflater)
             addReminderDialogBox = Dialog(requireContext())
             addReminderDialogBox?.apply {
@@ -466,6 +468,48 @@ class AddFragment: Fragment() {
         timePickerDialog.show()
     }
 
+//    private fun validateOptedTime() {
+//        val selectedDateText = dialogBinding.dateText.text.toString()
+//        val selectedTimeText = dialogBinding.timeText.text.toString()
+//
+//        println(" selected--- ${selectedDateText}  ${selectedTimeText}")
+//
+//        if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
+//            val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // Format for "November 20 6:00 PM"
+//
+//            try {
+//                val selectedDateTimeString = "$selectedDateText $selectedTimeText"
+//                println("AddFragment $selectedDateTimeString")
+//
+//                val selectedDateTime = dateFormat.parse(selectedDateTimeString)
+//
+//                if (selectedDateTime != null) {
+//                    val selectedCalendar = Calendar.getInstance()
+//                    selectedCalendar.time = selectedDateTime
+//
+//                    val currentCalendar = Calendar.getInstance()
+//                    println("Current time: ${currentCalendar.time}, Selected time: ${selectedCalendar.time}")
+//
+//                    if (selectedCalendar.before(currentCalendar)) {
+//                        println("Selected time is in the past")
+//                        dialogBinding.timePassedText.visibility = View.VISIBLE
+//                    } else {
+//                        println("Selected time is in the future.")
+//                        dialogBinding.timePassedText.visibility = View.GONE
+//                    }
+//                } else {
+//                    Log.e("AddFragment", "Failed to parse date and time")
+//                }
+//            } catch (e: ParseException) {
+//                Log.e("AddFragment", "Date parse error: ${e.message}")
+//            }
+//        }
+//        else {
+//            Toast.makeText(requireContext(), "Please select both date and time", Toast.LENGTH_SHORT).show()
+//            dialogBinding.timePassedText.visibility = View.GONE
+//        }
+//    }
+
     private fun validateOptedTime() {
         val selectedDateText = dialogBinding.dateText.text.toString()
         val selectedTimeText = dialogBinding.timeText.text.toString()
@@ -473,9 +517,15 @@ class AddFragment: Fragment() {
         println(" selected--- ${selectedDateText}  ${selectedTimeText}")
 
         if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
-            val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // Format for "November 20 6:00 PM"
-
             try {
+                val dateFormat: SimpleDateFormat
+                // Check if the time is in 24-hour format or 12-hour format
+                dateFormat = if (selectedTimeText.contains(":") && selectedTimeText.contains("PM") || selectedTimeText.contains("AM")) {
+                    SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // 12-hour format
+                } else {
+                    SimpleDateFormat("MMMM dd yyyy HH:mm", Locale.getDefault()) // 24-hour format
+                }
+
                 val selectedDateTimeString = "$selectedDateText $selectedTimeText"
                 println("AddFragment $selectedDateTimeString")
 
@@ -501,8 +551,7 @@ class AddFragment: Fragment() {
             } catch (e: ParseException) {
                 Log.e("AddFragment", "Date parse error: ${e.message}")
             }
-        }
-        else {
+        } else {
             Toast.makeText(requireContext(), "Please select both date and time", Toast.LENGTH_SHORT).show()
             dialogBinding.timePassedText.visibility = View.GONE
         }
