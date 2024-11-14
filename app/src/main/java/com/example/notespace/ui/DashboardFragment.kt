@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notespace.MainActivity
 import com.example.notespace.NoteInterface
@@ -55,6 +56,7 @@ class DashboardFragment : Fragment(), NoteInterface{
                 if (isSelectionMode) {
                     toggleNoteSelection(note)
                 }
+                findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note))
             },
             onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)

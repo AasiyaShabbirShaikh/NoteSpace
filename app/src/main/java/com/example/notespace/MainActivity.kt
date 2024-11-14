@@ -76,15 +76,19 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == RESULT_OK) {
                 val capturedImageUri = CameraHelper.getImageUri()
-                println("Captured Image URI: $capturedImageUri")
-                if (capturedImageUri != null) {
-                    val bundle = Bundle().apply {
-                        putParcelable("image", capturedImageUri)
+                if(capturedImageUri != null){
+                    val addFragment = AddFragment()
+                    val bundle = Bundle().apply{
+                        putParcelable("image",capturedImageUri)
                     }
-                    navController.navigate(R.id.addFragment, bundle)
-                } else {
-                    Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
+                    addFragment.arguments = bundle
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.base_container, addFragment)
+                        .addToBackStack(null)
+                        .commit()
                 }
+//                navController.navigate(R.id.addFragment)
             } else {
                 Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
             }

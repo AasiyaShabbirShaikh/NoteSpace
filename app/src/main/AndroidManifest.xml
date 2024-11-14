@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-feature android:name="android.hardware.camera.any" />
@@ -32,6 +33,14 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".utils.NotificationActionHandler"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ACTION_CLEAR_NOTIFICATION" />
+                <action android:name="ACTION_SNOOZE_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

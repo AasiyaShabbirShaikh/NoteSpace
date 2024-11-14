@@ -48,6 +48,59 @@
             android:fontFamily="@font/poppins"
             android:textColor="@color/charcoal" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_reminder_cardview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            app:cardCornerRadius="5dp"
+            android:visibility="gone"
+            android:backgroundTint="@color/medium_grey"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/item_clock_reminder_asset"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/clock_reminder_asset"
+                    />
+
+                <TextView
+                    android:id="@+id/item_day_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tomorrow"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/poppins"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/item_time_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evening_time"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/poppins"
+                    android:layout_marginStart="7dp"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

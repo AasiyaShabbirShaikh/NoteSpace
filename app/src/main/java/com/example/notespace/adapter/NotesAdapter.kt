@@ -13,6 +13,9 @@ import com.example.notespace.databinding.NoteItemLayoutBinding
 import com.example.notespace.model.Notes
 import com.example.notespace.ui.DashboardFragmentDirections
 import com.example.notespace.viewModel.NotesViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class NotesAdapter(
     private val onNoteLongClick: (Notes) -> Unit,
@@ -38,10 +41,10 @@ class NotesAdapter(
             itemView.setOnClickListener {
                 val note = differ.currentList[adapterPosition]
                 if(isSelectionModeOn){
-//                    val note = differ.currentList[adapterPosition]
                     toggleSelection(note)
                 }
                 else{
+                    println("is item clicked")
                     itemView.findNavController().navigate(
                         DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
                     )
@@ -65,6 +68,7 @@ class NotesAdapter(
         fun bind(note: Notes){
             itemBinding.noteTitleText.text =note.noteTitle
             itemBinding.noteDescriptionText.text = note.noteDescription
+
             if(!note.noteImageUri.isNullOrEmpty()){
                 itemBinding.photoImage.visibility = View.VISIBLE
                 itemBinding.photoImage.setImageURI(Uri.parse(note.noteImageUri))
@@ -72,6 +76,17 @@ class NotesAdapter(
             else{
                 itemBinding.photoImage.visibility = View.GONE
             }
+
+            if (note.reminderTime != null) {
+                // Show the reminder CardView and set the reminder time text
+                itemBinding.itemReminderCardview.visibility = View.VISIBLE
+                itemBinding.itemTimeText.text = formatReminderTime(note.reminderTime)
+            } else {
+                // Hide the reminder CardView if no reminder is set
+                itemBinding.itemReminderCardview.visibility = View.GONE
+            }
+
+
             itemView.background =
                 if(selectedNotes.contains(note)){
                     itemView.context.getDrawable(R.drawable.note_selected_border)
@@ -80,6 +95,12 @@ class NotesAdapter(
                     itemView.context.getDrawable(R.drawable.note_default_border)
                 }
         }
+    }
+
+    private fun formatReminderTime(timeInMillis: Long): String {
+        val sdf = SimpleDateFormat("MMMM dd HH:mm", Locale.getDefault())
+        val date = Date(timeInMillis)
+        return sdf.format(date)
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<Notes>() {
@@ -141,13 +162,13 @@ class NotesAdapter(
 
         holder.bind(currentNote)
 
-//        holder.itemView.setOnClickListener {
-//            holder.itemView.findNavController().navigate(
-//                DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
-//                    currentNote
-//                )
-//            )
-//        }
+        holder.itemView.setOnClickListener {
+            holder.itemView.findNavController().navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
+                    currentNote
+                )
+            )
+        }
     }
 
 

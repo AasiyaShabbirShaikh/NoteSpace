@@ -5,8 +5,6 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.notespace.CameraHelper
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.notespace.MainActivity
 import com.example.notespace.R
 import com.example.notespace.databinding.AddReminderDialogBoxBinding
@@ -26,8 +26,8 @@ import com.example.notespace.databinding.BottomMenuPopUpLayoutBinding
 import com.example.notespace.databinding.BottomRemindPopUpLayoutBinding
 import com.example.notespace.databinding.BottomSheetPopUpLayoutBinding
 import com.example.notespace.databinding.FragmentAddBinding
-import com.example.notespace.databinding.GalleryDialogBoxBinding
 import com.example.notespace.model.Notes
+import com.example.notespace.utils.ReminderNotificationWorker
 import com.example.notespace.viewModel.NotesViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,6 +85,8 @@ class AddFragment: Fragment() {
             showAddReminderDialogBox()
         }
 
+        dialogBinding = AddReminderDialogBoxBinding.inflate(LayoutInflater.from(context))
+
 //        onReminderDayClicks()
     }
 
@@ -94,14 +96,11 @@ class AddFragment: Fragment() {
                 requireActivity().onBackPressed()
             }
             pinIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Pinned Clicked", Toast.LENGTH_LONG).show()
             }
             remindMeIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Remind Clicked", Toast.LENGTH_LONG).show()
                 showRemindMeBottomPopUpDialog()
             }
             archiveIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "Archive Clicked", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -114,7 +113,6 @@ class AddFragment: Fragment() {
 
         remindMeViewBinding.apply {
             remindLaterTodayLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow one clicked",Toast.LENGTH_LONG).show()
                 binding.clockReminderCardview.visibility = View.VISIBLE
                 val laterDayText = remindLaterTodayText.text.toString()
                 val laterDayTime = "," + remindLaterTodayTimeText.text.toString()
@@ -124,7 +122,6 @@ class AddFragment: Fragment() {
             }
 
             remindTomorrowLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow two clicked",Toast.LENGTH_LONG).show()
                 binding.clockReminderCardview.visibility = View.VISIBLE
                 val tomorrowDayText = remindTomorrowText.text.toString()
                 val tomorrowDayTime = "," + remindTomorrowTimeText.text.toString()
@@ -134,7 +131,6 @@ class AddFragment: Fragment() {
             }
 
             remindNextDayLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "tomorrow three clicked",Toast.LENGTH_LONG).show()
                 binding.clockReminderCardview.visibility = View.VISIBLE
                 val nextDayText = remindNextDayText.text.toString()
                 val nextDayTime = "," + remindNextDayTimeText.text.toString()
@@ -144,12 +140,10 @@ class AddFragment: Fragment() {
             }
 
             remindPickDateTimeLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "pick date time clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
 
             remindPickPlaceLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "pick place clicked",Toast.LENGTH_LONG).show()
                 remindMeDialog.dismiss()
             }
         }
@@ -159,19 +153,15 @@ class AddFragment: Fragment() {
     fun setUpBottomNavBar(){
         binding.apply{
             baseAddOnIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "add on Clicked", Toast.LENGTH_SHORT).show()
                 showAddOnBottomPopUpDialog()
             }
             baseColorPaleteIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "color palete Clicked", Toast.LENGTH_SHORT).show()
 
             }
             baseTextStylePickerIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "text style Clicked", Toast.LENGTH_SHORT).show()
 
             }
             baseMenuIcon.setOnClickListener {
-//                Toast.makeText(requireContext(), "menu Clicked", Toast.LENGTH_SHORT).show()
                 showMenuBottomPopUpDialog()
             }
         }
@@ -185,23 +175,17 @@ class AddFragment: Fragment() {
 
         addOnViewBinding.apply {
             popupTakePhotoLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "take photo clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
             popupAddImageLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "add image clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
             popupDrawingLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "drawing clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
             popupRecordingLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "recording clicked",Toast.LENGTH_LONG).show()
                 addOnDialog.dismiss()
             }
-
-
         }
         addOnDialog.show()
 
@@ -215,23 +199,18 @@ class AddFragment: Fragment() {
 
         menuViewBinding.apply {
             menuDeleteLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "delete clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuMakeACopyLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "make a copy clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuSendLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "send clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuCollaboratorLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "collaborator clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuLabelsLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "labels clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
             menuHelpFeedbackLayout.setOnClickListener {
@@ -254,7 +233,9 @@ class AddFragment: Fragment() {
         val title = binding.addTitleEditText.text.toString()
         val description = binding.addDescriptionEditText.text.toString()
 
-        val note = Notes(0, title, description, System.currentTimeMillis(),false, imageUri?.toString())
+        val reminderTime = parseReminderDateTime(dialogBinding.dateText.text.toString(), dialogBinding.timeText.text.toString())
+
+        val note = Notes(0, title, description, System.currentTimeMillis(),false, imageUri?.toString(), reminderTime)
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
@@ -264,9 +245,30 @@ class AddFragment: Fragment() {
                     delay(3000)
                     if (isAdded) {
                         notesViewModel.deleteNoteById(currentId)
-//                        Toast.makeText(requireContext(), getString(R.string.note_discarded), Toast.LENGTH_LONG).show()
                     }
                 } else {
+                    val reminderTime = parseReminderDateTime(dialogBinding.dateText.text.toString(),dialogBinding.timeText.text.toString())
+                    if(reminderTime != null && reminderTime > System.currentTimeMillis()){
+                        val notificationTitle: String
+                        val notificationDescription : String
+
+                        when {
+                            title.isEmpty() && description.isEmpty() -> {
+                                notificationTitle = "Untitled note"
+                                notificationDescription = "Reminder set for: ${dialogBinding.dateText.text}, ${dialogBinding.timeText.text}"
+                            }
+                            title.isNotEmpty() && description.isEmpty() -> {
+                                notificationTitle = title
+                                notificationDescription = "Reminder set for: ${dialogBinding.dateText.text} ${dialogBinding.timeText.text}"
+                            }
+                            else -> {
+                                notificationTitle = title
+                                notificationDescription = description
+                            }
+                        }
+
+                        scheduleReminder(notificationTitle, notificationDescription, reminderTime)
+                    }
                     findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
                 }
             } catch (e: Exception) {
@@ -274,47 +276,71 @@ class AddFragment: Fragment() {
         }
     }
 
-    private fun showAddReminderDialogBox(){
-        dialogBinding = AddReminderDialogBoxBinding.inflate(layoutInflater)
-        addReminderDialogBox = Dialog(requireContext())
-        addReminderDialogBox?.apply {
-            setContentView(dialogBinding.root)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-            window?.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            setCancelable(true)
-        }
+    private fun parseReminderDateTime(dateText: String, timeText: String): Long? {
+        val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault())
 
-        dialogBinding.apply {
-            dateLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "date selected", Toast.LENGTH_SHORT).show()
-                chooseDateMenuOption(dateLayout)
-//                addReminderDialogBox?.dismiss()
-            }
-            timeLayout.setOnClickListener {
-                chooseTimeMenuOption(timeLayout)
-//                addReminderDialogBox?.dismiss()
-            }
-            doesNotRepeatLayout.setOnClickListener {
-                chooseRepeatMenuOption(doesNotRepeatLayout)
-//                addReminderDialogBox?.dismiss()
-            }
-            addReminderDeleteTextButton.setOnClickListener {
-                //delete the reminder
-                binding.clockReminderCardview.visibility=View.GONE
-                addReminderDialogBox?.dismiss()
-            }
-            addReminderCancelTextButton.setOnClickListener {
-                addReminderDialogBox?.dismiss()
-            }
-            saveButton.setOnClickListener {
-                validateOptedTime()
-//                addReminderDialogBox?.dismiss()
-            }
+//        var formattedDate = dateText
+//        if (dateText.equals("Today", ignoreCase = true)) {
+//            val calendar = Calendar.getInstance()
+//            formattedDate = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
+//        }
+
+        return try {
+            dateFormat.parse("$dateText $timeText")?.time
+        } catch (e: ParseException) {
+            Log.e("AddFragment", "Failed to parse reminder date and time: ${e.message}")
+            null
         }
-        addReminderDialogBox?.show()
     }
+
+        private fun showAddReminderDialogBox(){
+            dialogBinding = AddReminderDialogBoxBinding.inflate(layoutInflater)
+            addReminderDialogBox = Dialog(requireContext())
+            addReminderDialogBox?.apply {
+                setContentView(dialogBinding.root)
+                window?.setBackgroundDrawableResource(android.R.color.transparent)
+                window?.setLayout(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                setCancelable(true)
+            }
+
+            dialogBinding.apply {
+                dateLayout.setOnClickListener {
+                    chooseDateMenuOption(dateLayout)
+                }
+                timeLayout.setOnClickListener {
+                    chooseTimeMenuOption(timeLayout)
+                }
+                doesNotRepeatLayout.setOnClickListener {
+                    chooseRepeatMenuOption(doesNotRepeatLayout)
+                }
+                addReminderDeleteTextButton.setOnClickListener {
+                    binding.clockReminderCardview.visibility=View.GONE
+                    addReminderDialogBox?.dismiss()
+                }
+                addReminderCancelTextButton.setOnClickListener {
+                    addReminderDialogBox?.dismiss()
+                }
+                saveButton.setOnClickListener {
+                    validateOptedTime()
+
+                    val selectedDateText = dialogBinding.dateText.text.toString()
+                    val selectedTimeText = dialogBinding.timeText.text.toString()
+                    if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
+                        binding.dayText.text = selectedDateText
+                        binding.timeText.text = selectedTimeText
+                    }
+
+                    val reminderTime = parseReminderDateTime(selectedDateText, selectedTimeText)
+                    if (reminderTime != null && reminderTime > System.currentTimeMillis()) {
+                        scheduleReminder(binding.addTitleEditText.text.toString(), binding.addDescriptionEditText.text.toString(), reminderTime)
+                    }
+                    addReminderDialogBox?.dismiss()
+                }
+            }
+            addReminderDialogBox?.show()
+        }
 
     private fun chooseDateMenuOption(view: View){
         val popupMenu = PopupMenu(requireContext(), view)
@@ -329,14 +355,12 @@ class AddFragment: Fragment() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.today -> {
-//                    Toast.makeText(requireContext(), "Today selected", Toast.LENGTH_SHORT).show()
                     val calendar = Calendar.getInstance()
                     val today = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
                     dialogBinding.dateText.text = today
                     true
                 }
                 R.id.tomorrow -> {
-//                    Toast.makeText(requireContext(), "Tomorrow selected", Toast.LENGTH_SHORT).show()
                     val calendar = Calendar.getInstance()
                     calendar.add(Calendar.DAY_OF_YEAR, 1)
                     val tomorrow = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
@@ -344,7 +368,6 @@ class AddFragment: Fragment() {
                     true
                 }
                 R.id.next_weekday -> {
-//                    Toast.makeText(requireContext(), "Next Weekday selected", Toast.LENGTH_SHORT).show()
                     val calendar = Calendar.getInstance()
                     calendar.add(Calendar.DAY_OF_YEAR, 7)
                     val nextWeekday = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
@@ -352,7 +375,6 @@ class AddFragment: Fragment() {
                     true
                 }
                 R.id.pick_a_date -> {
-//                    Toast.makeText(requireContext(), "Pick a Date selected", Toast.LENGTH_SHORT).show()
                     showDatePickerDialogBox()
                     true
                 }
@@ -380,7 +402,7 @@ class AddFragment: Fragment() {
                 val selectedDateCalendar = Calendar.getInstance()
                 selectedDateCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
 
-                val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // "MMMM" is full month name, "dd" is day
+                val dateFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()) // "MMMM" is full month name, "dd" is day
                 val formattedDate = dateFormat.format(selectedDateCalendar.time)
 
                 dialogBinding.dateText.text = formattedDate
@@ -398,27 +420,22 @@ class AddFragment: Fragment() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.morning_option -> {
-//                    Toast.makeText(requireContext(), "Today selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.timeText.text = "8:00 AM"
                     true
                 }
                 R.id.afternoon_option -> {
-//                    Toast.makeText(requireContext(), "Tomorrow selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.timeText.text = "1:00 PM"
                     true
                 }
                 R.id.evening_option -> {
-//                    Toast.makeText(requireContext(), "Next Weekday selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.timeText.text = "6:00 PM"
                     true
                 }
                 R.id.night_option -> {
-//                    Toast.makeText(requireContext(), "Next Weekday selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.timeText.text = "8:00 PM"
                     true
                 }
                 R.id.pick_a_time -> {
-//                    Toast.makeText(requireContext(), "Pick a Date selected", Toast.LENGTH_SHORT).show()
                     showTimePickerDialogBox()
                     true
                 }
@@ -437,7 +454,7 @@ class AddFragment: Fragment() {
         val timePickerDialog = TimePickerDialog(
             requireContext(),
             { _, selectedHour, selectedMinute ->
-                val timeFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault())
+                val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
                 calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
                 calendar.set(Calendar.MINUTE, selectedMinute)
                 val formattedTime = timeFormat.format(calendar.time)
@@ -459,11 +476,9 @@ class AddFragment: Fragment() {
             val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // Format for "November 20 6:00 PM"
 
             try {
-                // Combine the date and time strings correctly
                 val selectedDateTimeString = "$selectedDateText $selectedTimeText"
-                Log.d("AddFragment", "Date and time string: $selectedDateTimeString")
+                println("AddFragment $selectedDateTimeString")
 
-                // Parse the combined date and time string
                 val selectedDateTime = dateFormat.parse(selectedDateTimeString)
 
                 if (selectedDateTime != null) {
@@ -471,17 +486,13 @@ class AddFragment: Fragment() {
                     selectedCalendar.time = selectedDateTime
 
                     val currentCalendar = Calendar.getInstance()
-                    Log.d("AddFragment", "Current time: ${currentCalendar.time}, Selected time: ${selectedCalendar.time}")
+                    println("Current time: ${currentCalendar.time}, Selected time: ${selectedCalendar.time}")
 
-                    // Check if the selected time is in the past or future
                     if (selectedCalendar.before(currentCalendar)) {
-                        Log.d("AddFragment", "Selected time is in the past.")
+                        println("Selected time is in the past")
                         dialogBinding.timePassedText.visibility = View.VISIBLE
-
-                        // Show Toast message when the selected time has passed
-                        Toast.makeText(requireContext(), "The selected time is in the past", Toast.LENGTH_SHORT).show()
                     } else {
-                        Log.d("AddFragment", "Selected time is in the future.")
+                        println("Selected time is in the future.")
                         dialogBinding.timePassedText.visibility = View.GONE
                     }
                 } else {
@@ -497,7 +508,6 @@ class AddFragment: Fragment() {
         }
     }
 
-
     private fun chooseRepeatMenuOption(view: View){
         dialogBinding.timePassedText.visibility = View.GONE
         val popupMenu = PopupMenu(requireContext(), view)
@@ -507,32 +517,26 @@ class AddFragment: Fragment() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.does_not_repeat -> {
-//                    Toast.makeText(requireContext(), "Today selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.doesNotRepeatText.text = getString(R.string.does_not_repeat)
                     true
                 }
                 R.id.daily -> {
-//                    Toast.makeText(requireContext(), "Tomorrow selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.doesNotRepeatText.text = getString(R.string.repeats_daily)
                     true
                 }
                 R.id.weekly -> {
-//                    Toast.makeText(requireContext(), "Next Weekday selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.doesNotRepeatText.text = getString(R.string.repeats_weekly)
                     true
                 }
                 R.id.monthly -> {
-//                    Toast.makeText(requireContext(), "Next Weekday selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.doesNotRepeatText.text = getString(R.string.repeats_monthly)
                     true
                 }
                 R.id.yearly -> {
-//                    Toast.makeText(requireContext(), "Pick a Date selected", Toast.LENGTH_SHORT).show()
                     dialogBinding.doesNotRepeatText.text = getString(R.string.repeats_yearly)
                     true
                 }
                 R.id.custom -> {
-//                    Toast.makeText(requireContext(), "Pick a Date selected", Toast.LENGTH_SHORT).show()
                     true
                 }
                 else -> false
@@ -541,9 +545,30 @@ class AddFragment: Fragment() {
         popupMenu.show()
     }
 
+    private fun scheduleReminder(title: String, message: String, reminderTime: Long) {
+        val delay = reminderTime - System.currentTimeMillis()
+        var time = reminderTime.toString()
+        if (delay > 0) {
+            val data = Data.Builder()
+                .putString("title", title)
+                .putString("message", message)
+                .putString("time", time)
+                .build()
+
+            val reminderRequest = OneTimeWorkRequestBuilder<ReminderNotificationWorker>()
+                .setInitialDelay(delay, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .setInputData(data)
+                .build()
+
+            WorkManager.getInstance(requireContext()).enqueue(reminderRequest)
+            Toast.makeText(requireContext(), "Reminder set!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Selected time is in the past!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("AddFragment", "Fragment is destroyed")
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as MainActivity).showFloatingActionButton()
         _binding = null
