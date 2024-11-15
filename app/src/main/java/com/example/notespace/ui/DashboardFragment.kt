@@ -70,7 +70,8 @@ class DashboardFragment : Fragment(), NoteInterface{
             },
             onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)
-            }
+            },
+            selectedIds = selectedIds
 //            notesViewModel = notesViewModel
         )
 
