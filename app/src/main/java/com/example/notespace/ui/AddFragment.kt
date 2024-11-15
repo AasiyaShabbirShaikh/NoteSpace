@@ -79,6 +79,7 @@ class AddFragment: Fragment() {
         if (imageUri != null) {
             binding.addImageView.visibility = View.VISIBLE
             binding.addImageView.setImageURI(imageUri)
+            (activity as MainActivity).hideBottomNavBar()
         }
 
         binding.clockReminderCardview.setOnClickListener {

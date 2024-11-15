@@ -13,9 +13,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_addFragment"
             app:destination="@id/addFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_newListFragment"
-            app:destination="@id/newListFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_dashboardFragment_to_newListFragment"-->
+<!--            app:destination="@id/newListFragment" />-->
         <action
             android:id="@+id/action_dashboardFragment_to_reminderFragment"
             app:destination="@id/reminderFragment" />
@@ -50,11 +50,11 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/newListFragment"
-        android:name="com.example.notespace.ui.NewListFragment"
-        android:label="fragment_new_list"
-        tools:layout="@layout/fragment_new_list" />
+<!--    <fragment-->
+<!--        android:id="@+id/newListFragment"-->
+<!--        android:name="com.example.notespace.ui.NewListFragment"-->
+<!--        android:label="fragment_new_list"-->
+<!--        tools:layout="@layout/fragment_new_list" />-->
     <fragment
         android:id="@+id/reminderFragment"
         android:name="com.example.notespace.ui.ReminderFragment"

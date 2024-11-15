@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notespace.MainActivity
 import com.example.notespace.NoteInterface
+import com.example.notespace.R
 import com.example.notespace.adapter.NotesAdapter
 import com.example.notespace.databinding.FragmentDashboardBinding
 import com.example.notespace.model.Notes
@@ -53,10 +54,19 @@ class DashboardFragment : Fragment(), NoteInterface{
                 }
             },
             onNoteClick = { note ->
-                if (isSelectionMode) {
-                    toggleNoteSelection(note)
+//                if (isSelectionMode) {
+//                    toggleNoteSelection(note)
+//                }
+//                else{
+//                println("passed note ${note}")
+//                val action =
+//                    DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
+//                findNavController().navigate(action)
+//                }
+                val bundle = Bundle().apply {
+                    putParcelable("note", note)  // Pass the note ID or other necessary data
                 }
-                findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note))
+                findNavController().navigate(R.id.action_dashboardFragment_to_editNoteFragment, bundle)
             },
             onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)

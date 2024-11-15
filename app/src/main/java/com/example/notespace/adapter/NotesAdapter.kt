@@ -40,15 +40,16 @@ class NotesAdapter(
 
             itemView.setOnClickListener {
                 val note = differ.currentList[adapterPosition]
-                if(isSelectionModeOn){
-                    toggleSelection(note)
-                }
-                else{
-                    println("is item clicked")
+//                if(isSelectionModeOn){
+//                    toggleSelection(note)
+//                }
+//                else{
+                    println("is item clicked ${note}")
+                    onNoteClick(note)
                     itemView.findNavController().navigate(
                         DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
                     )
-                }
+//                }
             }
         }
 
@@ -85,7 +86,6 @@ class NotesAdapter(
                 // Hide the reminder CardView if no reminder is set
                 itemBinding.itemReminderCardview.visibility = View.GONE
             }
-
 
             itemView.background =
                 if(selectedNotes.contains(note)){
@@ -162,13 +162,10 @@ class NotesAdapter(
 
         holder.bind(currentNote)
 
-        holder.itemView.setOnClickListener {
-            holder.itemView.findNavController().navigate(
-                DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(
-                    currentNote
-                )
-            )
-        }
+//        holder.itemView.setOnClickListener {
+//            val action = DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(currentNote)
+//            findNavController().navigate(currentNote)
+//        }
     }
 
 

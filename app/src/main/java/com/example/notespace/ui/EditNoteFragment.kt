@@ -48,13 +48,10 @@ class EditNoteFragment : Fragment(){
     private lateinit var dialogBinding: AddReminderDialogBoxBinding
 
     private val notesViewModel: NotesViewModel by viewModels()
-    private lateinit var currentNote : Notes
     private val args : EditNoteFragmentArgs by navArgs()
     private var imageUri: Uri? = null
+    private var note: Notes? = null
 
-//    private var noteId: Long? = null
-//    private var noteTitle: String? = null
-//    private var noteDescription: String? = null
     private var isNoteModified = false
 
     override fun onCreateView(
@@ -66,12 +63,6 @@ class EditNoteFragment : Fragment(){
         setUpActionBar()
         setUpBottomNavBar()
 
-//        arguments?.let {
-//            noteId= it.getLong("noteId")
-//            noteTitle = it.getString("noteTitle")
-//            noteDescription = it.getString("noteDescription")
-//        }
-
         return (binding.root)
     }
 
@@ -79,22 +70,24 @@ class EditNoteFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
         (activity as MainActivity).hideFloatingActionButton()
+        (activity as MainActivity).hideBottomNavBar()
+
+        note = arguments?.getParcelable("note")
 
         binding.editClockReminderCardview.setOnClickListener {
             showAddReminderDialogBox()
         }
         dialogBinding = AddReminderDialogBoxBinding.inflate(LayoutInflater.from(context))
-        currentNote = args.note!!
 
         binding.apply {
-            editTitleEditText.setText(currentNote.noteTitle)
-            editDescriptionEditText.setText(currentNote.noteDescription)
-            if (currentNote.noteImageUri != null) {
-                imageUri = Uri.parse(currentNote.noteImageUri)
+            editTitleEditText.setText(note?.noteTitle)
+            editDescriptionEditText.setText(note?.noteDescription)
+            if (note?.noteImageUri != null) {
+                imageUri = Uri.parse(note?.noteImageUri)
                 editImageView.setImageURI(imageUri)
                 editImageView.visibility = View.VISIBLE
             }
-            val reminderTimeValue = currentNote.reminderTime // Assign to local variable
+            val reminderTimeValue = note?.reminderTime // Assign to local variable
             if (reminderTimeValue != null && reminderTimeValue > System.currentTimeMillis()) {
                 val reminderDate = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(Date(reminderTimeValue))
                 val reminderTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(reminderTimeValue))
@@ -135,11 +128,12 @@ class EditNoteFragment : Fragment(){
         val selectedTimeText = dialogBinding.timeText.text.toString()
         val reminderTime = parseReminderDateTime(selectedDateText, selectedTimeText)
 
-        isNoteModified = reminderTime != currentNote.reminderTime
+        isNoteModified = reminderTime != note?.reminderTime
 
         if(noteTitle.isNotEmpty() && isNoteModified){
-            val note = Notes(currentNote.noteId, noteTitle, noteDescription, System.currentTimeMillis(), false, currentNote.noteImageUri, reminderTime )
+            val note = Notes(note?.noteId ?:0, noteTitle, noteDescription, System.currentTimeMillis(), false, note?.noteImageUri, reminderTime )
             notesViewModel.updateNote(note)
+            isNoteModified = false
         }
     }
 
@@ -544,6 +538,7 @@ class EditNoteFragment : Fragment(){
         super.onDestroyView()
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as MainActivity).showFloatingActionButton()
+        (activity as MainActivity).showBottomNavBar()
         _binding = null
     }
 

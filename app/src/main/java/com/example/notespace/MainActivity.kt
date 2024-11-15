@@ -24,6 +24,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.notespace.adapter.NotesAdapter
 import com.example.notespace.databinding.ActivityMainBinding
 import com.example.notespace.databinding.AddReminderDialogBoxBinding
@@ -56,7 +57,11 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navController = findNavController(R.id.container)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
+
+        setupToolbarVisibility()
+//        navController = findNavController(R.id.container)
         setSupportActionBar(binding.headerToolbar.toolbarHome)
 
         setUpActionBarClicks()
@@ -70,7 +75,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         handleFloatingButtonClick()
         handleCustomToolbarIconClicks()
 
-        binding.customToolbarLayout.toolbar.visibility = View.GONE
+//        binding.customToolbarLayout.toolbar.visibility = View.GONE
 
 
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
@@ -81,12 +86,13 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                     val bundle = Bundle().apply{
                         putParcelable("image",capturedImageUri)
                     }
-                    addFragment.arguments = bundle
+//                    addFragment.arguments = bundle
+                    navController.navigate(R.id.addFragment, bundle)
 
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.base_container, addFragment)
-                        .addToBackStack(null)
-                        .commit()
+//                    supportFragmentManager.beginTransaction()
+//                        .replace(R.id.base_container, addFragment)
+//                        .addToBackStack(null)
+//                        .commit()
                 }
 //                navController.navigate(R.id.addFragment)
             } else {
@@ -99,6 +105,23 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                 CameraHelper.handleCameraAction(this, contentResolver, cameraResultLauncher, permissionLauncher)
             } else {
                 Toast.makeText(this, "Camera permission is required to take photos", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupToolbarVisibility() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.editNoteFragment -> {
+                    hideHeaderToolbar()
+                    hideBottomNavBar()
+                    showCustomToolbar()  // Show custom toolbar when in EditFragment
+                }
+                else -> {
+                    showHeaderToolbar()
+                    showBottomNavBar()
+                    hideCustomToolbar()  // Hide custom toolbar for other fragments
+                }
             }
         }
     }
@@ -165,7 +188,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
     private fun setCustomBottomIconClickEvents(){
         binding.bottomNavCustom.apply {
             checkboxNavIcon.setOnClickListener {
-                navController.navigate(R.id.newListFragment)
+//                navController.navigate(R.id.newListFragment)
             }
             paintNavIcon.setOnClickListener {
 
