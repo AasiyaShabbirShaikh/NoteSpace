@@ -1,36 +1,32 @@
 package com.example.notespace
 
 import android.app.Dialog
-import android.content.ContentValues
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.notespace.adapter.NotesAdapter
 import com.example.notespace.databinding.ActivityMainBinding
-import com.example.notespace.databinding.AddReminderDialogBoxBinding
+import com.example.notespace.databinding.BottomMenuPopUpLayoutBinding
+import com.example.notespace.databinding.BottomSheetPopUpLayoutBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
 import com.example.notespace.ui.AddFragment
 import com.example.notespace.viewModel.NotesViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,6 +37,9 @@ class MainActivity : AppCompatActivity(), NoteInterface{
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var navController : NavController
     private var dialogbox : Dialog? = null
+    private lateinit var addOnDialog : BottomSheetDialog
+    private lateinit var menuDialog: BottomSheetDialog
+    private lateinit var remindMeDialog : BottomSheetDialog
     private lateinit var notesAdapter : NotesAdapter
 
     private val notesViewModel: NotesViewModel by viewModels()
@@ -77,7 +76,6 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
 //        binding.customToolbarLayout.toolbar.visibility = View.GONE
 
-
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == RESULT_OK) {
                 val capturedImageUri = CameraHelper.getImageUri()
@@ -112,16 +110,23 @@ class MainActivity : AppCompatActivity(), NoteInterface{
     private fun setupToolbarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.editNoteFragment -> {
-                    hideHeaderToolbar()
-                    hideBottomNavBar()
-                    showCustomToolbar()  // Show custom toolbar when in EditFragment
+                R.id.editFragment -> {
+                    hideMainHeaderToolbar()
+                    hideMainBottomNavLayout()
+                    showAddEditCustomToolbar()
+                    showAddEditCustomBottomBar()
+                    hideFloatingActionButton()
                 }
-                else -> {
-                    showHeaderToolbar()
-                    showBottomNavBar()
-                    hideCustomToolbar()  // Hide custom toolbar for other fragments
-                }
+//                R.id.dashboardFragment -> {
+//
+//                }
+//                else -> {
+//                    showMainHeaderToolbar()
+//                    hideAddEditCustomToolbar()
+//                    showMainBottomNavLayout()
+//                    hideAddEditCustomBottomBar()
+//                    showFloatingActionButton()
+//                }
             }
         }
     }
@@ -174,6 +179,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
     }
 
+    //toolbar for main activity (base)
     private fun setUpActionBarClicks(){
         binding.headerToolbar.apply {
             searchCardView.setOnClickListener {
@@ -185,6 +191,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         }
     }
 
+    //bottombar for main activity (base)
     private fun setCustomBottomIconClickEvents(){
         binding.bottomNavCustom.apply {
             checkboxNavIcon.setOnClickListener {
@@ -209,13 +216,13 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                 binding.mainDrawer.closeDrawer(GravityCompat.START)
             }
             binding.customToolbarLayout.toolbar.visibility == View.VISIBLE -> {
-                notesAdapter.clearNoteSelection()  // Clear selection
-                hideCustomToolbar()
-                showHeaderToolbar()
+                notesAdapter.clearNoteSelection()
+                hideAddEditCustomToolbar()
+                showMainHeaderToolbar()
             }
             else -> {
                 super.onBackPressed()
-                showBottomNavLayout()
+                showMainBottomNavLayout()
             }
         }
     }
@@ -227,6 +234,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         return super.onOptionsItemSelected(item)
     }
 
+    //dialogbox for clicking photo
     private fun showGalleryDialogBox(){
         val dialogBinding = GalleryDialogBoxBinding.inflate(layoutInflater)
         dialogbox = Dialog(this@MainActivity)
@@ -253,52 +261,14 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         dialogbox?.show()
     }
 
-//    private fun openCamera(){
-//        // Create content values for the image metadata
-//        val contentValues = ContentValues().apply {
-//            put(MediaStore.Images.Media.TITLE, "ImageTitle")
-//            put(MediaStore.Images.Media.DESCRIPTION, "ImageDescription")
-//        }
-//
-//        // Insert the content values to get a URI for the new image
-//        val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-//
-//        if (imageUri != null) {
-//            // Create an Intent to open the camera
-//            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-//                putExtra(MediaStore.EXTRA_OUTPUT, imageUri) // Set the output URI to save the image
-//            }
-//
-//            // Launch the camera app using ActivityResultLauncher
-//            cameraResultLauncher.launch(intent)
-//        } else {
-//            // If imageUri is null, show an error message
-//            Toast.makeText(this, "Failed to create image URI", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
-//    private val cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-//        if (isGranted) {
-//            openCamera()
-//        } else {
-//            Toast.makeText(this, "Camera permission is required to take photos", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//
-//    private fun checkCameraPermissionAndOpenCamera() {
-//        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//            openCamera()
-//        } else {
-//            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
-//        }
-//    }
-
+    //floating action button on main activity
     private fun handleFloatingButtonClick(){
         binding.floatingActionButton.setOnClickListener {
-            hideBottomNavLayout()
+            hideMainBottomNavLayout()
             navController.navigate(R.id.addFragment)
         }
     }
+
 
     private fun handleCustomToolbarIconClicks() {
         binding.customToolbarLayout.apply {
@@ -309,7 +279,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
             }
             remindMeIcon.setOnClickListener {
-                showAddReminderDialogBox()
+//                showRemindMeBottomPopUpDialog()
             }
             colorIcon.setOnClickListener {
 
@@ -322,6 +292,47 @@ class MainActivity : AppCompatActivity(), NoteInterface{
             }
         }
     }
+
+//    fun showRemindMeBottomPopUpDialog(){
+//        val remindMeViewBinding = BottomRemindPopUpLayoutBinding.inflate(LayoutInflater.from(this
+//        ))
+//        remindMeDialog = BottomSheetDialog(this)
+//        remindMeDialog.setContentView(remindMeViewBinding.root)
+//
+//        remindMeViewBinding.apply {
+//            remindLaterTodayLayout.setOnClickListener {
+//                binding.editClockReminderCardview.visibility = View.VISIBLE
+//                val laterDayText = remindLaterTodayText.text.toString()
+//                val laterDayTime = "," + remindLaterTodayTimeText.text.toString()
+//                binding.editDayText.text = laterDayText
+//                binding.editTimeText.text = laterDayTime
+//                remindMeDialog.dismiss()
+//            }
+//            remindTomorrowLayout.setOnClickListener {
+//                binding.editClockReminderCardview.visibility = View.VISIBLE
+//                val tomorrowDayText = remindTomorrowText.text.toString()
+//                val tomorrowDayTime = "," + remindTomorrowTimeText.text.toString()
+//                binding.editDayText.text = tomorrowDayText
+//                binding.editTimeText.text = tomorrowDayTime
+//                remindMeDialog.dismiss()
+//            }
+//            remindNextDayLayout.setOnClickListener {
+//                binding.editClockReminderCardview.visibility = View.VISIBLE
+//                val nextDayText = remindNextDayText.text.toString()
+//                val nextDayTime = "," + remindNextDayTimeText.text.toString()
+//                binding.editDayText.text = nextDayText
+//                binding.editTimeText.text = nextDayTime
+//                remindMeDialog.dismiss()
+//            }
+//            remindPickDateTimeLayout.setOnClickListener {
+//                remindMeDialog.dismiss()
+//            }
+//            remindPickPlaceLayout.setOnClickListener {
+//                remindMeDialog.dismiss()
+//            }
+//        }
+//        remindMeDialog.show()
+//    }
 
     private fun showCustomMenuOptions(){
         val popupMenu = PopupMenu(this@MainActivity, binding.customToolbarLayout.menuDotsIcon)
@@ -336,8 +347,8 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                 }
                 R.id.menu_delete -> {
                     dashboardFragment?.deleteSelectedNotes()
-                    hideCustomToolbar()
-                    showHeaderToolbar()
+                    hideAddEditCustomToolbar()
+                    showMainHeaderToolbar()
                 }
                 R.id.menu_make_copy -> {
                     Toast.makeText(this@MainActivity, "makeACopy clicked", Toast.LENGTH_SHORT).show()
@@ -350,99 +361,113 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                 }
             }
             true
-
         }
         popupMenu.show()
     }
 
-    private fun showAddReminderDialogBox(){
-        val addReminderBinding = AddReminderDialogBoxBinding.inflate(layoutInflater)
-
-        dialogbox = Dialog(this@MainActivity)
-
-        dialogbox?.apply {
-            setContentView(addReminderBinding.root)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-            window?.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            setCancelable(true)
+    private fun handleCustomBottomBar(){
+        binding.addEditBottomBar.apply{
+            editAddOnIcon.setOnClickListener {
+                showAddOnBottomPopUpDialog()
+            }
+            editColorPaleteIcon.setOnClickListener {
+            }
+            editTextStylePickerIcon.setOnClickListener {
+            }
+            editMenuIcon.setOnClickListener {
+                showMenuBottomPopUpDialog()
+            }
         }
+    }
 
-        addReminderBinding.apply {
-            timeTabText.setOnClickListener {
-//                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
-                dialogbox?.dismiss()
-            }
-            placeTabText.setOnClickListener {
-//                Toast.makeText(this@MainActivity, "datelayout clicked",Toast.LENGTH_SHORT).show()
-                timeTabDisplayLayout.visibility = View.GONE
-                placeTabDisplayLayout.visibility = View.VISIBLE
-                dialogbox?.dismiss()
-            }
-            dateLayout.setOnClickListener {
-//                Toast.makeText(this@MainActivity, "timeLayout clicked",Toast.LENGTH_SHORT).show()
-                dialogbox?.dismiss()
-            }
-            doesNotRepeatLayout.setOnClickListener {
-//                Toast.makeText(this@MainActivity, "doesNotRepeat clicked",Toast.LENGTH_SHORT).show()
-                dialogbox?.dismiss()
-            }
-            addReminderCancelTextButton.setOnClickListener {
-//                Toast.makeText(this@MainActivity, "cancel clicked",Toast.LENGTH_SHORT).show()
-                dialogbox?.dismiss()
-            }
-            saveButton.setOnClickListener {
-//                Toast.makeText(this@MainActivity, "save clicked",Toast.LENGTH_SHORT).show()
-                dialogbox?.dismiss()
-            }
+    fun showAddOnBottomPopUpDialog(){
+        val addOnViewBinding = BottomSheetPopUpLayoutBinding.inflate(LayoutInflater.from(this))
+        addOnDialog = BottomSheetDialog(this)
+        addOnDialog.setContentView(addOnViewBinding.root)
+        addOnViewBinding.popupCheckboxesLayout.visibility = View.GONE
 
+        addOnViewBinding.apply {
+            popupTakePhotoLayout.setOnClickListener {
+                addOnDialog.dismiss()
+            }
+            popupAddImageLayout.setOnClickListener {
+                addOnDialog.dismiss()
+            }
+            popupDrawingLayout.setOnClickListener {
+                addOnDialog.dismiss()
+            }
+            popupRecordingLayout.setOnClickListener {
+                addOnDialog.dismiss()
+            }
         }
-        dialogbox?.show()
+        addOnDialog.show()
     }
 
-    private fun showBottomNavLayout(){
-        binding.bottomNavFrameLayout.visibility = View.VISIBLE
+    fun showMenuBottomPopUpDialog(){
+        val menuViewBinding = BottomMenuPopUpLayoutBinding.inflate(LayoutInflater.from(this))
+        menuDialog = BottomSheetDialog(this)
+        menuDialog.setContentView(menuViewBinding.root)
+
+        menuViewBinding.apply {
+            menuDeleteLayout.setOnClickListener {
+                menuDialog.dismiss()
+            }
+            menuMakeACopyLayout.setOnClickListener {
+                menuDialog.dismiss()
+            }
+            menuSendLayout.setOnClickListener {
+                menuDialog.dismiss()
+            }
+            menuCollaboratorLayout.setOnClickListener {
+                menuDialog.dismiss()
+            }
+            menuLabelsLayout.setOnClickListener {
+                menuDialog.dismiss()
+            }
+            menuHelpFeedbackLayout.setOnClickListener {
+                menuDialog.dismiss()
+            }
+        }
+        menuDialog.show()
     }
 
-     fun showFloatingActionButton(){
-        binding.floatingActionButton.visibility = View.VISIBLE
+    fun showMainBottomNavLayout(){
+        binding.bottomNavCustom.bottomNavCustomLayout.visibility = View.VISIBLE
+    }
+    fun hideMainBottomNavLayout(){
+        binding.bottomNavCustom.bottomNavCustomLayout.visibility = View.GONE
     }
 
-    fun hideHeaderToolbar() {
-        binding.headerToolbar.root.visibility = View.GONE
-    }
-
-    fun showHeaderToolbar() {
-        binding.headerToolbar.root.visibility = View.VISIBLE
-    }
-
-     fun hideFloatingActionButton(){
+    fun showFloatingActionButton() {
+         binding.floatingActionButton.visibility = View.VISIBLE
+     }
+    fun hideFloatingActionButton(){
         binding.floatingActionButton.visibility= View.GONE
     }
 
-    private fun hideBottomNavLayout(){
-        binding.bottomNavFrameLayout.visibility = View.GONE
+    fun hideMainHeaderToolbar() {
+        binding.headerToolbar.root.visibility = View.GONE
+    }
+    fun showMainHeaderToolbar() {
+        binding.headerToolbar.root.visibility = View.VISIBLE
     }
 
-    fun showCustomToolbar() {
+    fun showAddEditCustomToolbar() {
         binding.customToolbarLayout.toolbar.visibility = View.VISIBLE
     }
-
-    fun hideCustomToolbar() {
+    fun hideAddEditCustomToolbar() {
         binding.customToolbarLayout.toolbar.visibility = View.GONE
     }
 
+    fun showAddEditCustomBottomBar(){
+        binding.addEditBottomBar.customBottomBarLayout.visibility = View.VISIBLE
+    }
+    fun hideAddEditCustomBottomBar(){
+        binding.addEditBottomBar.customBottomBarLayout.visibility = View.GONE
+
+    }
     fun updateNotesCount(count: Int) {
         binding.customToolbarLayout.toolbar.findViewById<TextView>(R.id.count_textview).text = count.toString()
-    }
-
-    fun hideBottomNavBar(){
-        binding.bottomNavFrameLayout.visibility= View.GONE
-    }
-
-    fun showBottomNavBar(){
-        binding.bottomNavFrameLayout.visibility= View.VISIBLE
     }
 
     override fun getSelectedNoteIds(): List<Long> {

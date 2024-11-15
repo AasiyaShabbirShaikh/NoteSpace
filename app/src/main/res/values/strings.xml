@@ -116,13 +116,12 @@
     <!--    toast_string-->
     <string name="note_discarded">Note discarded</string>
 
-<!--    does_not_repeat_menu-->
+    <!--    does_not_repeat_menu-->
     <string name="custom_pick">Custom...</string>
     <string name="repeats_daily">Repeats daily</string>
     <string name="repeats_weekly">Repeats weekly</string>
     <string name="repeats_monthly">Repeats monthly</string>
     <string name="repeats_yearly">Repeats yearly</string>
-
 
 
 </resources>

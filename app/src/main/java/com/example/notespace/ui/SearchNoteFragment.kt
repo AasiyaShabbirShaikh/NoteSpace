@@ -27,8 +27,8 @@ class SearchNoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
         (activity as MainActivity).hideFloatingActionButton()
-        (activity as MainActivity).hideBottomNavBar()
-
+        (activity as MainActivity).hideMainBottomNavLayout()
+//
         setUpSearchToolbar()
 
         binding.apply {
@@ -60,7 +60,7 @@ class SearchNoteFragment : Fragment() {
         super.onDestroyView()
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as MainActivity).showFloatingActionButton()
-        (activity as MainActivity).showBottomNavBar()
+        (activity as MainActivity).showMainBottomNavLayout()
 
     }
 

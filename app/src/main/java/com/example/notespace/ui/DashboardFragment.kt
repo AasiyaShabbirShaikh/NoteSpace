@@ -53,7 +53,7 @@ class DashboardFragment : Fragment(), NoteInterface{
                     toggleNoteSelection(note)
                 }
             },
-            onNoteClick = { note ->
+            onNoteClick = {
 //                if (isSelectionMode) {
 //                    toggleNoteSelection(note)
 //                }
@@ -63,14 +63,16 @@ class DashboardFragment : Fragment(), NoteInterface{
 //                    DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
 //                findNavController().navigate(action)
 //                }
-                val bundle = Bundle().apply {
-                    putParcelable("note", note)  // Pass the note ID or other necessary data
-                }
-                findNavController().navigate(R.id.action_dashboardFragment_to_editNoteFragment, bundle)
+//                val bundle = Bundle().apply {
+//                    putParcelable("note", note)  // Pass the note ID or other necessary data
+//                }
+//                findNavController().navigate(R.id.action_dashboardFragment_to_editNoteFragment, bundle)
+                findNavController().navigate(R.id.action_dashboardFragment_to_editFragment)
             },
             onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)
-            }
+            },
+            selectedIds = selectedIds
 //            notesViewModel = notesViewModel
         )
 
@@ -106,8 +108,8 @@ class DashboardFragment : Fragment(), NoteInterface{
 //            hideHeaderToolbar()
 //            showCustomToolbar()
 //        }
-        (activity as MainActivity).hideHeaderToolbar()
-        (activity as MainActivity).showCustomToolbar()
+        (activity as MainActivity).hideMainHeaderToolbar()
+        (activity as MainActivity).showAddEditCustomToolbar()
     }
 
 
@@ -149,8 +151,8 @@ class DashboardFragment : Fragment(), NoteInterface{
         selectedIds.clear()
         isSelectionMode = false
         notesAdapter.clearNoteSelection()
-        (activity as? MainActivity)?.hideCustomToolbar()
-        (activity as? MainActivity)?.showHeaderToolbar()
+        (activity as? MainActivity)?.hideAddEditCustomToolbar()
+        (activity as? MainActivity)?.showMainHeaderToolbar()
         (activity as? MainActivity)?.updateNotesCount(0)
 
     }

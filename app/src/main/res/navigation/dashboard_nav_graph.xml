@@ -34,9 +34,12 @@
         <action
             android:id="@+id/action_dashboardFragment_to_helpFeedbackFragment"
             app:destination="@id/helpFeedbackFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_dashboardFragment_to_editNoteFragment"-->
+<!--            app:destination="@id/editNoteFragment" />-->
         <action
-            android:id="@+id/action_dashboardFragment_to_editNoteFragment"
-            app:destination="@id/editNoteFragment" />
+            android:id="@+id/action_dashboardFragment_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
 
     <fragment
@@ -85,27 +88,31 @@
         android:name="com.example.notespace.ui.HelpFeedbackFragment"
         android:label="fragment_help_feedback"
         tools:layout="@layout/fragment_help_feedback" />
-    <fragment
-        android:id="@+id/editNoteFragment"
-        android:name="com.example.notespace.ui.EditNoteFragment"
-        android:label="fragment_edit_note"
-        tools:layout="@layout/fragment_edit_note">
-        <argument
-            android:name="note"
-            app:argType="com.example.notespace.model.Notes"
-            app:nullable="true"/>
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/editNoteFragment"-->
+<!--        android:name="com.example.notespace.ui.EditNoteFragment"-->
+<!--        android:label="fragment_edit_note"-->
+<!--        tools:layout="@layout/fragment_edit_note">-->
+<!--        <argument-->
+<!--            android:name="note"-->
+<!--            app:argType="com.example.notespace.model.Notes"-->
+<!--            app:nullable="true"/>-->
+<!--    </fragment>-->
     <fragment
         android:id="@+id/searchNoteFragment"
         android:name="com.example.notespace.ui.SearchNoteFragment"
         android:label="fragment_search_note"
         tools:layout="@layout/fragment_search_note" />
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.notespace.ui.EditFragment"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/cameraFragment"-->
 <!--        android:name="com.example.notespace.ui.CameraFragment"-->
 <!--        android:label="fragment_camera"-->
 <!--        tools:layout="@layout/fragment_camera" />-->
-
 
 </navigation>

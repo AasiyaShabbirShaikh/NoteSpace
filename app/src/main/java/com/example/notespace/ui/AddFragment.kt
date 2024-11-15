@@ -71,6 +71,8 @@ class AddFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
         (activity as MainActivity).hideFloatingActionButton()
+        (activity as MainActivity).hideMainBottomNavLayout()
+        (activity as MainActivity).hideMainBottomNavLayout()
 
         // Use the same key "image" as in MainActivity
         imageUri = arguments?.getParcelable("image")
@@ -79,7 +81,6 @@ class AddFragment: Fragment() {
         if (imageUri != null) {
             binding.addImageView.visibility = View.VISIBLE
             binding.addImageView.setImageURI(imageUri)
-            (activity as MainActivity).hideBottomNavBar()
         }
 
         binding.clockReminderCardview.setOnClickListener {

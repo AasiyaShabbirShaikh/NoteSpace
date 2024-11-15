@@ -19,10 +19,15 @@ import java.util.Locale
 
 class NotesAdapter(
     private val onNoteLongClick: (Notes) -> Unit,
-    private val onNoteClick: (Notes) -> Unit,
-    private val onSelectCountChange: (Int) -> Unit
+    private val onNoteClick: () -> Unit ,
+    private val onSelectCountChange: (Int) -> Unit,
 //    private val notesViewModel: NotesViewModel
+    private val selectedIds: List<Long>
 ) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
+
+    init {
+        println("NotesAdapter selected IDs: $selectedIds")
+    }
 
     private val selectedNotes = mutableSetOf<Notes>()
     var isSelectionModeOn = false
@@ -40,16 +45,16 @@ class NotesAdapter(
 
             itemView.setOnClickListener {
                 val note = differ.currentList[adapterPosition]
-//                if(isSelectionModeOn){
-//                    toggleSelection(note)
-//                }
-//                else{
-                    println("is item clicked ${note}")
-                    onNoteClick(note)
-                    itemView.findNavController().navigate(
-                        DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
-                    )
-//                }
+                if(isSelectionModeOn){
+                    toggleSelection(note)
+                }
+                else{
+//                    println("is item clicked ${note}")
+                    onNoteClick()
+//                    itemView.findNavController().navigate(
+//                        DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
+//                    )
+                }
             }
         }
 
