@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.NewListFragment">
+
+
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="330dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16sp"
+            android:background="@android:color/transparent"
+            android:hint="Title"
+            android:inputType="text"
+            android:textColorHint="@color/dark_grey"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/hide_menu_dots_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/dark_grey_dot_asset" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingStart="62dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_recycler_view"
+        tools:layout_editor_absoluteY="146dp">
+
+        <ImageView
+            android:id="@+id/add_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/create_new_label_asset" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingTop="3dp"
+            android:text="List item"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/checkbox_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout"
+        app:layout_constraintBottom_toTopOf="@+id/list_item_layout"
+        tools:listitem="@layout/checkbox_item_layout"
+         />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

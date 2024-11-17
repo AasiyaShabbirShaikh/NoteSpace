@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#F44336</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="grey">#EFEFEF</color>
+    <color name="medium_grey">#CFCFCF</color>
+    <color name="dark_grey">#BABABA</color>
     <color name="yellow">#FFE500</color>
     <color name="red">#FFF44336</color>
     <color name="pink">#E91E63</color>
@@ -11,13 +13,15 @@
     <color name="voilet">#673AB7</color>
     <color name="dark_blue">#3F51B5</color>
     <color name="sky_blue">#03A9F4</color>
+    <color name="sky_blue_bg">#5276D4FF</color>
     <color name="teal">#009688</color>
     <color name="dark_green">#4CAF50</color>
     <color name="light_green">#8BC34A</color>
     <color name="orange">#FF9800</color>
+    <color name="yellorange">#FFC107</color>
     <color name="charcoal">#98948F</color>
 
-    <array name="color-menu">
+    <array name="color_menu">
         <item>@color/white</item>
         <item>@color/purple</item>
         <item>@color/voilet</item>

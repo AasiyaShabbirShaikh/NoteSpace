@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/splash_screen_layout">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logo_cardview"
+        android:layout_width="110dp"
+        android:layout_height="160dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="110dp"
+            android:layout_height="160dp"
+            android:background="@color/yellow"
+            android:paddingLeft="20dp"
+            android:paddingTop="18dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="18dp"
+            android:src="@drawable/white_note_space_logo" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:text="@string/app_name"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="230dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo_cardview"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/new_list_icon"
+        android:icon="@drawable/checkbox_asset"
+        android:title=""/>
+
+    <item
+        android:id="@+id/paint_brush_icon"
+        android:icon="@drawable/paint_brush_asset"
+        android:title=""/>
+
+    <item
+        android:id="@+id/mike_audio_icon"
+        android:icon="@drawable/audio_mike_asset"
+        android:title=""/>
+
+    <item
+        android:id="@+id/gallery_image_icon"
+        android:icon="@drawable/image_gallery_asset"
+        android:title=""/>
+
+
+</menu>

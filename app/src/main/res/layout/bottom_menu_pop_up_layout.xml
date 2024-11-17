@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="7dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/menu_delete_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/menu_delete_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/trash_asset"
+            />
+
+        <TextView
+            android:id="@+id/menu_delete_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_make_a_copy_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/menu_make_a_copy_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/make_copy_asset"
+            />
+
+        <TextView
+            android:id="@+id/menu_make_a_copy_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/make_a_copy"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_send_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/menu_send_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/share_asset"
+            />
+
+        <TextView
+            android:id="@+id/menu_send_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_collaborator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/menu_collaborator_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/person_plus_asset"
+            />
+
+        <TextView
+            android:id="@+id/menu_collaborator_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/collaborator"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_labels_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/menu_labels_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/label_asset"
+            />
+
+        <TextView
+            android:id="@+id/menu_labels_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/labels"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_help_feedback_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/menu_help_feedback_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/help_feedback_asset"
+            />
+
+        <TextView
+            android:id="@+id/menu_help_feedback_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_feedback"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins"
+            android:paddingTop="2dp"
+            android:paddingStart="7dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
