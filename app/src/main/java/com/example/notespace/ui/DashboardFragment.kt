@@ -29,7 +29,7 @@ class DashboardFragment : Fragment(), NoteInterface{
 
     private val selectedIds = mutableListOf<Long>()
     private var isSelectionMode = false
-    private var isNoteGrid = true
+    private lateinit var notesList : List<Notes>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,32 +48,17 @@ class DashboardFragment : Fragment(), NoteInterface{
     private fun setUpDashboardRecyclerView(){
         notesAdapter = NotesAdapter(
             onNoteLongClick = {note ->
-                if (!isSelectionMode) {
-                    isSelectionMode = true
-                    toggleNoteSelection(note)
-                }
+
             },
             onNoteClick = {note ->
-//                if (isSelectionMode) {
-//                    toggleNoteSelection(note)
-//                }
-//                else{
-//                println("passed note ${note}")
-//                val action =
-//                    DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
-//                findNavController().navigate(action)
-//                }
                 val bundle = Bundle().apply {
                     putParcelable("note",note)  // Pass the note ID or other necessary data
                 }
                 findNavController().navigate(R.id.action_dashboardFragment_to_editFragment, bundle)
-//                findNavController().navigate(R.id.action_dashboardFragment_to_editFragment)
             },
             onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)
             },
-            selectedIds = selectedIds
-//            notesViewModel = notesViewModel
         )
 
         binding.recyclerView.apply {
@@ -103,11 +88,6 @@ class DashboardFragment : Fragment(), NoteInterface{
     }
 
     private fun onNoteSelection(){
-//        val mainActivity = activity as? MainActivity
-//        mainActivity?.apply {
-//            hideHeaderToolbar()
-//            showCustomToolbar()
-//        }
         (activity as MainActivity).hideMainHeaderToolbar()
         (activity as MainActivity).showAddEditCustomToolbar()
     }
@@ -119,7 +99,6 @@ class DashboardFragment : Fragment(), NoteInterface{
         } else {
             selectedIds.add(note.noteId)
         }
-//        notesAdapter.updateSelectedNotes(selectedIds)
         handleNoteSelectCount(selectedIds.size)
     }
 
@@ -139,10 +118,7 @@ class DashboardFragment : Fragment(), NoteInterface{
         if (selectedIds.isNotEmpty()) {
             notesViewModel.moveToTrash(selectedIds)
             Log.e("NotesViewModel", "Notes moved to trash: $selectedIds")
-//            notesAdapter.removeSelectedNotes(selectedIds)
-//            (activity as? MainActivity)?.getAllNotes()
             clearSelectionAndToolbar()
-//            notesViewModel.getAllNotes()
         }
 
     }
@@ -150,7 +126,6 @@ class DashboardFragment : Fragment(), NoteInterface{
     private fun clearSelectionAndToolbar(){
         selectedIds.clear()
         isSelectionMode = false
-        notesAdapter.clearNoteSelection()
         (activity as? MainActivity)?.hideAddEditCustomToolbar()
         (activity as? MainActivity)?.showMainHeaderToolbar()
         (activity as? MainActivity)?.updateNotesCount(0)
