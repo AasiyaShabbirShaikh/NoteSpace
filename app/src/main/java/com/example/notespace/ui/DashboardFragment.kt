@@ -53,7 +53,7 @@ class DashboardFragment : Fragment(), NoteInterface{
                     toggleNoteSelection(note)
                 }
             },
-            onNoteClick = {
+            onNoteClick = {note ->
 //                if (isSelectionMode) {
 //                    toggleNoteSelection(note)
 //                }
@@ -63,11 +63,11 @@ class DashboardFragment : Fragment(), NoteInterface{
 //                    DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
 //                findNavController().navigate(action)
 //                }
-//                val bundle = Bundle().apply {
-//                    putParcelable("note", note)  // Pass the note ID or other necessary data
-//                }
-//                findNavController().navigate(R.id.action_dashboardFragment_to_editNoteFragment, bundle)
-                findNavController().navigate(R.id.action_dashboardFragment_to_editFragment)
+                val bundle = Bundle().apply {
+                    putParcelable("note",note)  // Pass the note ID or other necessary data
+                }
+                findNavController().navigate(R.id.action_dashboardFragment_to_editFragment, bundle)
+//                findNavController().navigate(R.id.action_dashboardFragment_to_editFragment)
             },
             onSelectCountChange = { selectedCount ->
                 handleNoteSelectCount(selectedCount)

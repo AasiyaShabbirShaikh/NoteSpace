@@ -14,12 +14,13 @@ import com.example.notespace.model.Notes
 import com.example.notespace.ui.DashboardFragmentDirections
 import com.example.notespace.viewModel.NotesViewModel
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class NotesAdapter(
     private val onNoteLongClick: (Notes) -> Unit,
-    private val onNoteClick: () -> Unit ,
+    private val onNoteClick: (note:Notes) -> Unit ,
     private val onSelectCountChange: (Int) -> Unit,
 //    private val notesViewModel: NotesViewModel
     private val selectedIds: List<Long>
@@ -50,7 +51,7 @@ class NotesAdapter(
                 }
                 else{
 //                    println("is item clicked ${note}")
-                    onNoteClick()
+                    onNoteClick(note)
 //                    itemView.findNavController().navigate(
 //                        DashboardFragmentDirections.actionDashboardFragmentToEditNoteFragment(note)
 //                    )
@@ -84,11 +85,10 @@ class NotesAdapter(
             }
 
             if (note.reminderTime != null) {
-                // Show the reminder CardView and set the reminder time text
                 itemBinding.itemReminderCardview.visibility = View.VISIBLE
-                itemBinding.itemTimeText.text = formatReminderTime(note.reminderTime)
+                itemBinding.itemDayText.text = formatReminderDate(note.reminderTime!!)
+                itemBinding.itemTimeText.text = formatReminderTime(note.reminderTime!!)
             } else {
-                // Hide the reminder CardView if no reminder is set
                 itemBinding.itemReminderCardview.visibility = View.GONE
             }
 
@@ -103,10 +103,47 @@ class NotesAdapter(
     }
 
     private fun formatReminderTime(timeInMillis: Long): String {
-        val sdf = SimpleDateFormat("MMMM dd HH:mm", Locale.getDefault())
+        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
         val date = Date(timeInMillis)
         return sdf.format(date)
     }
+
+//    private fun formatReminderDate(timeInMillis: Long): String {
+//        val dateFormat = SimpleDateFormat("MMM dd,", Locale.getDefault())
+//        val date = Date(timeInMillis)
+//        return dateFormat.format(date)
+//    }
+
+    private fun formatReminderDate(timeInMillis: Long): String {
+        val currentDate = Calendar.getInstance()
+        val reminderDate = Calendar.getInstance()
+        reminderDate.timeInMillis = timeInMillis
+
+        return when {
+            isToday(reminderDate, currentDate) -> {
+                "Today,"
+            }
+            isTomorrow(reminderDate, currentDate) -> {
+                "Tomorrow,"
+            }
+            else -> {
+                val dateFormat = SimpleDateFormat("MMM dd,", Locale.getDefault())
+                dateFormat.format(reminderDate.time)
+            }
+        }
+    }
+
+    private fun isToday(reminderDate: Calendar, currentDate: Calendar): Boolean {
+        return reminderDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                reminderDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                reminderDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)
+    }
+
+    private fun isTomorrow(reminderDate: Calendar, currentDate: Calendar): Boolean {
+        currentDate.add(Calendar.DAY_OF_YEAR, 1)
+        return isToday(reminderDate, currentDate)
+    }
+
 
     private val differCallback = object : DiffUtil.ItemCallback<Notes>() {
         override fun areItemsTheSame(oldItem: Notes, newItem: Notes): Boolean {

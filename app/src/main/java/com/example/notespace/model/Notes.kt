@@ -10,10 +10,10 @@ import kotlinx.parcelize.Parcelize
 data class Notes(
     @PrimaryKey(autoGenerate = true)
     val noteId: Long,
-    val noteTitle : String,
-    val noteDescription: String,
-    val timestamp: Long,
-    val trashed: Boolean = false,
-    val noteImageUri : String? =null,
-    val reminderTime : Long?
+    var noteTitle : String,
+    var noteDescription: String,
+    var timestamp: Long,
+    var trashed: Boolean = false,
+    var noteImageUri : String? =null,
+    var reminderTime : Long?
 ):Parcelable

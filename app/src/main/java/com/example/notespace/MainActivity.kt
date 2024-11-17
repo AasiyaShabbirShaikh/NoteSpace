@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.notespace.adapter.NotesAdapter
 import com.example.notespace.databinding.ActivityMainBinding
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         navController = navHostFragment.navController
 
         setupToolbarVisibility()
+        setUpMainBarVisibility()
 //        navController = findNavController(R.id.container)
         setSupportActionBar(binding.headerToolbar.toolbarHome)
 
@@ -109,26 +111,22 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
     private fun setupToolbarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.editFragment -> {
-                    hideMainHeaderToolbar()
-                    hideMainBottomNavLayout()
-                    showAddEditCustomToolbar()
-                    showAddEditCustomBottomBar()
-                    hideFloatingActionButton()
-                }
-//                R.id.dashboardFragment -> {
-//
-//                }
-//                else -> {
-//                    showMainHeaderToolbar()
-//                    hideAddEditCustomToolbar()
-//                    showMainBottomNavLayout()
-//                    hideAddEditCustomBottomBar()
-//                    showFloatingActionButton()
-//                }
-            }
+           if(destination.id == R.id.editFragment){
+               hideMainHeaderToolbar()
+               hideMainBottomNavLayout()
+               showAddEditCustomToolbar()
+               showAddEditCustomBottomBar()
+               hideFloatingActionButton()
+           }
         }
+    }
+
+    private fun setUpMainBarVisibility(){
+        showMainHeaderToolbar()
+        hideAddEditCustomToolbar()
+        showMainBottomNavLayout()
+        hideAddEditCustomBottomBar()
+        showFloatingActionButton()
     }
 
     private fun setUpDrawerLayout() {
@@ -215,11 +213,15 @@ class MainActivity : AppCompatActivity(), NoteInterface{
             binding.mainDrawer.isDrawerOpen(GravityCompat.START) -> {
                 binding.mainDrawer.closeDrawer(GravityCompat.START)
             }
-            binding.customToolbarLayout.toolbar.visibility == View.VISIBLE -> {
-                notesAdapter.clearNoteSelection()
-                hideAddEditCustomToolbar()
-                showMainHeaderToolbar()
+            navController.currentDestination?.id == R.id.editFragment -> {
+                setUpMainBarVisibility()
+                super.onBackPressed()
             }
+//            binding.customToolbarLayout.toolbar.visibility == View.VISIBLE -> {
+//                notesAdapter.clearNoteSelection()
+//                hideAddEditCustomToolbar()
+//                showMainHeaderToolbar()
+//            }
             else -> {
                 super.onBackPressed()
                 showMainBottomNavLayout()
@@ -273,19 +275,16 @@ class MainActivity : AppCompatActivity(), NoteInterface{
     private fun handleCustomToolbarIconClicks() {
         binding.customToolbarLayout.apply {
             backArrowIcon.setOnClickListener {
-                onBackPressed()
+
             }
             pinIcon.setOnClickListener {
-
             }
             remindMeIcon.setOnClickListener {
 //                showRemindMeBottomPopUpDialog()
             }
             colorIcon.setOnClickListener {
-
             }
             labelsIcon.setOnClickListener {
-
             }
             menuDotsIcon.setOnClickListener {
                 showCustomMenuOptions()
@@ -343,7 +342,6 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
             when(menuItem.itemId){
                 R.id.menu_archive -> {
-                    Toast.makeText(this@MainActivity, "archive clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.menu_delete -> {
                     dashboardFragment?.deleteSelectedNotes()
@@ -351,13 +349,10 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                     showMainHeaderToolbar()
                 }
                 R.id.menu_make_copy -> {
-                    Toast.makeText(this@MainActivity, "makeACopy clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.menu_send -> {
-                    Toast.makeText(this@MainActivity, "Send clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.menu_copy_to_google_docs -> {
-                    Toast.makeText(this@MainActivity, "CopyToGoogleDocs clicked", Toast.LENGTH_SHORT).show()
                 }
             }
             true

@@ -21,13 +21,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.notespace.MainActivity
 import com.example.notespace.R
+import com.example.notespace.utils.ReminderNotificationWorker
 import com.example.notespace.databinding.AddReminderDialogBoxBinding
 import com.example.notespace.databinding.BottomMenuPopUpLayoutBinding
 import com.example.notespace.databinding.BottomRemindPopUpLayoutBinding
 import com.example.notespace.databinding.BottomSheetPopUpLayoutBinding
 import com.example.notespace.databinding.FragmentAddBinding
 import com.example.notespace.model.Notes
-import com.example.notespace.utils.ReminderNotificationWorker
 import com.example.notespace.viewModel.NotesViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +43,6 @@ class AddFragment: Fragment() {
 
     private var _binding : FragmentAddBinding? = null
     private val binding get() = _binding!!
-
     private val notesViewModel: NotesViewModel by viewModels()
 
     private lateinit var addOnDialog : BottomSheetDialog
@@ -52,7 +51,6 @@ class AddFragment: Fragment() {
     private var addReminderDialogBox : Dialog? = null
 
     private lateinit var dialogBinding: AddReminderDialogBoxBinding
-
     private var imageUri: Uri? = null
 
     override fun onCreateView(
@@ -74,7 +72,6 @@ class AddFragment: Fragment() {
         (activity as MainActivity).hideMainBottomNavLayout()
         (activity as MainActivity).hideMainBottomNavLayout()
 
-        // Use the same key "image" as in MainActivity
         imageUri = arguments?.getParcelable("image")
         println("Received: $imageUri")
 
@@ -88,8 +85,6 @@ class AddFragment: Fragment() {
         }
 
         dialogBinding = AddReminderDialogBoxBinding.inflate(LayoutInflater.from(context))
-
-//        onReminderDayClicks()
     }
 
     fun setUpActionBar(){
@@ -109,10 +104,8 @@ class AddFragment: Fragment() {
 
     fun showRemindMeBottomPopUpDialog(){
         val remindMeViewBinding = BottomRemindPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
-
         remindMeDialog = BottomSheetDialog(requireContext())
         remindMeDialog.setContentView(remindMeViewBinding.root)
-
         remindMeViewBinding.apply {
             remindLaterTodayLayout.setOnClickListener {
                 binding.clockReminderCardview.visibility = View.VISIBLE
@@ -195,10 +188,8 @@ class AddFragment: Fragment() {
 
     fun showMenuBottomPopUpDialog(){
         val menuViewBinding = BottomMenuPopUpLayoutBinding.inflate(LayoutInflater.from(requireContext()))
-
         menuDialog = BottomSheetDialog(requireContext())
         menuDialog.setContentView(menuViewBinding.root)
-
         menuViewBinding.apply {
             menuDeleteLayout.setOnClickListener {
                 menuDialog.dismiss()
@@ -216,15 +207,11 @@ class AddFragment: Fragment() {
                 menuDialog.dismiss()
             }
             menuHelpFeedbackLayout.setOnClickListener {
-//                Toast.makeText(requireContext(), "helpFeedback clicked",Toast.LENGTH_LONG).show()
                 menuDialog.dismiss()
             }
-
-
         }
         menuDialog.show()
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -234,7 +221,6 @@ class AddFragment: Fragment() {
     private fun saveNote() {
         val title = binding.addTitleEditText.text.toString()
         val description = binding.addDescriptionEditText.text.toString()
-
         val reminderTime = parseReminderDateTime(dialogBinding.dateText.text.toString(), dialogBinding.timeText.text.toString())
 
         val note = Notes(0, title, description, System.currentTimeMillis(),false, imageUri?.toString(), reminderTime)
@@ -268,7 +254,6 @@ class AddFragment: Fragment() {
                                 notificationDescription = description
                             }
                         }
-
                         scheduleReminder(notificationTitle, notificationDescription, reminderTime)
                     }
                     findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
@@ -280,13 +265,6 @@ class AddFragment: Fragment() {
 
     private fun parseReminderDateTime(dateText: String, timeText: String): Long? {
         val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault())
-
-        var formattedDate = dateText
-        if (dateText.equals("Today", ignoreCase = true)) {
-            val calendar = Calendar.getInstance()
-            formattedDate = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(calendar.time)
-        }
-
         return try {
             dateFormat.parse("$dateText $timeText")?.time
         } catch (e: ParseException) {
@@ -294,8 +272,6 @@ class AddFragment: Fragment() {
             null
         }
     }
-
-
 
     private fun showAddReminderDialogBox(){
             dialogBinding = AddReminderDialogBoxBinding.inflate(layoutInflater)
@@ -328,14 +304,12 @@ class AddFragment: Fragment() {
                 }
                 saveButton.setOnClickListener {
                     validateOptedTime()
-
                     val selectedDateText = dialogBinding.dateText.text.toString()
                     val selectedTimeText = dialogBinding.timeText.text.toString()
                     if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
                         binding.dayText.text = selectedDateText
                         binding.timeText.text = selectedTimeText
                     }
-
                     val reminderTime = parseReminderDateTime(selectedDateText, selectedTimeText)
                     if (reminderTime != null && reminderTime > System.currentTimeMillis()) {
                         scheduleReminder(binding.addTitleEditText.text.toString(), binding.addDescriptionEditText.text.toString(), reminderTime)
@@ -406,7 +380,7 @@ class AddFragment: Fragment() {
                 val selectedDateCalendar = Calendar.getInstance()
                 selectedDateCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
 
-                val dateFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()) // "MMMM" is full month name, "dd" is day
+                val dateFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
                 val formattedDate = dateFormat.format(selectedDateCalendar.time)
 
                 dialogBinding.dateText.text = formattedDate
@@ -470,67 +444,23 @@ class AddFragment: Fragment() {
         timePickerDialog.show()
     }
 
-//    private fun validateOptedTime() {
-//        val selectedDateText = dialogBinding.dateText.text.toString()
-//        val selectedTimeText = dialogBinding.timeText.text.toString()
-//
-//        println(" selected--- ${selectedDateText}  ${selectedTimeText}")
-//
-//        if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
-//            val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // Format for "November 20 6:00 PM"
-//
-//            try {
-//                val selectedDateTimeString = "$selectedDateText $selectedTimeText"
-//                println("AddFragment $selectedDateTimeString")
-//
-//                val selectedDateTime = dateFormat.parse(selectedDateTimeString)
-//
-//                if (selectedDateTime != null) {
-//                    val selectedCalendar = Calendar.getInstance()
-//                    selectedCalendar.time = selectedDateTime
-//
-//                    val currentCalendar = Calendar.getInstance()
-//                    println("Current time: ${currentCalendar.time}, Selected time: ${selectedCalendar.time}")
-//
-//                    if (selectedCalendar.before(currentCalendar)) {
-//                        println("Selected time is in the past")
-//                        dialogBinding.timePassedText.visibility = View.VISIBLE
-//                    } else {
-//                        println("Selected time is in the future.")
-//                        dialogBinding.timePassedText.visibility = View.GONE
-//                    }
-//                } else {
-//                    Log.e("AddFragment", "Failed to parse date and time")
-//                }
-//            } catch (e: ParseException) {
-//                Log.e("AddFragment", "Date parse error: ${e.message}")
-//            }
-//        }
-//        else {
-//            Toast.makeText(requireContext(), "Please select both date and time", Toast.LENGTH_SHORT).show()
-//            dialogBinding.timePassedText.visibility = View.GONE
-//        }
-//    }
-
     private fun validateOptedTime() {
         val selectedDateText = dialogBinding.dateText.text.toString()
         val selectedTimeText = dialogBinding.timeText.text.toString()
-
         println(" selected--- ${selectedDateText}  ${selectedTimeText}")
 
         if (selectedDateText.isNotEmpty() && selectedTimeText.isNotEmpty()) {
             try {
-                val dateFormat: SimpleDateFormat
-                // Check if the time is in 24-hour format or 12-hour format
-                dateFormat = if (selectedTimeText.contains(":") && selectedTimeText.contains("PM") || selectedTimeText.contains("AM")) {
-                    SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // 12-hour format
-                } else {
-                    SimpleDateFormat("MMMM dd yyyy HH:mm", Locale.getDefault()) // 24-hour format
-                }
+                val dateFormat = SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault())
+//                dateFormat = if (selectedTimeText.contains(":") && selectedTimeText.contains("PM") || selectedTimeText.contains("AM")) {
+//                    SimpleDateFormat("MMMM dd yyyy hh:mm a", Locale.getDefault()) // 12-hour format
+//                }
+//                else {
+//                    SimpleDateFormat("MMMM dd yyyy HH:mm", Locale.getDefault()) // 24-hour format
+//                }
 
                 val selectedDateTimeString = "$selectedDateText $selectedTimeText"
                 println("AddFragment $selectedDateTimeString")
-
                 val selectedDateTime = dateFormat.parse(selectedDateTimeString)
 
                 if (selectedDateTime != null) {
