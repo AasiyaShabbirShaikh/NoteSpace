@@ -26,17 +26,17 @@ abstract class NotesDatabase: RoomDatabase() {
             }
         }
 
-        val migrationFrom1To2 = object : Migration(1,2){
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE notes ADD COLUMN trashed INTEGER NOT NULL DEFAULT 0")
-            }
-        }
-
-        val migrationFrom2To3 = object : Migration(2, 3) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE notes ADD COLUMN noteImageUri TEXT")
-            }
-        }
+//        val migrationFrom1To2 = object : Migration(1,2){
+//            override fun migrate(db: SupportSQLiteDatabase) {
+//                db.execSQL("ALTER TABLE notes ADD COLUMN trashed INTEGER NOT NULL DEFAULT 0")
+//            }
+//        }
+//
+//        val migrationFrom2To3 = object : Migration(2, 3) {
+//            override fun migrate(db: SupportSQLiteDatabase) {
+//                db.execSQL("ALTER TABLE notes ADD COLUMN noteImageUri TEXT")
+//            }
+//        }
 
         private fun createDatabse(context: Context) =
             Room.databaseBuilder(
@@ -44,8 +44,8 @@ abstract class NotesDatabase: RoomDatabase() {
                 NotesDatabase::class.java,
                 "note_db"
             )
-                .addMigrations(migrationFrom1To2, migrationFrom2To3)
-//                .fallbackToDestructiveMigration()
+//                .addMigrations(migrationFrom1To2, migrationFrom2To3)
+                .fallbackToDestructiveMigration()
                 .build()
 
     }

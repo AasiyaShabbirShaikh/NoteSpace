@@ -23,6 +23,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.notespace.adapter.NotesAdapter
 import com.example.notespace.databinding.ActivityMainBinding
 import com.example.notespace.databinding.BottomMenuPopUpLayoutBinding
+import com.example.notespace.databinding.BottomRemindPopUpLayoutBinding
 import com.example.notespace.databinding.BottomSheetPopUpLayoutBinding
 import com.example.notespace.databinding.GalleryDialogBoxBinding
 import com.example.notespace.ui.AddFragment
@@ -33,7 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NoteInterface{
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var navController : NavController
@@ -44,8 +45,6 @@ class MainActivity : AppCompatActivity(), NoteInterface{
     private lateinit var notesAdapter : NotesAdapter
 
     private val notesViewModel: NotesViewModel by viewModels()
-
-//    private lateinit var imageUri: Uri
 
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
@@ -62,7 +61,6 @@ class MainActivity : AppCompatActivity(), NoteInterface{
 
         setupToolbarVisibility()
         setUpMainBarVisibility()
-//        navController = findNavController(R.id.container)
         setSupportActionBar(binding.headerToolbar.toolbarHome)
 
         setUpActionBarClicks()
@@ -76,25 +74,16 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         handleFloatingButtonClick()
         handleCustomToolbarIconClicks()
 
-//        binding.customToolbarLayout.toolbar.visibility = View.GONE
-
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == RESULT_OK) {
                 val capturedImageUri = CameraHelper.getImageUri()
                 if(capturedImageUri != null){
-                    val addFragment = AddFragment()
                     val bundle = Bundle().apply{
                         putParcelable("image",capturedImageUri)
                     }
-//                    addFragment.arguments = bundle
                     navController.navigate(R.id.addFragment, bundle)
 
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.base_container, addFragment)
-//                        .addToBackStack(null)
-//                        .commit()
                 }
-//                navController.navigate(R.id.addFragment)
             } else {
                 Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
             }
@@ -137,37 +126,30 @@ class MainActivity : AppCompatActivity(), NoteInterface{
         binding.drawerNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.notes -> {
-//                    Toast.makeText(this,"notes clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.dashboardFragment)
                 }
                 R.id.reminders -> {
-//                    Toast.makeText(this,"reminders clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.reminderFragment)
                 }
                 R.id.create_new_label -> {
-//                    Toast.makeText(this,"create new label clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.createNewLabelFragment)
                 }
                 R.id.archive -> {
-//                    Toast.makeText(this,"archive clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.archiveFragment)
                 }
                 R.id.trash -> {
-//                    Toast.makeText(this,"trash clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.trashFragment)
                 }
                 R.id.settings -> {
-//                    Toast.makeText(this,"settings clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.settingsFragment)
                 }
                 R.id.help_feedback -> {
-//                    Toast.makeText(this,"help/feedback clicked", Toast.LENGTH_LONG).show()
                     binding.mainDrawer.closeDrawer(GravityCompat.START)
                     navController.navigate(R.id.helpFeedbackFragment)
                 }
@@ -217,11 +199,6 @@ class MainActivity : AppCompatActivity(), NoteInterface{
                 setUpMainBarVisibility()
                 super.onBackPressed()
             }
-//            binding.customToolbarLayout.toolbar.visibility == View.VISIBLE -> {
-//                notesAdapter.clearNoteSelection()
-//                hideAddEditCustomToolbar()
-//                showMainHeaderToolbar()
-//            }
             else -> {
                 super.onBackPressed()
                 showMainBottomNavLayout()
@@ -275,7 +252,6 @@ class MainActivity : AppCompatActivity(), NoteInterface{
     private fun handleCustomToolbarIconClicks() {
         binding.customToolbarLayout.apply {
             backArrowIcon.setOnClickListener {
-
             }
             pinIcon.setOnClickListener {
             }

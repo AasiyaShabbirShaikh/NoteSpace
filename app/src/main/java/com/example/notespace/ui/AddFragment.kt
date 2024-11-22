@@ -254,6 +254,7 @@ class AddFragment: Fragment() {
                                 notificationDescription = description
                             }
                         }
+                        println("notification ${notificationTitle} ,${notificationDescription}, ${reminderTime}")
                         scheduleReminder(notificationTitle, notificationDescription, reminderTime)
                     }
                     findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
@@ -268,7 +269,7 @@ class AddFragment: Fragment() {
         return try {
             dateFormat.parse("$dateText $timeText")?.time
         } catch (e: ParseException) {
-            Log.e("AddFragment", "Failed to parse reminder date and time: ${e.message}")
+//            Log.e("AddFragment", "Failed to parse reminder date and time: ${e.message}")
             null
         }
     }
@@ -527,6 +528,7 @@ class AddFragment: Fragment() {
     }
 
     private fun scheduleReminder(title: String, message: String, reminderTime: Long) {
+        println(" schedule gets ${title},  ${message}, ${reminderTime}")
         val delay = reminderTime - System.currentTimeMillis()
         var time = reminderTime.toString()
         if (delay > 0) {
